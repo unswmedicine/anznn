@@ -316,7 +316,6 @@ describe CrossQuestionValidation do
         end
         it "passes if q2 not answered but q1 is" do
           a1 = Factory :answer, response: @response, question: @q1, answer_value: "7"
-          do_cqv_check_unanswered_answer(a1, [])
         end
         it("passes if q2 not answered and q1 not answered") {} # rule won't be run
         it("passes if q2 is not -1 and q1 is blank") {} # rule won't be run }
