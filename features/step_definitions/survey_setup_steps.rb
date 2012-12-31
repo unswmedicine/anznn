@@ -36,7 +36,7 @@ Given /^"([^"]*)" has questions$/ do |survey_name, table|
 end
 
 Given /^question "([^"]*)" has question options$/ do |question_name, table|
-  question = Question.find_by_question(question_name)
+  question = Question.find_by_question!(question_name)
   question.question_options.delete_all
   table.hashes.each do |qo_attrs|
     Factory(:question_option, qo_attrs.merge(question: question))
