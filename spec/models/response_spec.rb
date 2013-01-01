@@ -298,6 +298,29 @@ describe Response do
         @response.section_started?(@section3).should be_true
         @response.status_of_section(@section3).should eq 'Incomplete'
       end
+
+      it "takes unanswered questions into account" do
+        survey = Factory(:survey)
+        response = Factory(:response, survey: survey)
+        section = Factory(:section, survey: survey)
+
+        question = Factory(:question, section: section, mandatory: false, question_type: Question::TYPE_TEXT)
+        trigger = Factory(:question, section: section, mandatory: false, question_type: Question::TYPE_INTEGER)
+
+        Factory(:cross_question_validation,
+                rule: 'present_if_const',
+                conditional_operator: '==',
+                conditional_constant: '1',
+                question: question,
+                related_question: trigger)
+
+        Factory(:answer, question: trigger, answer_value: '1', response: response)
+        # no answer for particular question
+        response.reload
+
+        response.section_started?(section).should be_true
+        response.status_of_section(section).should eq 'Incomplete'
+      end
     end
   end
 

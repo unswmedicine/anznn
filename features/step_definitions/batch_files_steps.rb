@@ -1,3 +1,5 @@
+require 'tempfile'
+
 Then /^I should have a batch file stored for survey "([^"]*)" with uploader "([^"]*)" and hospital "([^"]*)"$/ do |survey_name, email, hospital_name|
   check_batch_file(survey_name, email, hospital_name)
 end
@@ -147,4 +149,41 @@ end
 When /^I should have (\d+) supplementary files? for the most recent batch$/ do |expected_count|
   batch = BatchFile.last
   batch.supplementary_files.count.should eq(expected_count.to_i)
+end
+
+And /^I uploaded the following batch file to the "([^"]*)" survey in year "([^"]*)"$/ do |survey_name, year, table|
+  visit new_batch_file_path
+
+  select survey_name, from: "Registration type"
+  select year, from: "Year of registration"
+
+  with_table_as_csv(table) do |filename|
+    attach_file("File", filename)
+    click_button "Upload"
+  end
+end
+
+Then /^the last detail report should look like$/ do |expected_report_table|
+  report_path = BatchFile.last.detail_report_path
+  detail_report = CSV.read(report_path)
+
+  detail_report.should eq expected_report_table.raw
+end
+
+def with_table_as_csv(table, &block)
+  # writes a cucumber table to CSV, yielding the filename of the tempfile
+  csv_file = Tempfile.new('csv_file')
+  csv_file_path = csv_file.path
+
+  begin
+    CSV.open(csv_file_path, 'wb') do |csv|
+      table.raw.each do |row|
+        csv << row
+      end
+    end
+    block.call(csv_file_path)
+  ensure
+    csv_file.close
+    csv_file.unlink
+  end
 end

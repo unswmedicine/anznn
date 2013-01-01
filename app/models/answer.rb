@@ -22,6 +22,8 @@ class Answer < ActiveRecord::Base
 
   serialize :raw_answer
 
+  attr_accessor :is_dummy
+
   # Performance Optimisation: we don't load through the association, instead we do a global lookup by ID
   # to a cached set of questions that are loaded once in an initializer
   def question
@@ -92,9 +94,9 @@ class Answer < ActiveRecord::Base
       when TYPE_TEXT, TYPE_DECIMAL, TYPE_INTEGER, TYPE_CHOICE
         answer_value.to_s
       when TYPE_DATE
-        date_answer.strftime('%Y-%m-%d')
+        date_answer.try(:strftime, '%Y-%m-%d') || ''
       when TYPE_TIME
-        time_answer.strftime('%H:%M')
+        time_answer.try(:strftime, '%H:%M') || ''
       else
         raise "Unknown question type #{question.question_type}"
     end

@@ -44,10 +44,10 @@ class CsvGenerator
   private
 
   def answers(response)
-    answer_hash = response.answers.reduce({}) { |hash, answer| hash[answer.question.code] = answer; hash }
+    answer_hash = response.all_answers_with_blanks_created.reduce({}) { |hash, answer| hash[answer.question.code] = answer; hash }
     question_codes.collect do |code|
       answer = answer_hash[code]
-      answer.nil? ? "" : answer.format_for_csv
+      answer.format_for_csv
     end
   end
 
