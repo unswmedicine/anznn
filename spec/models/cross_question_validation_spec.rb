@@ -131,15 +131,12 @@ describe CrossQuestionValidation do
       error_messages.should eq val
     end
 
-    def build_two_answers(val_first, val_second)
+    def standard_cqv_test(val_first, val_second, error)
       first = Factory :answer, response: @response, question: @q1, answer_value: val_first
       second = Factory :answer, response: @response, question: @q2, answer_value: val_second
-      @response.reload
-      return first, second
-    end
 
-    def standard_cqv_test(val_first, val_second, error)
-      first, second = build_two_answers(val_first, val_second)
+      @response.reload
+
       do_cqv_check(first, error)
     end
 
@@ -355,6 +352,8 @@ describe CrossQuestionValidation do
         @q1 = Factory :question, section: @section, question_type: 'Date'
         @q2 = Factory :question, section: @section, question_type: 'Date'
         @response = Factory :response, survey: @survey
+        @response.reload
+        @response.answers.count.should eq 0
       end
       describe "date_lte" do
         before :each do

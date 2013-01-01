@@ -92,9 +92,9 @@ class Answer < ActiveRecord::Base
       when TYPE_TEXT, TYPE_DECIMAL, TYPE_INTEGER, TYPE_CHOICE
         answer_value.to_s
       when TYPE_DATE
-        date_answer.strftime('%Y-%m-%d')
+        date_answer.try(:strftime, '%Y-%m-%d') || ''
       when TYPE_TIME
-        time_answer.strftime('%H:%M')
+        time_answer.try(:strftime, '%H:%M') || ''
       else
         raise "Unknown question type #{question.question_type}"
     end

@@ -149,6 +149,7 @@ describe BatchFile do
     describe "well formatted files" do
       it "file with no errors or warnings - should create the survey responses and answers" do
         batch_file = process_batch_file('no_errors_or_warnings.csv', survey, user, 2008)
+        batch_file.organised_problems.detailed_problems.should eq []
         batch_file.status.should eq("Processed Successfully")
         batch_file.message.should eq("Your file has been processed successfully.")
         Response.count.should == 3

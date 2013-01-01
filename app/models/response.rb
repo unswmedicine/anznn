@@ -28,11 +28,18 @@ class Response < ActiveRecord::Base
 
   before_validation :strip_whitespace
   before_save :compute_validation_status
+  before_save :clear_dummy_answers
 
   scope :for_survey, lambda { |survey| where(survey_id: survey.id) }
 
   scope :unsubmitted, where(submitted_status: STATUS_UNSUBMITTED)
   scope :submitted, where(submitted_status: STATUS_SUBMITTED)
+
+  def initialize(*args, &block)
+    super(*args, &block)
+    @dummy_answers = []
+  end
+
 
   # Performance Optimisation: we don't load through the association, instead we do a global lookup by ID
   # to a cached set of surveys that are loaded once in an initializer
@@ -86,13 +93,14 @@ class Response < ActiveRecord::Base
   end
 
   def prepare_answers_to_section_with_blanks_created(section)
-    existing_answers = answers_to_section(section).reduce({}) { |hash, answer| hash[answer.question_id] = answer; hash }
+    existing_answers = answers_to_section(section).each_with_object({}) { |answer, hash| hash[answer.question_id] = answer }
 
     section.questions.each do |question|
       #if there's no answer object already, build an empty one
-      if existing_answers[question.id].nil?
+      if !existing_answers.include?(question.id)
         answer = self.answers.build(question: question)
         existing_answers[question.id] = answer
+        @dummy_answers << answer
       end
     end
     existing_answers
@@ -106,28 +114,33 @@ class Response < ActiveRecord::Base
     end
   end
 
+  def all_answers_with_blanks_created
+    sections_to_answers_with_blanks_created.values.flatten
+  end
+
   def section_started?(section)
     !answers_to_section(section).empty?
   end
 
   def status_of_section(section)
-    answers_to_sec = answers_to_section(section)
+    answers_to_sec = prepare_answers_to_section_with_blanks_created(section).values
 
-    all_mandatory_questions_answered = all_mandatory_passed_for_section(section, answers_to_sec)
-    any_warnings = answers_to_sec.map { |a| a.warnings.present? }.any?
-    any_fatal_warnings = answers_to_sec.map { |a| a.fatal_warnings.present? }.any?
+    any_mandatory_question_unanswered = answers_to_sec.any? { |a| a.violates_mandatory }
+    any_warnings = answers_to_sec.any? { |a| a.warnings.present? }
+    any_fatal_warnings = answers_to_sec.any? { |a| a.fatal_warnings.present? }
 
-    if all_mandatory_questions_answered
-      if any_fatal_warnings
-        INCOMPLETE
-      elsif any_warnings
-        COMPLETE_WITH_WARNINGS
-      else
-        COMPLETE
-      end
-    else
+    if any_fatal_warnings or any_mandatory_question_unanswered
       INCOMPLETE
+    elsif any_warnings
+      COMPLETE_WITH_WARNINGS
+    else
+      COMPLETE
     end
+  end
+
+  def missing_mandatory_questions
+    answers = all_answers_with_blanks_created.select { |a| a.violates_mandatory }
+    answers.map(&:question)
   end
 
   def build_answers_from_hash(hash)
@@ -142,15 +155,13 @@ class Response < ActiveRecord::Base
   end
 
   def fatal_warnings?
-    violates_mandatory || answers.collect(&:has_fatal_warning?).any?
+    all_answers_with_blanks_created.any? do |answer|
+      answer.violates_mandatory || answer.fatal_warnings.present?
+    end
   end
 
   def warnings?
-    violates_mandatory || answers.collect(&:has_warning?).any?
-  end
-
-  def missing_mandatory_questions
-    Question.find(missing_mandatory_question_ids)
+    answers.any?(&:has_warning?) || fatal_warnings?
   end
 
   #TODO: test me
@@ -189,24 +200,12 @@ class Response < ActiveRecord::Base
     answers.select {|a| a.question.section_id == section.id}
   end
 
-  def violates_mandatory
-    !missing_mandatory_question_ids.empty?
-  end
-
-  def missing_mandatory_question_ids
-    required_question_ids = survey.mandatory_question_ids
-    answered_question_ids = answers.collect(&:question_id)
-    required_question_ids - answered_question_ids
-  end
-
-  def all_mandatory_passed_for_section(section, answers_to_section)
-    required_question_ids = section.questions.select{|q| q.mandatory }.collect(&:id)
-    answered_question_ids = answers_to_section.collect(&:question_id)
-    (required_question_ids - answered_question_ids).empty?
-  end
-
   def strip_whitespace
     self.baby_code = self.baby_code.strip unless self.baby_code.nil?
+  end
+
+  def clear_dummy_answers
+    self.answers.delete_if {|elem| @dummy_answers.map(&:object_id).include? elem.object_id }
   end
 
 end
