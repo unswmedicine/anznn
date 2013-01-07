@@ -125,7 +125,7 @@ class BatchFile < ActiveRecord::Base
     # get all the problems from all the responses organised for reporting
     responses.each do |r|
       r.answers.each do |answer|
-        next if r.instance_variable_get(:@dummy_answers).include?(answer)
+        next if r.instance_variable_get(:@dummy_answers).map(&:object_id).include?(answer.object_id)
         organiser.add_problems(answer.question.code, r.baby_code, answer.fatal_warnings, answer.warnings, answer.format_for_csv)
       end
       r.missing_mandatory_questions.each do |question|

@@ -26,19 +26,21 @@ class Response < ActiveRecord::Base
   validates_format_of :baby_code, with: BABY_CODE_REGEX
   validates_length_of :baby_code, maximum: 30
 
+  before_validation { puts 'start before validation' }
   before_validation :strip_whitespace
+  before_validation :clear_dummy_answers
+  before_validation { puts 'end before validation' }
+  before_save { puts 'start before save' }
   before_save :compute_validation_status
   before_save :clear_dummy_answers
+  before_save { puts 'end before save' }
 
   scope :for_survey, lambda { |survey| where(survey_id: survey.id) }
 
   scope :unsubmitted, where(submitted_status: STATUS_UNSUBMITTED)
   scope :submitted, where(submitted_status: STATUS_SUBMITTED)
 
-  def initialize(*args, &block)
-    super(*args, &block)
-    @dummy_answers = []
-  end
+  after_initialize { @dummy_answers = [] }
 
 
   # Performance Optimisation: we don't load through the association, instead we do a global lookup by ID
@@ -99,6 +101,8 @@ class Response < ActiveRecord::Base
       #if there's no answer object already, build an empty one
       if !existing_answers.include?(question.id)
         answer = self.answers.build(question: question)
+        answer.response=self
+        puts "created #{answer.object_id}"
         existing_answers[question.id] = answer
         @dummy_answers << answer
       end
@@ -205,7 +209,10 @@ class Response < ActiveRecord::Base
   end
 
   def clear_dummy_answers
+    puts self.answers.map(&:object_id).inspect
     self.answers.delete_if {|elem| @dummy_answers.map(&:object_id).include? elem.object_id }
+    puts self.answers.inspect
+    @dummy_answers.clear
   end
 
 end

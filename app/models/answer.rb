@@ -22,6 +22,8 @@ class Answer < ActiveRecord::Base
 
   serialize :raw_answer
 
+  attr_accessor :is_dummy
+
   # Performance Optimisation: we don't load through the association, instead we do a global lookup by ID
   # to a cached set of questions that are loaded once in an initializer
   def question

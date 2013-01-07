@@ -60,6 +60,7 @@ class CrossQuestionValidation < ActiveRecord::Base
   SpecialRules.register_additional_rules
 
   def self.check(answer)
+    puts "checking #{answer.object_id}"
     cqvs = answer.question.cross_question_validations
     warnings = cqvs.map do |cqv|
       cqv.check answer
