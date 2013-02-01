@@ -66,10 +66,12 @@ class ResponsesController < ApplicationController
 
       # destroy answers for questions not in section
       section = @response.survey.section_with_id(params[:go_to_section])
-      missing_questions = section.questions.select { |q| !submitted_questions.include?(q.id) }
-      missing_questions.each do |question|
-        answer = @response.get_answer_to(question.id)
-        answer.destroy if answer
+      if section
+        missing_questions = section.questions.select { |q| !submitted_questions.include?(q.id) && q.question_type == Question::TYPE_CHOICE }
+        missing_questions.each do |question|
+          answer = @response.get_answer_to(question.id)
+          answer.destroy if answer
+        end
       end
     end
 
