@@ -314,6 +314,7 @@ def get_checked_radio(question_name)
     end
   end
 
+  return nil
 end
 
 Then /^I should see answers for section "([^"]*)"$/ do |section_name, expected_table|
@@ -523,4 +524,18 @@ Then /^the year select for question "([^"]*)" should have range "([^"]*)" to "([
   actual_options = options.collect(&:text)
   expected_options = ["Year"] + expected_values.collect(&:to_s)
   actual_options.should eq(expected_options)
+end
+
+Then /^I deselect "([^"]*)"$/ do |question_name|
+  question_div = question_div(question_name)
+  btn = question_div.find('a.btn-deselect')
+  btn.click
+end
+
+Then /^I should see choice "([^"]*)" with "([^"]*)"$/ do |question_name, answer|
+  get_checked_radio(question_name).should == answer
+end
+
+Then /^I should see choice "([^"]*)" with no options$/ do |question_name|
+  get_checked_radio(question_name).should == nil
 end

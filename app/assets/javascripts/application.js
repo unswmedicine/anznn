@@ -13,6 +13,7 @@
 //= require ie6
 //= require show_hide_multi_questions
 //= require supplementary_questions_batch
+//= require deselect_option
 
 $(window).load(function () {
   $('.row div[class^="span"]:last-child').addClass('last-child');

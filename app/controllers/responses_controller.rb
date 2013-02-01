@@ -48,6 +48,7 @@ class ResponsesController < ApplicationController
     answers = params[:answers]
     answers ||= {}
     submitted_answers = answers.map { |id, val| [id.to_i, val] }
+    submitted_questions = submitted_answers.map { |q_a| q_a.first }
      #WARNING: this is a performance enhancing hack to get around the fact that reverse associations are not loaded as one would expect - don't change it
     set_response_value_on_answers(@response)
 
@@ -62,7 +63,16 @@ class ResponsesController < ApplicationController
           answer.save!
         end
       end
+
+      # destroy answers for questions not in section
+      section = @response.survey.section_with_id(params[:go_to_section])
+      missing_questions = section.questions.select { |q| !submitted_questions.include?(q.id) }
+      missing_questions.each do |question|
+        answer = @response.get_answer_to(question.id)
+        answer.destroy if answer
+      end
     end
+
     # reload and trigger a save so that status is recomputed afresh - DONT REMOVE THIS
     @response.reload
      #WARNING: this is a performance enhancing hack to get around the fact that reverse associations are not loaded as one would expect - don't change it

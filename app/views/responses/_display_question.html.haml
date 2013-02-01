@@ -61,6 +61,7 @@
                 %span.radio-label= qo.display_value
                 - unless qo.hint_text.blank?
                   %span.help-block.radio-description= qo.hint_text
+          = link_to 'Deselect', '#', class: 'btn btn-deselect'
       - when 'Decimal'
         = text_field_tag "answers[#{q.id}]", answer.answer_value, id: field_id, maxlength: 15,
           class: 'medium field_trigger',
