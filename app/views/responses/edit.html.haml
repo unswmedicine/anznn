@@ -4,6 +4,7 @@
   .span12#question_box
     = form_tag response_path(@response), method: :put, id: :response_form do
       = hidden_field_tag :go_to_section, @section.id, id: "go_to_section_field"
+      = hidden_field_tag :current_section, @section.id, id: "current_section"
       %fieldset
         %legend= @section.name
         = render partial: 'display_question', collection: @questions, as: :q

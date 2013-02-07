@@ -65,7 +65,7 @@ class ResponsesController < ApplicationController
       end
 
       # destroy answers for questions not in section
-      section = @response.survey.section_with_id(params[:go_to_section])
+      section = @response.survey.section_with_id(params[:current_section])
       if section
         missing_questions = section.questions.select { |q| !submitted_questions.include?(q.id) && q.question_type == Question::TYPE_CHOICE }
         missing_questions.each do |question|
