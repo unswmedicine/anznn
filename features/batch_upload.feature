@@ -90,7 +90,7 @@ Feature: Upload survey responses in a batch file
       | Test Survey       | no_errors_or_warnings.csv | Processed Successfully |              |
       | Test Survey       | number_out_of_range.csv   | Needs Review           | Force Submit |
 
-  Scenario: Supervisors can force submit
+  Scenario: Supervisors can force submit with range warnings
     Given I am logged in as "data.provider@intersect.org.au"
     And I upload batch file as "data.provider@intersect.org.au" "number_out_of_range.csv" for survey "Test Survey"
     And I am on the list of batch uploads page
@@ -122,3 +122,38 @@ Feature: Upload survey responses in a batch file
     Then I should see "batch_uploads" table with
       | Registration Type | Status                 |  |
       | Test Survey       | Processed Successfully |  |
+
+  Scenario: Supervisors can force submit with cross-question-validation warnings
+    Given I have the standard survey setup
+    And I am logged in as "data.provider@intersect.org.au"
+    And I upload batch file as "data.provider@intersect.org.au" "cross_question_error.csv" for survey "MySurvey"
+    And I am on the list of batch uploads page
+    Then the "batch_uploads" table should have 9 columns
+    And I should see "batch_uploads" table with
+      | Registration Type | Status      |
+      | MySurvey          | In Progress |
+    When the batch files are processed
+    And I am on the list of batch uploads page
+    Then I should see "batch_uploads" table with
+      | Registration Type | Status       |
+      | MySurvey          | Needs Review |
+
+    Given I am logged in as "supervisor@intersect.org.au" and have role "Data Provider Supervisor" and I'm linked to hospital "RPA"
+    When I am on the list of batch uploads page
+    And the "batch_uploads" table should have 10 columns
+    Then the batch uploads table should look like
+      | Registration Type | Filename                 | Status       |              |
+      | MySurvey          | cross_question_error.csv | Needs Review | Force Submit |
+    When I force submit for "cross_question_error.csv"
+    Then I should be on the list of batch uploads page
+    And I should see "Your request is now being processed. This may take some time depending on the size of the file."
+    And I should see "batch_uploads" table with
+      | Registration Type | Filename                 | Status       |
+      | MySurvey          | cross_question_error.csv | Needs Review |
+
+    When the batch files are processed
+    And I am on the list of batch uploads page
+    Then I should see "batch_uploads" table with
+      | Registration Type | Status                 |  |
+      | MySurvey          | Processed Successfully |  |
+    

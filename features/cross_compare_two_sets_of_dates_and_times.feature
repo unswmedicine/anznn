@@ -24,7 +24,7 @@ Feature: Cross Question Validations - compare 2 pairs of date+time
       | Time Q1  | 01:23    |
       | Date Q2  | 2012/2/2 |
       | Time Q2  | 11:23    |
-    Then I should see "Date1+Time1 must be <= Date2+Time2"
+    Then I should see warning "Date1+Time1 must be <= Date2+Time2" for question "Date Q1"
 
   Scenario: Success - all are answered and do meet comparison condition
     When I store the following answers

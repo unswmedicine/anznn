@@ -45,6 +45,9 @@ Given /^question "([^"]*)" has question options$/ do |question_name, table|
 end
 
 Given /^I have the standard survey setup$/ do
+  survey = Survey.find_by_name("MySurvey")
+  survey.destroy if survey
+
   question_file = Rails.root.join 'test_data/survey', 'survey_questions.csv'
   options_file = Rails.root.join 'test_data/survey', 'survey_options.csv'
   cross_question_validations_file = Rails.root.join 'test_data/survey', 'cross_question_validations.csv'

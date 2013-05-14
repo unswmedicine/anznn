@@ -8,13 +8,15 @@ Feature: Review my answers
     And I have a survey with name "MySurvey"
     And "MySurvey" has sections
       | name       | section_order |
-      | SectionOne | 0     |
-      | SectionTwo | 1     |
+      | SectionOne | 0             |
+      | SectionTwo | 1             |
     And "MySurvey" has questions
       | question   | question_type | section | mandatory | string_min | string_max |
       | Text Qn    | Text          | 0       | true      | 8          | 8          |
       | Decimal Qn | Decimal       | 0       | false     |            |            |
       | Integer Qn | Integer       | 0       | true      |            |            |
+      | Integer Q2 | Integer       | 0       | false     |            |            |
+      | Integer Q3 | Integer       | 0       | false     |            |            |
       | Date Qn    | Date          | 1       | true      |            |            |
       | Time Qn    | Time          | 1       | true      |            |            |
       | Choice Qn  | Choice        | 1       | false     |            |            |
@@ -23,6 +25,9 @@ Feature: Review my answers
       | 99           | Dunno |              | 2            |
       | 0            | Yes   | this is true | 0            |
       | 1            | No    | not true     | 1            |
+    And I have the following cross question validations
+      | question   | related    | rule       | operator | error_message                         |
+      | Integer Q2 | Integer Q3 | comparison | ==       | Integer Q2 should be eq to Integer Q3 |
     And I create a response for "MySurvey" with baby code "ABCDEF" and year of registration "2005"
 
   Scenario: Navigate from home page to review answers page
@@ -54,6 +59,8 @@ Feature: Review my answers
       | Text Qn    | Not answered\nThis question is mandatory |
       | Decimal Qn | Not answered                             |
       | Integer Qn | Not answered\nThis question is mandatory |
+      | Integer Q2 | Not answered                             |
+      | Integer Q3 | Not answered                             |
     And I should see answers for section "SectionTwo"
       | Date Qn   | Not answered\nThis question is mandatory |
       | Time Qn   | Not answered\nThis question is mandatory |
@@ -79,24 +86,30 @@ Feature: Review my answers
       | Text Qn    | abcdefgh |
       | Decimal Qn | 1.23     |
       | Integer Qn | 22       |
+      | Integer Q2 | Not answered                             |
+      | Integer Q3 | Not answered                             |
     And I should see answers for section "SectionTwo"
       | Date Qn   | 25/12/2011 |
       | Time Qn   | 18:56      |
       | Choice Qn | (0) Yes    |
 
   @javascript
-  Scenario: warnings/errors are shown beneath answers - required/range/format errors
+  Scenario: warnings/errors are shown beneath answers - required/range/format/cqv errors
     Given I am on the response page for ABCDEF
     And I answer as follows
       | question   | answer |
       | Decimal Qn | abc    |
       | Text Qn    | abcd   |
+      | Integer Q2 | 22     |
+      | Integer Q3 | 23     |
     And I follow "Summary"
     And I follow "Review Answers"
     Then I should see answers for section "SectionOne"
-      | Text Qn    | abcd\nAnswer should be 8 characters                   |
+      | Text Qn    | abcd\nAnswer should be 8 characters                    |
       | Decimal Qn | Answer is the wrong format (expected a decimal number) |
-      | Integer Qn | Not answered\nThis question is mandatory              |
+      | Integer Qn | Not answered\nThis question is mandatory               |
+      | Integer Q2 | 22\nInteger Q2 should be eq to Integer Q3              |
+      | Integer Q3 | 23                                                     |
 
   @javascript
   Scenario: Bad/partially filled dates and times are not shown, just error is shown instead

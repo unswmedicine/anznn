@@ -51,5 +51,5 @@ Feature: Cross Question Blank-Unless Validations
     When I store the following answers
       | question | answer   |
       | Date Q1  | 2012/1/1 |
-    Then I should see "q2 was blank, q1 must be blank"
+    Then I should see warning "q2 was blank, q1 must be blank" for question "Date Q1"
 

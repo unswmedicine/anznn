@@ -44,12 +44,12 @@ Feature: Cross Question Present-If-Constant Validations
     When I store the following answers
       | question  | answer   |
       | Choice Q1 | (-1) Yes |
-    Then I should see "date should be present if q1 is -1"
+    Then I should see warning "date should be present if q1 is -1" for question "Choice Q1"
 
   Scenario: If one answer = -1, another must also be present (choice and date) - fail (choice is -1 and date invalid)
     When I store the following answers
       | question  | answer   |
       | Date Q1   | 2009/12/ |
       | Choice Q1 | (-1) Yes |
-    Then I should see "date should be present if q1 is -1"
+    Then I should see warning "date should be present if q1 is -1" for question "Choice Q1"
 

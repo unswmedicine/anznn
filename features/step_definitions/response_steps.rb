@@ -44,9 +44,12 @@ end
 
 Then /^I should see( fatal)? warning "([^"]*)" for question "([^"]*)"$/ do |maybe_fatal, warning, question_label|
   question = question_div(question_label)
-
   check_class_on_question(maybe_fatal, question)
-  get_error_warning_messages(question).should eq(warning)
+  if maybe_fatal
+    get_error_messages(question).should eq(warning)
+  else
+    get_warning_messages(question).should eq(warning)
+  end
 end
 
 Then /^I should see warnings as follows$/ do |table|
@@ -65,8 +68,17 @@ end
 
 def get_error_warning_messages(question_div)
   help_block = question_div.find(".help-block")
-  warnings = help_block.all('.fatalerror-display, .warning-display')
-  warnings.collect(&:text).join(" ")
+  help_block.all('.fatalerror-display, .warning-display').collect(&:text).join(" ")
+end
+
+def get_warning_messages(question_div)
+  help_block = question_div.all(".help-block").last
+  help_block.all('.warning-display').collect(&:text).join(" ")
+end
+
+def get_error_messages(question_div)
+  help_block = question_div.find(".help-block")
+  help_block.all('.fatalerror-display').collect(&:text).join(" ")
 end
 
 Then /^I should see no warnings$/ do

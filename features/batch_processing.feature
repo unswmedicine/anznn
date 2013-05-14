@@ -46,11 +46,22 @@ Feature: Processing batch files
     | bad_decimal.csv                   |
     | bad_integer.csv                   |
     | bad_time.csv                      |
-    | cross_question_error.csv          |
     | incorrect_choice_answer_value.csv |
     | missing_mandatory_column.csv      |
     | missing_mandatory_fields.csv      |
     | a_range_of_problems.csv           |
+
+  Scenario Outline: Well formed files that have warnings
+    Given I upload batch file "<file>" for survey "MySurvey"
+    And the system processes the latest upload
+    When I am on the list of batch uploads page
+    Then I should see "batch_uploads" table with
+      | Registration Type | Num records | Status       | Details                                                                               | Reports                       |
+      | MySurvey          | 3           | Needs Review | The file you uploaded has one or more warnings. Please review the reports for details. | Summary Report\nDetail Report |
+  Examples:
+    | file                     |
+    | cross_question_error.csv |
+    | number_out_of_range.csv  |
 
   Scenario: File that gets rejected because a baby code already exists in the system
     Given "data.provider@intersect.org.au" created a response to the "MySurvey" survey with babycode "B2"

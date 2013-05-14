@@ -78,7 +78,7 @@ Feature: Cross Question Special Rules
       | LastO2         | 2012/1/2 |
       | CeaseCPAPDate  | 2012/1/2 |
       | CeaseHiFloDate | 2012/1/2 |
-    Then I should see "o2a_err"
+    Then I should see warning "o2a_err" for question "O2_36wk_"
 
   Scenario: CQV Pass - Special_O2_A - Both cases
     Given I have the following cross question validations
@@ -137,7 +137,7 @@ Feature: Cross Question Special Rules
       | HmeO2    | -1     |
       | Gest     | 1      |
       | Wght     | 1      |
-    Then I should see "o2b_err"
+    Then I should see warning "o2b_err" for question "HmeO2"
 
 
   Scenario: CQV Failure - Special_HmeO2 - If HmeO2 is -1 and (Gest must be <32 or Wght must be <1500) then HomeDate must be a valid date
@@ -152,7 +152,7 @@ Feature: Cross Question Special Rules
       | HomeDate | 2012/2/31 |
       | Gest     | 1         |
       | Wght     | 1         |
-    Then I should see "o2b_err"
+    Then I should see warning "o2b_err" for question "HmeO2"
 
   Scenario: CQV Failure - Special_HmeO2 - If HmeO2 is -1 and (Gest must be <32 or Wght must be <1500) then HomeDate must be the same as LastO2
     Given I have the following cross question validations
@@ -167,7 +167,7 @@ Feature: Cross Question Special Rules
       | LastO2   | 2012/1/2 |
       | Gest     | 1        |
       | Wght     | 1        |
-    Then I should see "o2b_err"
+    Then I should see warning "o2b_err" for question "HmeO2"
 
   Scenario: CQV Pass - Special_HmeO2 -  If HmeO2 is -1 and (Gest must be <32 or Wght must be <1500) and HomeDate must be a date and HomeDate must be the same as LastO2
     Given I have the following cross question validations
@@ -198,7 +198,7 @@ Feature: Cross Question Special Rules
       | question | answer   |
       | DOB      | 2011/1/1 |
 
-    Then I should see "DOB not in year of registration"
+    Then I should see warning "DOB not in year of registration" for question "dob"
 
 
   Scenario:  CQV Pass - DOB in year
@@ -225,7 +225,7 @@ Feature: Cross Question Special Rules
       | DOB      | 2012/1/2 |
       | Wght     | 1499     |
       | Gest     | 31       |
-    Then I should see "Err - special_usd6wk_dob_weeks"
+    Then I should see warning "Err - special_usd6wk_dob_weeks" for question "USd6wk"
 
   Scenario: CQV Fail - special_usd6wk_dob_weeks - out of range (high)
     Given I have the following cross question validations
@@ -239,7 +239,7 @@ Feature: Cross Question Special Rules
       | DOB      | 2012/12/1 |
       | Wght     | 1499      |
       | Gest     | 31        |
-    Then I should see "Err - special_usd6wk_dob_weeks"
+    Then I should see warning "Err - special_usd6wk_dob_weeks" for question "USd6wk"
 
   Scenario: CQV Pass - special_usd6wk_dob_weeks - out of range but Num Q1 not in range
     Given I have the following cross question validations
@@ -299,7 +299,7 @@ Feature: Cross Question Special Rules
       | question | answer   |
       | Num Q1   | 1        |
       | USd6wk   | 2012/1/1 |
-    Then I should see "Err - set_present_implies_present"
+    Then I should see warning "Err - set_present_implies_present" for question "Num Q1"
 
   Scenario: CQV Pass - set_present_implies_present - conditions met, present
   # If IVH is 1-4 and USd6wk is a date, Cysts must be between 0 and 4
@@ -399,7 +399,7 @@ Feature: Cross Question Special Rules
       | PNS      | -1     |
       | Wght     | 1500   |
       | Gest     | 32     |
-    Then I should see "Err - special_pns"
+    Then I should see warning "Err - special_pns" for question "PNS"
 
     When I store the following answers skipping assertion
       | question | answer |
@@ -407,4 +407,4 @@ Feature: Cross Question Special Rules
       | Wght     | 1501   |
       | Gest     | 33     |
     # PNS -1, Wght/Gest both asserted
-    Then I should see "Err - special_pns"
+    Then I should see warning "Err - special_pns" for question "PNS"

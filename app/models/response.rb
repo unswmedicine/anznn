@@ -160,7 +160,9 @@ class Response < ActiveRecord::Base
   end
 
   def warnings?
-    answers.any?(&:has_warning?) || fatal_warnings?
+    all_answers_with_blanks_created.any? do |answer|
+      answer.has_warning?
+    end || fatal_warnings?
   end
 
   #TODO: test me

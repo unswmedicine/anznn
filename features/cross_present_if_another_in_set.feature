@@ -48,19 +48,19 @@ Feature: Cross Question Present-If-In-Set Validations
     When I store the following answers
       | question  | answer     |
       | Choice Q1 | (2) Two   |
-    Then I should see "date should be present if q1 is between 2 and 7"
+    Then I should see warning "date should be present if q1 is between 2 and 7" for question "Choice Q1"
 
   Scenario: If one answer within range 2-7, another must also be present - fail (value 7 (end of range) and other question NOT answered)
     When I store the following answers
       | question  | answer     |
       | Choice Q1 | (7) Seven   |
-    Then I should see "date should be present if q1 is between 2 and 7"
+    Then I should see warning "date should be present if q1 is between 2 and 7" for question "Choice Q1"
 
   Scenario: If one answer within range 2-7, another must also be present - fail (value 5 (mid range) and other question NOT answered)
     When I store the following answers
       | question  | answer     |
       | Choice Q1 | (5) Five   |
-    Then I should see "date should be present if q1 is between 2 and 7"
+    Then I should see warning "date should be present if q1 is between 2 and 7" for question "Choice Q1"
 
   Scenario: If one answer within range 2-7, another must also be present - pass (choice is NOT in 2-7 and date NOT answered)
     When I store the following answers
@@ -79,5 +79,5 @@ Feature: Cross Question Present-If-In-Set Validations
       | question  | answer   |
       | Date Q1   | 2009/12/ |
       | Choice Q1 | (2) Two |
-    Then I should see "date should be present if q1 is between 2 and 7"
+    Then I should see warning "date should be present if q1 is between 2 and 7" for question "Choice Q1"
 

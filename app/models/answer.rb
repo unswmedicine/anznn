@@ -49,17 +49,17 @@ class Answer < ActiveRecord::Base
 
   def fatal_warnings
     if answer_value_set?
-      [warn_on_invalid_data, *warn_on_cross_questions].compact
+      [warn_on_invalid_data].compact
     else
-      warn_on_cross_questions.compact
+      []
     end
   end
 
   def warnings
     if answer_value_set?
-      [warn_on_range].compact
+      [warn_on_range, *warn_on_cross_questions].compact
     else
-      []
+      warn_on_cross_questions.compact
     end
   end
 

@@ -285,7 +285,7 @@ describe Response do
         @response.status_of_section(@section2).should eq 'Incomplete'
       end
 
-      it "shows incomplete if a CQV fails even if a range check fails" do
+      it "shows complete with warnings if a CQV fails and a range check fails" do
         @section3 = Factory(:section, survey: @survey)
         @q8 = Factory(:question, section: @section3, mandatory: false, question_type: "Date")
         @q9 = Factory(:question, section: @section3, mandatory: false, question_type: "Integer", number_min: 0)
@@ -296,7 +296,7 @@ describe Response do
         @response.reload
 
         @response.section_started?(@section3).should be_true
-        @response.status_of_section(@section3).should eq 'Incomplete'
+        @response.status_of_section(@section3).should eq 'Complete with warnings'
       end
 
       it "takes unanswered questions into account" do
@@ -319,7 +319,7 @@ describe Response do
         response.reload
 
         response.section_started?(section).should be_true
-        response.status_of_section(section).should eq 'Incomplete'
+        response.status_of_section(section).should eq 'Complete with warnings'
       end
     end
   end

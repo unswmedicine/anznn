@@ -29,7 +29,7 @@ Feature: Cross Multiple Question Validations
       | Date Q2  | 2012/2/2 |
       | Time Q2  | 01:23    |
       | Num Q1   | 30       |
-    Then I should see "this must be <= Hours (Date+Time1 to Date+Time2)"
+    Then I should see warning "this must be <= Hours (Date+Time1 to Date+Time2)" for question "Num Q1"
 
   Scenario: CQV Success - Multiple Questions - time interval comparison (in hours)
     Given I have the following cross question validations

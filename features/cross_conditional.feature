@@ -21,7 +21,7 @@ Feature: Cross Question Conditional Validations
       | question | answer   |
       | Date Q1  | 2012/2/1 |
       | Num Q1   | 0        |
-    Then I should see "Date entered in Date Q1, this needs to be -1"
+    Then I should see warning "Date entered in Date Q1, this needs to be -1" for question "Num Q1"
 
   Scenario: CQV Failure - Constant Implies Constant, eg If Qx > 0 then This must <not be> <0> [3A Birth Order]
     Given I have the following cross question validations
@@ -32,7 +32,7 @@ Feature: Cross Question Conditional Validations
       | question | answer |
       | Num Q1   | 0      |
       | Num Q2   | 5      |
-    Then I should see "NumQ2 > 0, so this can't be 0"
+    Then I should see warning "NumQ2 > 0, so this can't be 0" for question "Num Q1"
 
   Scenario: CQV Failure - Constant Implies Set, eg If Qx > 0 then This must be <included in> set [a,b,c,d] [17 B17c Retmaturity]
     Given I have the following cross question validations
@@ -43,7 +43,7 @@ Feature: Cross Question Conditional Validations
       | question | answer |
       | Num Q1   | 0      |
       | Num Q2   | 5      |
-    Then I should see "NumQ2 > 0, so this must one of 1,3,5,7"
+    Then I should see warning "NumQ2 > 0, so this must one of 1,3,5,7" for question "Num Q1"
 
   Scenario: CQV Failure - Set Implies Set, eg If Qx exists in some set [w,x,y,z] then This must be <included in> [a,b,c,d] [17 B17c ROP_VEGF]
     Given I have the following cross question validations
@@ -54,5 +54,5 @@ Feature: Cross Question Conditional Validations
       | question | answer |
       | Num Q1   | 1      |
       | Num Q2   | 2      |
-    Then I should see "NumQ2 is in [2,4,6,8], so this cannot be one of [1,3,5,7]"
+    Then I should see warning "NumQ2 is in [2,4,6,8], so this cannot be one of [1,3,5,7]" for question "Num Q1"
 

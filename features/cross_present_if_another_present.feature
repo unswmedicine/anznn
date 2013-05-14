@@ -41,12 +41,12 @@ Feature: Cross Question Present-If-Present Validations
     When I store the following answers
       | question | answer     |
       | Date Q1  | 2009/12/23 |
-    Then I should see "time should be present"
+    Then I should see warning "time should be present" for question "Date Q1"
 
   Scenario: If one answer is present, another must also be present (date and time) - fail (invalid second answer)
     When I store the following answers
       | question | answer     |
       | Date Q1  | 2009/12/23 |
       | Time Q2  | 11:        |
-    Then I should see "time should be present"
+    Then I should see warning "time should be present" for question "Date Q1"
 

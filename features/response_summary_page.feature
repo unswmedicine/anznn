@@ -9,9 +9,9 @@ Feature: View a summary page for a survey response
     And I have a survey with name "MySurvey"
     And "MySurvey" has sections
       | name | section_order |
-      | Sec1 | 0     |
-      | Sec2 | 1     |
-      | Sec3 | 2     |
+      | Sec1 | 0             |
+      | Sec2 | 1             |
+      | Sec3 | 2             |
     And "MySurvey" has questions
       | question        | question_type | section | mandatory | number_min |
       | Sect1 QText1    | Text          | 0       | true      |            |
@@ -69,10 +69,10 @@ Feature: View a summary page for a survey response
     Then I should see "summary" table with
       | Section | Status                 |
       | Sec1    | Complete with warnings |
-      | Sec2    | Incomplete            |
-      | Sec3    | Incomplete            |
+      | Sec2    | Incomplete             |
+      | Sec3    | Incomplete             |
 
-  Scenario: Section is incomplete when a cross-question validation fails (and all questions are answered)
+  Scenario: Section is complete with warnings when a cross-question validation fails (and all questions are answered)
     Given I have the following cross question validations
       | question    | related     | rule       | operator | error_message        |
       | Sect1 QDate | Sect1 QDate | comparison | >        | This will never pass |
@@ -88,10 +88,10 @@ Feature: View a summary page for a survey response
       | Sect1 QChoice  | (A) Apple  |
     And I follow "Summary"
     Then I should see "summary" table with
-      | Section | Status      |
-      | Sec1    | Incomplete  |
-      | Sec2    | Incomplete |
-      | Sec3    | Incomplete |
+      | Section | Status                 |
+      | Sec1    | Complete with warnings |
+      | Sec2    | Incomplete             |
+      | Sec3    | Incomplete             |
 
   Scenario: Section becomes complete when all are answered correctly
     Given I am on the edit first response page
@@ -106,8 +106,8 @@ Feature: View a summary page for a survey response
       | Sect1 QChoice  | (A) Apple  |
     And I follow "Summary"
     Then I should see "summary" table with
-      | Section | Status      |
-      | Sec1    | Complete    |
+      | Section | Status     |
+      | Sec1    | Complete   |
       | Sec2    | Incomplete |
       | Sec3    | Incomplete |
 

@@ -64,7 +64,7 @@ Feature: Cross Question One-Of-Present-If-Constant Validations
     When I store the following answers
       | question  | answer   |
       | Choice Q1 | (-1) Yes |
-    Then I should see "one of C2, C3, C4 must be 99 if C1 is -1"
+    Then I should see warning "one of C2, C3, C4 must be 99 if C1 is -1" for question "Choice Q1"
 
   Scenario: Fail: C1 is -1 and others are answered but none are 99
     When I store the following answers
@@ -73,5 +73,5 @@ Feature: Cross Question One-Of-Present-If-Constant Validations
       | Choice Q2 | (-1) Yes |
       | Choice Q3 | (-1) Yes |
       | Choice Q4 | (-1) Yes |
-    Then I should see "one of C2, C3, C4 must be 99 if C1 is -1"
+    Then I should see warning "one of C2, C3, C4 must be 99 if C1 is -1" for question "Choice Q1"
 

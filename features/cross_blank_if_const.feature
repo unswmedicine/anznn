@@ -41,7 +41,7 @@ Feature: Cross Question Blank-If-Const Validations
       | question | answer     |
       | DiedDate | 2010/12/25 |
       | Died_    | (0) No     |
-    Then I should see "If Died_ is 0, DiedDate must be blank"
+    Then I should see warning "If Died_ is 0, DiedDate must be blank" for question "DiedDate"
 
   Scenario: Pass when DiedDate answered and Died_not answered
     When I store the following answers

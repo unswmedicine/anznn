@@ -61,8 +61,8 @@ describe Answer do
         answer = Factory(:answer)
 
         answer.should have_warning
-        answer.fatal_warnings.should eq ["error1", "error2"]
-        answer.warnings.should eq []
+        answer.warnings.should eq ["error1", "error2"]
+        answer.fatal_warnings.should eq []
       end
     end
 

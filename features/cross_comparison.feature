@@ -18,8 +18,8 @@ Feature: Cross Question Comparison Validations
       | Decimal Q2 | Decimal       |
       | Choice Q1  | Choice        |
       | Choice Q2  | Choice        |
-      | Text Q1  | Text        |
-      | Text Q2  | Text        |
+      | Text Q1    | Text          |
+      | Text Q2    | Text          |
     And question "Choice Q1" has question options
       | option_value | label | hint_text    | option_order |
       | 99           | Dunno |              | 2            |
@@ -84,7 +84,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/1 |
       | Date Q2  | 2012/2/2 |
-    Then I should see "date should be gte"
+    Then I should see warning "date should be gte" for question "Date Q1"
 
   Scenario: CQV Failure - date lte
     Given I have the following cross question validations
@@ -95,7 +95,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/3 |
       | Date Q2  | 2012/2/2 |
-    Then I should see "date should be lte"
+    Then I should see warning "date should be lte" for question "Date Q1"
 
   Scenario: CQV Failure - date lt
     Given I have the following cross question validations
@@ -106,7 +106,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/3 |
       | Date Q2  | 2012/2/2 |
-    Then I should see "date should be lt"
+    Then I should see warning "date should be lt" for question "Date Q1"
 
   Scenario: CQV Failure - date gt
     Given I have the following cross question validations
@@ -117,7 +117,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/1 |
       | Date Q2  | 2012/2/2 |
-    Then I should see "date should be gt"
+    Then I should see warning "date should be gt" for question "Date Q1"
 
   Scenario: CQV Failure - date eq
     Given I have the following cross question validations
@@ -128,7 +128,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/1 |
       | Date Q2  | 2012/2/2 |
-    Then I should see "date should be eq"
+    Then I should see warning "date should be eq" for question "Date Q1"
 
   Scenario: CQV Failure - date ne
     Given I have the following cross question validations
@@ -139,7 +139,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/1 |
       | Date Q2  | 2012/2/1 |
-    Then I should see "date should not be eq"
+    Then I should see warning "date should not be eq" for question "Date Q1"
 
   Scenario: CQV Failure - date lte with offset
     Given I have the following cross question validations
@@ -150,7 +150,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/3 |
       | Date Q2  | 2012/2/1 |
-    Then I should see "date should be not be lte Q2+1"
+    Then I should see warning "date should be not be lte Q2+1" for question "Date Q1"
 
   Scenario: multiple error messages
     Given I have the following cross question validations
@@ -162,8 +162,7 @@ Feature: Cross Question Comparison Validations
       | question | answer   |
       | Date Q1  | 2012/2/1 |
       | Date Q2  | 2012/2/2 |
-    Then I should see "date should be gt"
-    And I should see "date should really be gt"
+    Then I should see warning "date should be gt date should really be gt" for question "Date Q1"
 
   Scenario: no infinite loop
     Given I have the following cross question validations
@@ -179,12 +178,11 @@ Feature: Cross Question Comparison Validations
   # Then I should not get a "stack level too deep" error
     Then I should be on the edit first response page
 
-
   Scenario: CQV Fail - Play nice with choice questions
     Given I have the following cross question validations
-      | question   | related    | rule       | operator | constant | error_message                         |
-      | Integer Q1 | Choice Q1  | comparison | <        | 0        | Should be less than the choice value  |
-      | Choice Q2  | Integer Q2 | comparison | <        | 0        | Should be less than the integer value |
+      | question   | related    | rule       | operator | constant | error_message                            |
+      | Integer Q1 | Choice Q1  | comparison | <        | 0        | Integer Q1 should be less than Choice Q1 |
+      | Choice Q2  | Integer Q2 | comparison | <        | 0        | Choice Q2 should be less than Integer Q2 |
     And I am ready to enter responses as data.provider@intersect.org.au
     When I store the following answers
       | question   | answer |
@@ -192,8 +190,8 @@ Feature: Cross Question Comparison Validations
       | Choice Q2  | (1) No |
       | Integer Q1 | 2      |
       | Integer Q2 | 0      |
-    Then I should see "Should be less than the choice value"
-    Then I should see "Should be less than the integer value"
+    Then I should see warning "Integer Q1 should be less than Choice Q1" for question "Integer Q1"
+    Then I should see warning "Choice Q2 should be less than Integer Q2" for question "Choice Q2"
 
   Scenario: CQV Success - Play nice with choice questions
     Given I have the following cross question validations
@@ -221,5 +219,5 @@ Feature: Cross Question Comparison Validations
       | question | answer |
       | Text Q1  | abcde  |
       | Text Q2  | abcde  |
-    Then I should see "this can't be the same as text q2"
+    Then I should see warning "this can't be the same as text q2" for question "Text Q1"
     And I should not see "this must be the same as text q1"

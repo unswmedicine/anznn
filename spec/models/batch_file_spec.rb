@@ -352,43 +352,6 @@ describe BatchFile do
         batch_file.detail_report_path.should_not be_nil
       end
 
-      it "should reject records which fail cross-question validations" do
-        batch_file = process_batch_file('cross_question_error.csv', survey, user)
-        batch_file.status.should eq("Failed")
-        batch_file.message.should eq("The file you uploaded did not pass validation. Please review the reports for details.")
-        Response.count.should == 0
-        Answer.count.should == 0
-        batch_file.record_count.should == 3
-        batch_file.problem_record_count.should == 1
-        batch_file.summary_report_path.should_not be_nil
-        batch_file.detail_report_path.should_not be_nil
-
-        csv_file = batch_file.detail_report_path
-        rows = CSV.read(csv_file)
-        rows.size.should eq(2)
-        rows[0].should eq(['BabyCODE', 'Column Name', 'Type', 'Value', 'Message'])
-        rows[1].should eq(['B3', 'Date1', 'Error', '2010-05-29', 'D1 must be >= D2'])
-      end
-
-      it "should reject records which fail cross-question validations - date time quad failure" do
-        batch_file = process_batch_file('cross_question_error_datetime_comparison.csv', survey, user)
-        batch_file.status.should eq("Failed")
-        batch_file.message.should eq("The file you uploaded did not pass validation. Please review the reports for details.")
-        Response.count.should == 0
-        Answer.count.should == 0
-        batch_file.record_count.should == 3
-        batch_file.problem_record_count.should == 1
-        batch_file.summary_report_path.should_not be_nil
-        batch_file.detail_report_path.should_not be_nil
-        File.exist?(batch_file.summary_report_path).should be_true
-
-        csv_file = batch_file.detail_report_path
-        rows = CSV.read(csv_file)
-        rows.size.should eq(2)
-        rows[0].should eq(['BabyCODE', 'Column Name', 'Type', 'Value', 'Message'])
-        rows[1].should eq(['B3', 'Date1', 'Error', '2010-05-29', 'D1+T1 must be > D2+T2'])
-      end
-
       it "should reject records where the baby code is already in the system" do
         Factory(:response, survey: survey, baby_code: "B2")
         batch_file = process_batch_file('no_errors_or_warnings.csv', survey, user)
@@ -489,6 +452,69 @@ describe BatchFile do
         batch_file.detail_report_path.should_not be_nil
 
       end
+
+      it "should warn on records which fail cross-question validations" do
+        batch_file = process_batch_file('cross_question_error.csv', survey, user)
+        batch_file.status.should eq("Needs Review")
+        batch_file.message.should eq("The file you uploaded has one or more warnings. Please review the reports for details.")
+        Response.count.should == 0
+        Answer.count.should == 0
+        batch_file.record_count.should == 3
+        batch_file.problem_record_count.should == 1
+        batch_file.summary_report_path.should_not be_nil
+        batch_file.detail_report_path.should_not be_nil
+
+        csv_file = batch_file.detail_report_path
+        rows = CSV.read(csv_file)
+        rows.size.should eq(2)
+        rows[0].should eq(['BabyCODE', 'Column Name', 'Type', 'Value', 'Message'])
+        rows[1].should eq(['B3', 'Date1', 'Warning', '2010-05-29', 'D1 must be >= D2'])
+      end
+
+      it "should accepts cross-question validation failures if forced to" do
+        batch_file = process_batch_file('cross_question_error.csv', survey, user)
+        batch_file.status.should eq("Needs Review")
+        batch_file.message.should eq("The file you uploaded has one or more warnings. Please review the reports for details.")
+        Response.count.should == 0
+        Answer.count.should == 0
+        batch_file.record_count.should == 3
+        batch_file.problem_record_count.should == 1
+        batch_file.summary_report_path.should_not be_nil
+        batch_file.detail_report_path.should_not be_nil
+
+        batch_file.process(:force)
+        batch_file.reload
+
+        batch_file.status.should eq("Processed Successfully")
+        batch_file.message.should eq("Your file has been processed successfully.")
+        Response.count.should == 3
+        Answer.count.should == 21
+        batch_file.record_count.should == 3
+        batch_file.problem_record_count.should == 1
+        batch_file.summary_report_path.should_not be_nil
+        batch_file.detail_report_path.should_not be_nil
+      end
+
+      it "should warn on records which fail cross-question validations - date time quad failure" do
+        batch_file = process_batch_file('cross_question_error_datetime_comparison.csv', survey, user)
+        batch_file.status.should eq("Needs Review")
+        batch_file.message.should eq("The file you uploaded has one or more warnings. Please review the reports for details.")
+        Response.count.should == 0
+        Answer.count.should == 0
+        batch_file.record_count.should == 3
+        batch_file.problem_record_count.should == 1
+        batch_file.summary_report_path.should_not be_nil
+        batch_file.detail_report_path.should_not be_nil
+        File.exist?(batch_file.summary_report_path).should be_true
+
+        csv_file = batch_file.detail_report_path
+        rows = CSV.read(csv_file)
+        rows.size.should eq(2)
+        rows[0].should eq(['BabyCODE', 'Column Name', 'Type', 'Value', 'Message'])
+        rows[1].should eq(['B3', 'Date1', 'Warning', '2010-05-29', 'D1+T1 must be > D2+T2'])
+      end
+
+
     end
 
     describe "with a range of errors and warnings" do
@@ -511,7 +537,7 @@ describe BatchFile do
         rows[3].should eq(['B1', 'TextMandatory', 'Error', '', 'This question is mandatory'])
         rows[4].should eq(['B2', 'Integer', 'Warning', '3', 'Answer should be at least 5'])
         rows[5].should eq(['B2', 'Time', 'Error', 'ab:59', 'Answer is invalid (must be a valid time)'])
-        rows[6].should eq(['B3', 'Date1', 'Error', '2010-05-29', 'D1 must be >= D2'])
+        rows[6].should eq(['B3', 'Date1', 'Warning', '2010-05-29', 'D1 must be >= D2'])
 
         File.exist?(batch_file.summary_report_path).should be_true
       end

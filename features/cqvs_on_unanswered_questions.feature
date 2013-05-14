@@ -5,51 +5,51 @@ Feature: In order to see error messages in the right place
   Background:
     Given I have the usual roles
     And I have hospitals
-      | state | name       | abbrev |
-      | NSW   | Left Wing  | Left   |
+      | state | name      | abbrev |
+      | NSW   | Left Wing | Left   |
     And I have users
-      | email                         | first_name | last_name  | role                     | hospital  |
-      | dataprovider@intersect.org.au | Data       | Provider   | Data Provider            | Left Wing |
-    # Setup questionnaire with two questions one must be present if other is something
+      | email                         | first_name | last_name | role          | hospital  |
+      | dataprovider@intersect.org.au | Data       | Provider  | Data Provider | Left Wing |
+  # Setup questionnaire with two questions one must be present if other is something
     And I have a survey with name "MySurvey" and questions
       | question | question_type |
-      | QChoice   | Choice        |
-      | QText     | Text          |
+      | QChoice  | Choice        |
+      | QText    | Text          |
     And question "QChoice" has question options
       | option_value | label     |
       | 1            | trigger   |
       | 0            | notrigger |
     And I have the following cross question validations
-      | question  | related | rule             | conditional_operator | conditional_constant | error_message                               |
-      | QText     | QChoice | present_if_const | ==                   | 1                    | QText must be present if QChoice is trigger |
+      | question | related | rule             | conditional_operator | conditional_constant | error_message                         |
+      | QText    | QChoice | present_if_const | ==                   | 1                    | QText must be present if QChoice == 1 |
 
   Scenario: Warning shows up on entry screen
     Given I am ready to enter responses as dataprovider@intersect.org.au
-    Then I should not see "QText must be present if QChoice is trigger"
+    Then I should not see "QText must be present if QChoice == 1"
 
     When I store the following answers skipping assertion
       | question | answer  |
       | QChoice  | trigger |
       | QText    |         |
-    Then I should see "QText must be present if QChoice is trigger"
+    Then I should see warning "QText must be present if QChoice == 1" for question "QText"
 
     When I store the following answers skipping assertion
       | question | answer    |
       | QChoice  | notrigger |
       | QText    |           |
-    Then I should not see "QText must be present if QChoice is trigger"
+    Then I should not see "QText must be present if QChoice == 1"
 
     When I store the following answers skipping assertion
       | question | answer    |
       | QChoice  | notrigger |
       | QText    | something |
-    Then I should not see "QText must be present if QChoice is trigger"
+    Then I should not see "QText must be present if QChoice == 1"
 
     When I store the following answers skipping assertion
       | question | answer    |
       | QChoice  | trigger   |
       | QText    | something |
-    Then I should not see "QText must be present if QChoice is trigger"
+    Then I should not see "QText must be present if QChoice == 1"
 
   Scenario: Warning shows up on response submission screen
     Given "dataprovider@intersect.org.au" created a response to the "MySurvey" survey with babycode "abc"
@@ -78,15 +78,14 @@ Feature: In order to see error messages in the right place
     And I uploaded the following batch file to the "MySurvey" survey in year "2005"
       | BabyCODE | QChoice | QText |
       | bad      | 1       |       |
-
     And the system processes the latest upload
     When I am on the list of batch uploads page
     Then I should see "batch_uploads" table with
-      | Registration Type | Num records | Status | Details                                                                               | Reports                       |
-      | MySurvey          | 1           | Failed | The file you uploaded did not pass validation. Please review the reports for details. | Summary Report\nDetail Report |
+      | Registration Type | Num records | Status       | Details                                                                                | Reports                       |
+      | MySurvey          | 1           | Needs Review | The file you uploaded has one or more warnings. Please review the reports for details. | Summary Report\nDetail Report |
     And the last detail report should look like
-      | BabyCODE | Column Name | Type  | Value | Message                                     |
-      | bad      | QText       | Error |       | QText must be present if QChoice is trigger |
+      | BabyCODE | Column Name | Type    | Value | Message                               |
+      | bad      | QText       | Warning |       | QText must be present if QChoice == 1 |
 
   Scenario: Warning is ok for valid batch submission
     Given I am logged in as "dataprovider@intersect.org.au"
