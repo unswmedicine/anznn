@@ -75,7 +75,8 @@ gem "capistrano"
 gem "capistrano_colors"
 gem 'rvm-capistrano'
 gem "colorize"
-gem "simplecov", ">=0.3.8", :require => false, :group => :test
+gem "simplecov", :require => false, :group => :test
+gem "simplecov-rcov", :require => false, :group => :test
 gem "bootstrap-sass", '~> 1.4.4'
 gem "paperclip", "~> 2.0"
 gem 'delayed_job_active_record'
