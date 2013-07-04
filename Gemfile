@@ -67,7 +67,7 @@ end
 gem "haml"
 gem "haml-rails"
 gem "tabs_on_rails"
-gem "devise"
+gem "devise" , "1.5.4" 
 gem "email_spec", :group => :test
 gem "cancan"
 gem "capistrano-ext"
