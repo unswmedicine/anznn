@@ -110,6 +110,7 @@ after 'deploy:update' do
   server_setup.logging.rotation
   server_setup.config.apache
   deploy.copy_templates
+  deploy.create_deployment_record
   deploy.additional_symlinks
   deploy.restart
   deploy.generate_user_manual
@@ -221,6 +222,39 @@ namespace :deploy do
   task :generate_user_manual do
     run "cd #{current_path}; rm -rf public/user_manual/*"
     run "cd #{current_path}; bundle exec jekyll manual public/user_manual"
+  end
+  
+   task :create_deployment_record do
+    require 'net/http'
+    require 'socket'
+    branchName = branch.nil? ? "HEAD" : branch
+    availableTags = `git tag`.split( /\r?\n/ )
+    haveToShowHash = !availableTags.any? { |s| s.include?(branchName) }
+    current_deployed_version = branchName
+    if (haveToShowHash)
+      availableBranches = `git branch -a`.split( /\r?\n/ )
+      fullBranchName = (branchName.eql?("HEAD")) ? branchName : availableBranches.select { |s| s.include?(branchName) }.first.to_s.strip
+      fullBranchName.gsub!('*','').strip! if fullBranchName.include?('*')
+      current_deployed_version += " (sha1:" + `git rev-parse --short #{fullBranchName}`.strip + ")"
+    end
+    url = URI.parse('http://deployment-tracker.intersect.org.au/deployments/api_create')
+    post_args = {'app_name'=>application, 
+      'deployer_machine'=>"#{ENV['USER']}@#{Socket.gethostname}", 
+      'environment'=>rails_env, 
+      'server_url'=>find_servers[0].to_s,
+      'tag'=> current_deployed_version}
+    begin
+      print "Sending Post request with args: #{post_args}\n"
+      resp, data = Net::HTTP.post_form(url, post_args)
+      case resp
+      when Net::HTTPSuccess
+        puts "Deployment record saved"
+      else
+        puts data
+      end
+    rescue StandardError => e
+      puts e.message
+    end
   end
 end
 
