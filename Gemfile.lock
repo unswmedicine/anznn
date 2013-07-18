@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/IntersectAustralia/whoops_rails_logger.git
+  revision: 1f304e09b4367ece6fcccce570ac341bf54ec222
+  specs:
+    whoops_rails_logger (0.1.17)
+      rails (~> 3)
+      whoops_logger (= 0.1.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -270,6 +278,8 @@ GEM
     whenever (0.7.3)
       activesupport (>= 2.3.4)
       chronic (~> 0.6.3)
+    whoops_logger (0.1.4)
+      json
     will_paginate (3.0.3)
     will_paginate-bootstrap (0.2.0)
       will_paginate (>= 3.0.3)
@@ -325,5 +335,6 @@ DEPENDENCIES
   turn (~> 0.8.3)
   uglifier (>= 1.0.3)
   whenever
+  whoops_rails_logger!
   will_paginate (> 3.0)
   will_paginate-bootstrap

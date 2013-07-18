@@ -1,5 +1,7 @@
 source 'http://rubygems.org'
 
+gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
+
 gem 'rails', '3.1.10'
 
 # Bundle edge Rails instead:
