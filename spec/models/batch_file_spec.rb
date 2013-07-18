@@ -439,6 +439,7 @@ describe BatchFile do
         batch_file.summary_report_path.should_not be_nil
         batch_file.detail_report_path.should_not be_nil
 
+        batch_file.status = BatchFile::STATUS_IN_PROGRESS # the controller sets it to in progress before forcing processing
         batch_file.process(:force)
         batch_file.reload
 
@@ -482,6 +483,7 @@ describe BatchFile do
         batch_file.summary_report_path.should_not be_nil
         batch_file.detail_report_path.should_not be_nil
 
+        batch_file.status = BatchFile::STATUS_IN_PROGRESS # the controller sets it to in progress before forcing processing
         batch_file.process(:force)
         batch_file.reload
 

@@ -19,6 +19,10 @@ class BatchFilesController < ApplicationController
   end
 
   def force_submit
+    raise "Can't force with status #{@batch_file.status}" unless @batch_file.force_submittable?
+    @batch_file.status = BatchFile::STATUS_IN_PROGRESS
+    @batch_file.save!
+
     @batch_file.delay.process(:force)
     redirect_to batch_files_path, notice: FORCE_SUBMIT_NOTICE
   end

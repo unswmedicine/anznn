@@ -113,9 +113,10 @@ Feature: Upload survey responses in a batch file
     When I force submit for "number_out_of_range.csv"
     Then I should be on the list of batch uploads page
     And I should see "Your request is now being processed. This may take some time depending on the size of the file."
+    And I should not see button "Force Submit"
     And I should see "batch_uploads" table with
-      | Registration Type | Filename                | Status       |
-      | Test Survey       | number_out_of_range.csv | Needs Review |
+      | Registration Type | Filename                | Status      |
+      | Test Survey       | number_out_of_range.csv | In Progress |
 
     When the batch files are processed
     And I am on the list of batch uploads page
@@ -147,9 +148,10 @@ Feature: Upload survey responses in a batch file
     When I force submit for "cross_question_error.csv"
     Then I should be on the list of batch uploads page
     And I should see "Your request is now being processed. This may take some time depending on the size of the file."
+    And I should not see button "Force Submit"
     And I should see "batch_uploads" table with
-      | Registration Type | Filename                 | Status       |
-      | MySurvey          | cross_question_error.csv | Needs Review |
+      | Registration Type | Filename                 | Status      |
+      | MySurvey          | cross_question_error.csv | In Progress |
 
     When the batch files are processed
     And I am on the list of batch uploads page

@@ -72,8 +72,7 @@ class BatchFile < ActiveRecord::Base
   end
 
   def process(force=false)
-    raise "Batch has already been processed, cannot reprocess" unless status == STATUS_IN_PROGRESS or force
-    raise "Can't force with status #{status}" unless !force or force_submittable?
+    raise "Batch has already been processed, cannot reprocess" unless status == STATUS_IN_PROGRESS
 
     BatchFile.transaction do
       start = Time.now

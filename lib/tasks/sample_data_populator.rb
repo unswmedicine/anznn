@@ -41,15 +41,15 @@ def create_responses(big)
   count1.times { create_response(followup, ALL_MANDATORY, hospitals.sample) }
   count2.times { create_response(main, ALL, hospitals.sample) }
   count2.times { create_response(followup, ALL, hospitals.sample) }
-  count2.times { create_response(main, FEW, hospitals.sample) }
-  count2.times { create_response(followup, FEW, hospitals.sample) }
+  #count2.times { create_response(main, FEW, hospitals.sample) }
+  #count2.times { create_response(followup, FEW, hospitals.sample) }
 
   create_response(main, ALL_MANDATORY, dp_hospital)
   create_response(followup, ALL_MANDATORY, dp_hospital)
   create_response(main, ALL, dp_hospital)
   create_response(followup, ALL, dp_hospital)
-  create_response(main, FEW, dp_hospital)
-  create_response(followup, FEW, dp_hospital)
+  #create_response(main, FEW, dp_hospital)
+  #create_response(followup, FEW, dp_hospital)
 
   create_batch_files(main)
   create_batch_files(followup)
