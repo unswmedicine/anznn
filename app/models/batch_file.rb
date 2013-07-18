@@ -78,7 +78,7 @@ class BatchFile < ActiveRecord::Base
       start = Time.now
       begin
         can_generate_report = process_batch(force)
-        if can_generate_report
+        if can_generate_report && !force
           BatchReportGenerator.new(self).generate_reports
         end
       rescue ArgumentError
@@ -145,12 +145,14 @@ class BatchFile < ActiveRecord::Base
 
   def process_batch(force)
     logger.info("Processing batch file with id #{id}")
+    start = Time.now
 
     passed_pre_processing = pre_process_file
     unless passed_pre_processing
       save!
       return
     end
+    logger.info("After pre-processing took #{Time.now - start}")
 
     @csv_row_count = 0
     failures = false
@@ -168,6 +170,7 @@ class BatchFile < ActiveRecord::Base
       warnings = true if response.warnings?
       responses << response
     end
+    logger.info("After CSV processing took #{Time.now - start}")
 
     self.record_count = @csv_row_count
     @csv_row_count = nil
@@ -184,6 +187,8 @@ class BatchFile < ActiveRecord::Base
     end
     save!
     self.responses = responses #this is only ever kept in memory for the sake of reporting, its not an AR association
+    logger.info("After rest took #{Time.now - start}")
+
     true
   end
 
