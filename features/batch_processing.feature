@@ -24,6 +24,7 @@ Feature: Processing batch files
     | empty.csv               | The file you uploaded did not contain any data.                                                                             |
     | headers_only.csv        | The file you uploaded did not contain any data.                                                                             |
     | duplicate_baby_code.csv | The file you uploaded contained duplicate baby codes. Each baby code can only be used once. Processing stopped on CSV row 3 |
+    | duplicate_column.csv    | The file you uploaded contained duplicate columns. Each column heading must be unique.                                      |
 
   Scenario: Valid file with no errors or warnings
     Given I upload batch file "no_errors_or_warnings.csv" for survey "MySurvey"

@@ -18,6 +18,7 @@ class BatchFile < ActiveRecord::Base
   MESSAGE_DUPLICATE_BABY_CODES = "The file you uploaded contained duplicate baby codes. Each baby code can only be used once."
   MESSAGE_UNEXPECTED_ERROR = "Processing failed due to an unexpected error."
   MESSAGE_CSV_STOP_LINE = " Processing stopped on CSV row "
+  MESSAGE_NOT_UNIQUE = 'The file you uploaded contained duplicate columns. Each column heading must be unique.'
 
   belongs_to :user
   belongs_to :hospital
@@ -208,6 +209,10 @@ class BatchFile < ActiveRecord::Base
         set_outcome(STATUS_FAILED, MESSAGE_NO_BABY_CODE + MESSAGE_CSV_STOP_LINE + @csv_row_count.to_s)
         return false
       end
+      unless headers_unique?(row.headers)
+        set_outcome(STATUS_FAILED, MESSAGE_NOT_UNIQUE)
+        return false
+      end
       @csv_row_count += 1
       baby_code = row[BABY_CODE_COLUMN]
       if baby_code.blank?
@@ -248,5 +253,9 @@ class BatchFile < ActiveRecord::Base
   def set_outcome(status, message)
     self.status = status
     self.message = message
+  end
+
+  def headers_unique?(headers)
+    headers.compact.count == headers.compact.uniq.count
   end
 end
