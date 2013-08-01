@@ -45,6 +45,7 @@ class Survey < ActiveRecord::Base
   end
 
   def question_with_code(code)
+    return nil if code.blank?
     populate_question_hash if @question_map.nil?
     @question_map[code.downcase]
   end

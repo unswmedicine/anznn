@@ -81,6 +81,11 @@ describe Survey do
     it "should return nil if no such question exists in the survey" do
       @survey.question_with_code("blah").should be_nil
     end
+
+    it "should return nil if nil or blank passed in" do
+      @survey.question_with_code("").should be_nil
+      @survey.question_with_code(nil).should be_nil
+    end
   end
 
 
