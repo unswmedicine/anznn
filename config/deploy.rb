@@ -111,7 +111,6 @@ after 'deploy:update' do
   server_setup.logging.rotation
   server_setup.config.apache
   deploy.copy_templates
-  deploy.create_deployment_record
   deploy.additional_symlinks
   deploy.restart
   deploy.generate_user_manual
