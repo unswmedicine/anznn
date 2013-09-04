@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/IntersectAustralia/create_deployment_record.git
+  revision: 709826c26f1db09ca4d90d4520361f73bd979466
+  specs:
+    create_deployment_record (0.3.0)
+
+GIT
   remote: https://github.com/IntersectAustralia/whoops_rails_logger.git
   revision: 1f304e09b4367ece6fcccce570ac341bf54ec222
   specs:
@@ -299,6 +305,7 @@ DEPENDENCIES
   cheat
   coffee-rails (~> 3.1.1)
   colorize
+  create_deployment_record!
   cucumber
   cucumber-rails
   daemons

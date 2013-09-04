@@ -38,6 +38,7 @@ end
 
 gem "therubyracer"
 group :development, :test do
+  gem "create_deployment_record", git: 'https://github.com/IntersectAustralia/create_deployment_record.git'
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "shoulda-matchers"
