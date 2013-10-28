@@ -112,6 +112,7 @@ after 'deploy:update' do
   server_setup.config.apache
   deploy.copy_templates
   deploy.additional_symlinks
+  deploy.new_secret
   deploy.restart
   deploy.generate_user_manual
 end
@@ -223,7 +224,11 @@ namespace :deploy do
     run "cd #{current_path}; rm -rf public/user_manual/*"
     run "cd #{current_path}; bundle exec jekyll manual public/user_manual"
   end
-  
+
+  task :new_secret, :roles => :app do
+    run("cd #{current_path} && rake app:generate_secret", :env => {'RAILS_ENV' => "#{stage}"})
+  end
+
 end
 
 desc "Give sample users a custom password"
