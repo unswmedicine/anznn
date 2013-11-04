@@ -54,7 +54,7 @@ class Response < ActiveRecord::Base
     results = submitted.for_survey(survey).order(:baby_code)
     results = results.where(hospital_id: hospital_id) unless hospital_id.blank?
     results = results.where(year_of_registration: year_of_registration) unless year_of_registration.blank?
-    results.includes([:hospital, :answers])
+    results.includes([:hospital])
   end
 
   def self.count_per_survey_and_year_of_registration(survey_id, year)

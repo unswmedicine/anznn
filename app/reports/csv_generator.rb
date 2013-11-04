@@ -1,3 +1,4 @@
+require 'csv'
 class CsvGenerator
 
   BASIC_HEADERS = %w(RegistrationType YearOfRegistration Hospital BabyCODE)
@@ -44,10 +45,15 @@ class CsvGenerator
   private
 
   def answers(response)
-    answer_hash = response.all_answers_with_blanks_created.reduce({}) { |hash, answer| hash[answer.question.code] = answer; hash }
+    # Performance optimisation: only select the columns we need - speeds up by 20x
+    # instead of this
+    # answer_array = response.answers
+    # do this (avoiding loading raw_answer saves most of the time)
+    answer_array = response.answers.select([:question_id, :choice_answer, :date_answer, :decimal_answer, :integer_answer, :text_answer, :time_answer])
+    answer_hash = answer_array.reduce({}) { |hash, answer| hash[answer.question.code] = answer; hash }
     question_codes.collect do |code|
       answer = answer_hash[code]
-      answer.format_for_csv
+      answer ? answer.format_for_csv : ''
     end
   end
 
