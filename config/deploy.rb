@@ -5,7 +5,7 @@ require 'colorize'
 require 'rvm/capistrano'
 require "delayed/recipes"
 require "bundler/capistrano"
-require 'deploy/create_deployment_record'
+#require 'deploy/create_deployment_record'
 
 set :whenever_environment, defer { stage }
 set :whenever_command, "bundle exec whenever"
@@ -226,7 +226,7 @@ namespace :deploy do
   end
 
   task :new_secret, :roles => :app do
-    run("cd #{current_path} && rake app:generate_secret", :env => {'RAILS_ENV' => "#{stage}"})
+    run("cd #{current_path} && bundle exec rake app:generate_secret", :env => {'RAILS_ENV' => "#{stage}"})
   end
 
 end
