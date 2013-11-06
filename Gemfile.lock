@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/IntersectAustralia/create_deployment_record.git
-  revision: 2acb2ebf57b92aed834189e9287841376cf90fac
+  revision: 2c7f6ad3789e2f913f9da9d9d80cb44537177a17
   specs:
-    create_deployment_record (0.1.4)
+    create_deployment_record (0.2.1)
 
 GIT
   remote: https://github.com/IntersectAustralia/whoops_rails_logger.git
