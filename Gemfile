@@ -51,6 +51,7 @@ group :development, :test do
   gem "launchy"    # So you can do Then show me the page
   gem "minitest"  # currently breaks without this
   gem "minitest-reporters"
+  gem 'pry-rails'
 end
 
 group :development do
