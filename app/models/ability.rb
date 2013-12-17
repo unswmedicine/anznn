@@ -52,10 +52,20 @@ class Ability
 
         can :manage, ConfigurationItem
 
-      when Role::DATA_PROVIDER, Role::DATA_PROVIDER_SUPERVISOR
+      when Role::DATA_PROVIDER
         can :read, Response, hospital_id: user.hospital_id, submitted_status: Response::STATUS_UNSUBMITTED
         can :create, Response, hospital_id: user.hospital_id
         can :update, Response, hospital_id: user.hospital_id, submitted_status: Response::STATUS_UNSUBMITTED
+
+        can :read, BatchFile, hospital_id: user.hospital_id
+        can :create, BatchFile, hospital_id: user.hospital_id
+        can :submitted_baby_codes, Response
+
+    when Role::DATA_PROVIDER_SUPERVISOR
+        can :read, Response, hospital_id: user.hospital_id, submitted_status: Response::STATUS_UNSUBMITTED
+        can :create, Response, hospital_id: user.hospital_id
+        can :update, Response, hospital_id: user.hospital_id, submitted_status: Response::STATUS_UNSUBMITTED
+        can :destroy, Response, hospital_id: user.hospital_id
 
         can :read, BatchFile, hospital_id: user.hospital_id
         can :create, BatchFile, hospital_id: user.hospital_id
