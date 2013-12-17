@@ -27,4 +27,6 @@
             = link_to "View Summary", r, class: 'btn'
           %p
             = link_to "Review Answers", review_answers_response_path(r), class: 'btn'
+          %p
+            = link_to('Delete', '#', class: 'btn') if can?(:destroy, r)
           %p= render 'responses/submit_or_warning', response: r
