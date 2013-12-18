@@ -28,5 +28,19 @@
           %p
             = link_to "Review Answers", review_answers_response_path(r), class: 'btn'
           %p
-            = link_to('Delete', '#', class: 'btn') if can?(:destroy, r)
+            = link_to('Delete', '', 'data-controls-modal' => 'confirm_delete', class: 'btn', 'data-backdrop' => 'static') if can?(:destroy, r)
           %p= render 'responses/submit_or_warning', response: r
+  
+  %div{id: 'confirm_delete', class: 'modal hide fade'}
+    %div.modal-header
+      %h1= 'Confirm Delete'
+    %div.modal-body
+      %p= "You are about to delete this form in progress for BabyCODE XXXX. This action cannot be undone. Are you sure you want to delete this form?" 
+    %div.modal-footer
+      = link_to 'Delete', '', class: 'btn danger'
+      = link_to 'Cancel', '', class: 'btn'
+
+    
+
+
+

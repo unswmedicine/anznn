@@ -6,14 +6,17 @@
 //
 // To add bootstrap js, see https://github.com/thomas-mcdonald/bootstrap-sass
 
+
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap
 //= require help_text
 //= require section_navigation
 //= require ie6
 //= require show_hide_multi_questions
 //= require supplementary_questions_batch
 //= require deselect_option
+
 
 $(window).load(function () {
   $('.row div[class^="span"]:last-child').addClass('last-child');
