@@ -154,6 +154,10 @@ When /^I sleep for (\d+)$/ do |time|
   sleep time.to_i
 end
 
+When /^I wait for (\d+) seconds?$/ do |n|
+  sleep(n.to_i)
+end
+
 When /^"([^"]*)" should not be visible$/ do |text|
   result = page.has_content?(text)
   puts result
@@ -162,3 +166,4 @@ When /^"([^"]*)" should not be visible$/ do |text|
   # page.should have_no_content(text)
   # since have_no_content doesn't recognise when text is hidden
 end
+
