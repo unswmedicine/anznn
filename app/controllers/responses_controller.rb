@@ -84,6 +84,11 @@ class ResponsesController < ApplicationController
     redirect_after_update(params)
   end
 
+  def destroy
+    Response.find_by_id(params[:id]).destroy
+    redirect_to root_path
+  end
+
   def review_answers
     #WARNING: this is a performance enhancing hack to get around the fact that reverse associations are not loaded as one would expect - don't change it
     set_response_value_on_answers(@response)
