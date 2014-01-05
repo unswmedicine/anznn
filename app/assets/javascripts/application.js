@@ -16,6 +16,7 @@
 //= require show_hide_multi_questions
 //= require supplementary_questions_batch
 //= require deselect_option
+//= require cancel_delete
 
 
 $(window).load(function () {
