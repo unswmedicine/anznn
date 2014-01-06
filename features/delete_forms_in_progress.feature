@@ -22,6 +22,17 @@ Feature: Delete Data Entry Forms in Progress
           | babycode456 | survey            | Fred Bloggs |
         And I should see link "Delete"
 
+
+    Scenario: I can not see a delete button when logged in as a Data Provider
+        Given I am logged in as "data.provider@intersect.org.au"
+        When I am on the home page
+        Then I should see "responses" table with
+          | Baby Code   | Registration Type | Created By  |
+          | babycode123 | survey            | Fred Bloggs |
+          | babycode456 | survey            | Fred Bloggs |
+        And I should not see link "Delete"
+
+
     @javascript
     Scenario: I can delete an incomplete response
         When I am on the home page
