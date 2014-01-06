@@ -85,7 +85,7 @@ class ResponsesController < ApplicationController
   end
 
   def destroy
-    Response.find_by_id(params[:id]).destroy
+    @response.destroy
     redirect_to root_path
   end
 
