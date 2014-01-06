@@ -27,17 +27,18 @@
             = link_to "View Summary", r, class: 'btn'
           %p
             = link_to "Review Answers", review_answers_response_path(r), class: 'btn'
-          %p
-            %div{id: "confirm_delete_#{r.baby_code}", class: 'modal hide fade'}
-              %div.modal-header
-                = link_to "×", '#', class: 'close'
-                %h1= 'Confirm Delete'
-              %div.modal-body
-                %p= "You are about to delete this form in progress for BabyCODE #{r.baby_code}. This action cannot be undone. Are you sure you want to delete this form?" 
-              %div.modal-footer
-                = link_to 'Delete', response_path(r), method: :delete, class: 'btn danger'
-                = link_to 'Cancel', '#', class: 'btn btn-cancel'
-            = link_to('Delete', '', 'data-controls-modal' => "confirm_delete_#{r.baby_code}", class: 'btn', 'data-backdrop' => 'static', 'data-keyboard' => 'true') if can?(:destroy, r)
+          - if can?(:destroy, r)
+            %p
+              %div{id: "confirm_delete_#{r.baby_code}", class: 'modal hide fade'}
+                %div.modal-header
+                  = link_to "×", '#', class: 'close'
+                  %h1= 'Confirm Delete'
+                %div.modal-body
+                  %p= "You are about to delete this form in progress for BabyCODE #{r.baby_code}. This action cannot be undone. Are you sure you want to delete this form?" 
+                %div.modal-footer
+                  = link_to 'Delete', response_path(r), method: :delete, class: 'btn danger'
+                  = link_to 'Cancel', '#', class: 'btn btn-cancel'
+              = link_to('Delete', '', 'data-controls-modal' => "confirm_delete_#{r.baby_code}", class: 'btn', 'data-backdrop' => 'static', 'data-keyboard' => 'true')
           %p= render 'responses/submit_or_warning', response: r
   
 
