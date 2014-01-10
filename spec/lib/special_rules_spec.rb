@@ -429,4 +429,72 @@ describe "Special Rules" do
     end
   end
 
+  describe "RULE: special_hmeo2_new" do
+    # If HmeO2 is -1 and HomeDate is a date then HomeDate must be the same as LastRespSupp
+    before(:each) do
+      @survey = Factory(:survey)
+      @section = Factory(:section, survey: @survey)
+      @hme_o2 = Factory(:question, code: 'HmeO2', section: @section, question_type: Question::TYPE_CHOICE)
+      Factory(:question_option, question: @hme_o2, option_value: 99)
+      Factory(:question_option, question: @hme_o2, option_value: 0)
+      Factory(:question_option, question: @hme_o2, option_value: -1)
+      @home_date = Factory(:question, code: 'HomeDate', section: @section, question_type: Question::TYPE_DATE)
+      @last_resp_supp = Factory(:question, code: 'LastO2', section: @section, question_type: Question::TYPE_DATE)
+      @cqv = Factory(:cross_question_validation, rule: 'special_hmeo2_new', question: @hme_o2, error_message: 'My message', related_question_id: nil)
+      @response = Factory(:response, survey: @survey)
+    end
+
+    it 'should raise an error if used on the wrong question' do
+      q = Factory(:question, code: 'Blah')
+      cqv = Factory.build(:cross_question_validation, rule: 'special_hmeo2_new', question: q)
+      cqv.valid?.should be_false
+      cqv.errors[:base].should eq ['special_hmeo2_new requires question code HmeO2 but got Blah']
+    end
+
+    it 'should pass when HmeO2 is anything other than -1' do
+      [0, 99].each do |answer_val|
+        answer = Factory(:answer, question: @hme_o2, answer_value: answer_val, response: @response)
+        @cqv.check(answer).should be_nil
+      end
+    end
+
+    describe 'when HmeO2 is -1' do
+      it 'should pass when HomeDate not answered' do
+        answer = Factory(:answer, question: @hme_o2, answer_value: -1, response: @response)
+        @cqv.check(answer).should be_nil
+      end
+
+      it 'should fail when HomeDate answered but LastRespSupp not answered' do
+        # TODO: check if this is correct or not
+        answer = Factory(:answer, question: @hme_o2, answer_value: -1, response: @response)
+        Factory(:answer, question: @home_date, answer_value: '2013-01-01', response: @response)
+        answer.reload
+        @cqv.check(answer).should eq('My message')
+      end
+
+      it 'should pass when HomeDate and LastRespSupp are the same' do
+        answer = Factory(:answer, question: @hme_o2, answer_value: -1, response: @response)
+        Factory(:answer, question: @home_date, answer_value: '2013-01-01', response: @response)
+        Factory(:answer, question: @last_resp_supp, answer_value: '2013-01-01', response: @response)
+        answer.reload
+        @cqv.check(answer).should be_nil
+      end
+
+      it 'should fail when HomeDate before LastRespSupp' do
+        answer = Factory(:answer, question: @hme_o2, answer_value: -1, response: @response)
+        Factory(:answer, question: @home_date, answer_value: '2013-01-01', response: @response)
+        Factory(:answer, question: @last_resp_supp, answer_value: '2013-01-02', response: @response)
+        answer.reload
+        @cqv.check(answer).should eq('My message')
+      end
+
+      it 'should fail when HomeDate after LastO2' do
+        answer = Factory(:answer, question: @hme_o2, answer_value: -1, response: @response)
+        Factory(:answer, question: @home_date, answer_value: '2013-01-02', response: @response)
+        Factory(:answer, question: @last_resp_supp, answer_value: '2013-01-01', response: @response)
+        answer.reload
+        @cqv.check(answer).should eq('My message')
+      end
+    end
+  end
 end

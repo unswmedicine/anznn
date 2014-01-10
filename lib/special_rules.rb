@@ -13,6 +13,7 @@ class SpecialRules
     'special_o2_a' => 'O2_36wk_',
     'special_o2_a_new' => 'O2_36wk_',
     'special_hmeo2' => 'HmeO2',
+    'special_hmeo2_new' => 'HmeO2',
     'special_namesurg2' => 'Surg_Desc2',
     'special_namesurg3' => 'Surg_Desc3',
     'special_cool_hours' =>'StartCoolDate',
@@ -55,6 +56,7 @@ class SpecialRules
                                  special_o2_a
                                  special_o2_a_new
                                  special_hmeo2
+                                 special_hmeo2_new
                                  special_same_name_inf
                                  special_pns)
     CrossQuestionValidation.register_checker 'special_pns', lambda { |answer, unused_related_answer, unused_checker_params|
@@ -151,6 +153,24 @@ class SpecialRules
       true
     }
   
+    CrossQuestionValidation.register_checker 'special_hmeo2_new', lambda { |answer, unused_related_answer, checker_params|
+      raise 'Can only be used on question HmeO2' unless answer.question.code == 'HmeO2'
+      # If HmeO2 is -1 and HomeDate is a date then HomeDate must be the same as LastRespSupp
+
+      home_date = answer.response.comparable_answer_or_nil_for_question_with_code(HOME_DATE_CODE)
+      last_o2 = answer.response.comparable_answer_or_nil_for_question_with_code(LAST_O2_CODE)
+
+      #Conditions (IF)
+      break true unless (answer.comparable_answer == -1) # ok if not -1
+      break true unless home_date.present? # bad if homedate blank
+
+      #Requirements (THEN)
+      break false unless last_o2.present?
+      break false unless last_o2.eql? home_date
+
+      true
+    }
+
     CrossQuestionValidation.register_checker 'special_dob', lambda { |answer, unused_related_answer, checker_params|
       answer.date_answer.year == answer.response.year_of_registration
     }
