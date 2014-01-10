@@ -304,4 +304,129 @@ describe "Special Rules" do
       end
     end
   end
+
+  describe "RULE: special_o2_a_new" do
+    # this rule is separate to special_o2_a so that we can maintain backward compatibility with old surveys
+    #If O2_36wk_ is -1 and (Gest must be <32 or Wght must be <1500) then (Gest+Gestdays + weeks(DOB and the latest date of (LastRespSupp|CeaseCPAPDate|CeaseHiFloDate))) >35
+    before(:each) do
+      @survey = Factory(:survey)
+      @section = Factory(:section, survey: @survey)
+      @o2_36_wk = Factory(:question, code: 'O2_36wk_', section: @section, question_type: Question::TYPE_CHOICE)
+      Factory(:question_option, question: @o2_36_wk, option_value: 99)
+      Factory(:question_option, question: @o2_36_wk, option_value: 0)
+      Factory(:question_option, question: @o2_36_wk, option_value: -1)
+      @gest = Factory(:question, code: 'Gest', section: @section, question_type: Question::TYPE_INTEGER)
+      @gest_days = Factory(:question, code: 'Gestdays', section: @section, question_type: Question::TYPE_INTEGER)
+      @dob = Factory(:question, code: 'DOB', section: @section, question_type: Question::TYPE_DATE)
+      @last_resp_supp = Factory(:question, code: 'LastRespSupp', section: @section, question_type: Question::TYPE_DATE)
+      @cease_cpap = Factory(:question, code: 'CeaseCPAPDate', section: @section, question_type: Question::TYPE_DATE)
+      @cease_hiflo = Factory(:question, code: 'CeaseHiFloDate', section: @section, question_type: Question::TYPE_DATE)
+      @cqv = Factory(:cross_question_validation, rule: 'special_o2_a_new', question: @o2_36_wk, error_message: 'My message', related_question_id: nil)
+      @response = Factory(:response, survey: @survey)
+    end
+
+    it 'should raise an error if used on the wrong question' do
+      q = Factory(:question, code: 'Blah')
+      cqv = Factory.build(:cross_question_validation, rule: 'special_o2_a_new', question: q)
+      cqv.valid?.should be_false
+      cqv.errors[:base].should eq ['special_o2_a_new requires question code O2_36wk_ but got Blah']
+    end
+
+    it 'should pass when O2_36wk_ is anything other than -1' do
+      [0, 99].each do |answer_val|
+        answer = Factory(:answer, question: @o2_36_wk, answer_value: answer_val, response: @response)
+        @cqv.check(answer).should be_nil
+      end
+    end
+
+    describe 'when O2_36wk_ is -1' do
+      it 'should pass when not premature' do
+        # logic for "Gest must be <32 or Wght must be <1500" is tested separately, so mock that part to simplify testing here
+        CrossQuestionValidation.should_receive(:check_gest_wght).and_return(false)
+        answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+        @cqv.check(answer).should be_nil
+      end
+
+      describe 'When premature' do
+        it 'should fail when any of Gest, Gestdays, DOB are not answered' do
+          # TODO: clarify that fail is correct here, unclear from description
+          # logic for Gest must be <32 or Wght must be <1500 is tested separately, so mock that part to simplify testing here
+          CrossQuestionValidation.should_receive(:check_gest_wght).exactly(3).times.and_return(true)
+          answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+          Factory(:answer, question: @gest, answer_value: '38', response: @response)
+          Factory(:answer, question: @gest_days, answer_value: '5', response: @response)
+          Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
+          answer.reload
+          [@gest, @gest_days, @dob].each do |q|
+            answer.response.answers.where(question_id: q.id).destroy_all
+            @cqv.check(answer).should eq("My message")
+          end
+        end
+
+        it 'should fail when none of LastRespSupp, CeaseCPAPDate, CeaseHiFloDate are answered' do
+          # logic for Gest must be <32 or Wght must be <1500 is tested separately, so mock that part to simplify testing here
+          # TODO: clarify that fail is correct here, unclear from description
+          CrossQuestionValidation.should_receive(:check_gest_wght).and_return(true)
+          answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+          Factory(:answer, question: @gest, answer_value: '38', response: @response)
+          Factory(:answer, question: @gest_days, answer_value: '5', response: @response)
+          Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
+          answer.reload
+          @cqv.check(answer).should eq("My message")
+        end
+
+        # testing and (Gest+Gestdays + weeks(DOB and the latest date of (LastRespSupp|CeaseCPAPDate|CeaseHiFloDate))) >36
+        describe 'date calculations' do
+          # 35 weeks = 245 days
+          it 'should pass when total > 35' do
+            CrossQuestionValidation.should_receive(:check_gest_wght).and_return(true)
+            answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+            Factory(:answer, question: @gest, answer_value: '33', response: @response) # 231
+            Factory(:answer, question: @gest_days, answer_value: '2', response: @response) # 2
+            Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
+            Factory(:answer, question: @cease_cpap, answer_value: '2013-01-14', response: @response) # 13 d diff
+            answer.reload
+            @cqv.check(answer).should be_nil
+          end
+
+          it 'should fail when total = 35' do
+            CrossQuestionValidation.should_receive(:check_gest_wght).and_return(true)
+            answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+            Factory(:answer, question: @gest, answer_value: '33', response: @response) # 231
+            Factory(:answer, question: @gest_days, answer_value: '2', response: @response) # 2
+            Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
+            Factory(:answer, question: @cease_cpap, answer_value: '2013-01-13', response: @response) # 12 d diff
+            answer.reload
+            @cqv.check(answer).should eq('My message')
+          end
+
+          it 'should fail when total < 35' do
+            CrossQuestionValidation.should_receive(:check_gest_wght).and_return(true)
+            answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+            Factory(:answer, question: @gest, answer_value: '33', response: @response) # 231
+            Factory(:answer, question: @gest_days, answer_value: '2', response: @response) # 2
+            Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
+            Factory(:answer, question: @cease_cpap, answer_value: '2013-01-12', response: @response) # 11 d diff
+            answer.reload
+            @cqv.check(answer).should eq('My message')
+          end
+
+          it 'with different question as latest date' do
+            CrossQuestionValidation.should_receive(:check_gest_wght).and_return(true)
+            answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
+            Factory(:answer, question: @gest, answer_value: '33', response: @response) # 231
+            Factory(:answer, question: @gest_days, answer_value: '2', response: @response) # 2
+            Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
+
+            Factory(:answer, question: @cease_cpap, answer_value: '2013-01-10', response: @response)
+            Factory(:answer, question: @cease_hiflo, answer_value: '2013-01-19', response: @response)
+            Factory(:answer, question: @last_resp_supp, answer_value: '2013-01-14', response: @response) # 13 d diff
+            answer.reload
+            @cqv.check(answer).should be_nil
+          end
+        end
+      end
+    end
+  end
+
 end

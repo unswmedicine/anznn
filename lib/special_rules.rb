@@ -4,12 +4,14 @@ class SpecialRules
   WGHT_CODE = 'Wght'
   DOB_CODE = 'DOB'
   LAST_O2_CODE = 'LastO2'
+  LAST_RESP_SUPP_CODE = 'LastRespSupp'
   CEASE_CPAP_DATE_CODE = 'CeaseCPAPDate'
   CEASE_HI_FLO_DATE_CODE = 'CeaseHiFloDate'
   HOME_DATE_CODE = 'HomeDate'
 
   RULE_CODES_REQUIRING_PARTICULAR_QUESTION_CODES = {
     'special_o2_a' => 'O2_36wk_',
+    'special_o2_a_new' => 'O2_36wk_',
     'special_hmeo2' => 'HmeO2',
     'special_namesurg2' => 'Surg_Desc2',
     'special_namesurg3' => 'Surg_Desc3',
@@ -51,6 +53,7 @@ class SpecialRules
                                  special_length
                                  special_cochimplt
                                  special_o2_a
+                                 special_o2_a_new
                                  special_hmeo2
                                  special_same_name_inf
                                  special_pns)
@@ -95,6 +98,38 @@ class SpecialRules
   
     }
     
+    CrossQuestionValidation.register_checker 'special_o2_a_new', lambda { |answer, unused_related_answer, checker_params|
+      raise 'Can only be used on question O2_36wk_' unless answer.question.code == 'O2_36wk_'
+
+      #If O2_36wk_ is -1 and (Gest must be <32 or Wght must be <1500) then (Gest+Gestdays + weeks(DOB and the latest date of (LastRespSupp|CeaseCPAPDate|CeaseHiFloDate))) >35
+      break true unless (answer.comparable_answer == -1)
+
+      # ok if not premature
+      break true unless CrossQuestionValidation.check_gest_wght(answer)
+
+      gest = answer.response.comparable_answer_or_nil_for_question_with_code(GEST_CODE)
+      gest_days = answer.response.comparable_answer_or_nil_for_question_with_code(GEST_DAYS_CODE)
+      dob = answer.response.comparable_answer_or_nil_for_question_with_code(DOB_CODE)
+
+      last_resp_supp = answer.response.comparable_answer_or_nil_for_question_with_code(LAST_RESP_SUPP_CODE)
+      cease_cpap_date = answer.response.comparable_answer_or_nil_for_question_with_code(CEASE_CPAP_DATE_CODE)
+      cease_hi_flo_date = answer.response.comparable_answer_or_nil_for_question_with_code(CEASE_HI_FLO_DATE_CODE)
+
+      break false unless dob.present?
+      break false unless gest.present?
+      break false unless gest_days.present?
+      break false unless last_resp_supp.present? || cease_cpap_date.present? || cease_hi_flo_date.present?
+
+      dates = [last_resp_supp, cease_cpap_date, cease_hi_flo_date]
+      last_date = dates.compact.sort.last
+      max_elapsed = last_date - dob
+
+      #The actual test (gest in in weeks)
+
+      gest.weeks + gest_days.days + max_elapsed.to_i.days > 35.weeks
+
+    }
+
     CrossQuestionValidation.register_checker 'special_hmeo2', lambda { |answer, unused_related_answer, checker_params|
       raise 'Can only be used on question HmeO2' unless answer.question.code == 'HmeO2'
       # If HmeO2 is -1 and (Gest must be <32 or Wght must be <1500) and HomeDate must be a date and HomeDate must be the same as LastO2
