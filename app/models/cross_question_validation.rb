@@ -145,8 +145,7 @@ class CrossQuestionValidation < ActiveRecord::Base
   end
 
   def self.check_gest_wght(answer)
-    #TODO Tests kthx
-    gest = answer.response.comparable_answer_or_nil_for_question_with_code(GEST_CODE)
+     gest = answer.response.comparable_answer_or_nil_for_question_with_code(GEST_CODE)
     weight = answer.response.comparable_answer_or_nil_for_question_with_code(WGHT_CODE)
     (gest && gest < GEST_LT) || (weight && weight < WGHT_LT)
   end

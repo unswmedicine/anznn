@@ -37,7 +37,7 @@ describe CrossQuestionValidation do
       SpecialRules::RULE_CODES_REQUIRING_PARTICULAR_QUESTION_CODES.each do |rule_code, required_question_code|
         good_q = Factory.create(:question, code: required_question_code)
 
-        Factory.build(:cross_question_validation, rule: rule_code , question: bad_q).should_not be_valid
+        Factory.build(:cross_question_validation, rule: rule_code, question: bad_q).should_not be_valid
         Factory.build(:cross_question_validation, rule: rule_code, question: good_q).should be_valid
       end
     end
@@ -340,10 +340,10 @@ describe CrossQuestionValidation do
           do_cqv_check(a1, [])
         end
         it("passes if q2 not answered and q1 answered") {} # rule won't be run
-        it("passes if q2 is not -1 and q1 is blank") {standard_cqv_test({}, 0, [])}
-        it("passes if q2 is not -1 and q1 is not blank") {}# rule won't be run
+        it("passes if q2 is not -1 and q1 is blank") { standard_cqv_test({}, 0, []) }
+        it("passes if q2 is not -1 and q1 is not blank") {} # rule won't be run
         it("passes when q2 is -1 and q1 is not blank") {} # rule won't be run
-        it("fails when q2 is -1 and q1 is blank") {standard_cqv_test({}, -1, [@error_message])}
+        it("fails when q2 is -1 and q1 is blank") { standard_cqv_test({}, -1, [@error_message]) }
       end
     end
 
@@ -438,6 +438,43 @@ describe CrossQuestionValidation do
           standard_cqv_test(Date.new(2012, 2, 1), Date.new(2012, 2, 1), [@error_message])
         end
       end
+    end
+  end
+
+  describe 'check if premature' do
+    before(:each) do
+      @gest_q = Factory(:question, code: 'Gest', question_type: Question::TYPE_INTEGER)
+      @wght_q = Factory(:question, code: 'Wght', section: @gest_q.section, question_type: Question::TYPE_INTEGER)
+    end
+
+    it 'should return false if neither gest nor gest wgt answered' do
+      check_gest_wght(nil, nil, nil)       # it returns nil for false in this case
+
+    end
+    it 'should return true if gest < 32 OR wght < 1500' do
+      check_gest_wght(31, nil, true)
+      check_gest_wght(31, 1499, true)
+      check_gest_wght(31, 1500, true)
+      check_gest_wght(31, 1501, true)
+
+      check_gest_wght(32, nil, nil)# it returns nil for false in this case
+      check_gest_wght(32, 1499, true)
+      check_gest_wght(32, 1500, false)
+      check_gest_wght(32, 1501, false)
+
+      check_gest_wght(33, nil, nil)# it returns nil for false in this case
+      check_gest_wght(33, 1499, true)
+      check_gest_wght(33, 1500, false)
+      check_gest_wght(33, 1501, false)
+    end
+
+    def check_gest_wght(gest, wght, expected_result)
+      response = Factory(:response, survey: @gest_q.section.survey)
+      Factory(:answer, question: @gest_q, answer_value: gest, response: response) unless gest.nil?
+      Factory(:answer, question: @wght_q, answer_value: wght, response: response) unless wght.nil?
+      any_answer = Factory(:answer, response: response)
+      any_answer.reload
+      CrossQuestionValidation.check_gest_wght(any_answer).should eq(expected_result)
     end
   end
 end
