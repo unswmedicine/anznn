@@ -300,7 +300,7 @@ class SpecialRules
     datetime2 = CrossQuestionValidation.aggregate_date_time(cease_cool_date, cease_cool_time)
     hour_difference = (datetime2 - datetime1) / 1.hour
 
-    hour_difference <= 72
+    hour_difference <= 120
   }
 
   CrossQuestionValidation.register_checker 'special_immun', lambda { |answer, ununused_related_answer, checker_params|

@@ -23,7 +23,7 @@ describe "Special Rules" do
   end
 
   describe "RULE: special_cool_hours" do
-    #hours between |StartCoolDate+StartCoolTime - CeaseCoolDate+CeaseCoolTime| <=72
+    #hours between |CeaseCoolDate+CeaseCoolTime - StartCoolDate+StartCoolTime| should not be greater than 120 hours
     before(:each) do
       @survey = Factory(:survey)
       @section = Factory(:section, survey: @survey)
@@ -42,9 +42,9 @@ describe "Special Rules" do
       cqv.errors[:base].should eq ['special_cool_hours requires question code StartCoolDate but got Blah']
     end
 
-    describe 'should fail when hour difference is > 72' do
+    describe 'should fail when hour difference is > 120' do
       it 'over by 1 minute' do
-        cool_hours_test('2013-05-01', '11:59', '2013-05-04', '12:00', 'My message')
+        cool_hours_test('2013-05-01', '11:59', '2013-05-06', '12:00', 'My message')
       end
       it 'over by a lot' do
         cool_hours_test('2013-05-01', '11:59', '2013-06-04', '12:00', 'My message')
@@ -52,12 +52,12 @@ describe "Special Rules" do
     end
 
     it 'should pass when hour difference is = 72' do
-      cool_hours_test('2013-05-01', '11:59', '2013-05-04', '11:59', nil)
+      cool_hours_test('2013-05-01', '11:59', '2013-05-06', '11:59', nil)
     end
 
     describe 'should pass when hour difference is < 72' do
       it 'under by 1 minute' do
-        cool_hours_test('2013-05-01', '11:59', '2013-05-04', '11:58', nil)
+        cool_hours_test('2013-05-01', '11:59', '2013-05-06', '11:58', nil)
       end
       it 'under by a lot' do
         cool_hours_test('2013-05-01', '11:59', '2013-05-02', '11:59', nil)
