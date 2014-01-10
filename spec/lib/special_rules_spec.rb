@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe "Special Rules" do
   pending "shouldn't call 'present' on an answer" do
     survey = Factory.create(:survey)
@@ -43,57 +44,41 @@ describe "Special Rules" do
 
     describe 'should fail when hour difference is > 72' do
       it 'over by 1 minute' do
-        answer = Factory(:answer, question: @start_cool_date, answer_value: '2013-05-01', response: @response)
-        Factory(:answer, question: @start_cool_time, answer_value: '11:59', response: @response)
-        Factory(:answer, question: @cease_cool_date, answer_value: '2013-05-04', response: @response)
-        Factory(:answer, question: @cease_cool_time, answer_value: '12:00', response: @response)
-        answer.reload
-        @cqv.check(answer).should eq('My message')
+        cool_hours_test('2013-05-01', '11:59', '2013-05-04', '12:00', 'My message')
       end
       it 'over by a lot' do
-        answer = Factory(:answer, question: @start_cool_date, answer_value: '2013-05-01', response: @response)
-        Factory(:answer, question: @start_cool_time, answer_value: '11:59', response: @response)
-        Factory(:answer, question: @cease_cool_date, answer_value: '2013-06-04', response: @response)
-        Factory(:answer, question: @cease_cool_time, answer_value: '12:00', response: @response)
-        answer.reload
-        @cqv.check(answer).should eq('My message')
+        cool_hours_test('2013-05-01', '11:59', '2013-06-04', '12:00', 'My message')
       end
     end
 
     it 'should pass when hour difference is = 72' do
-      answer = Factory(:answer, question: @start_cool_date, answer_value: '2013-05-01', response: @response)
-      Factory(:answer, question: @start_cool_time, answer_value: '11:59', response: @response)
-      Factory(:answer, question: @cease_cool_date, answer_value: '2013-05-04', response: @response)
-      Factory(:answer, question: @cease_cool_time, answer_value: '11:59', response: @response)
-      answer.reload
-      @cqv.check(answer).should be_nil
+      cool_hours_test('2013-05-01', '11:59', '2013-05-04', '11:59', nil)
     end
 
     describe 'should pass when hour difference is < 72' do
       it 'under by 1 minute' do
-        answer = Factory(:answer, question: @start_cool_date, answer_value: '2013-05-01', response: @response)
-        Factory(:answer, question: @start_cool_time, answer_value: '11:59', response: @response)
-        Factory(:answer, question: @cease_cool_date, answer_value: '2013-05-04', response: @response)
-        Factory(:answer, question: @cease_cool_time, answer_value: '11:58', response: @response)
-        answer.reload
-        @cqv.check(answer).should be_nil
+        cool_hours_test('2013-05-01', '11:59', '2013-05-04', '11:58', nil)
       end
       it 'under by a lot' do
-        answer = Factory(:answer, question: @start_cool_date, answer_value: '2013-05-01', response: @response)
-        Factory(:answer, question: @start_cool_time, answer_value: '11:59', response: @response)
-        Factory(:answer, question: @cease_cool_date, answer_value: '2013-05-02', response: @response)
-        Factory(:answer, question: @cease_cool_time, answer_value: '11:59', response: @response)
-        answer.reload
-        @cqv.check(answer).should be_nil
+        cool_hours_test('2013-05-01', '11:59', '2013-05-02', '11:59', nil)
       end
     end
 
-    it 'should pass if all 4 questions not answered' do
-      answer = Factory(:answer, question: @start_cool_date, answer_value: '2013-05-01', response: @response)
-      Factory(:answer, question: @start_cool_time, answer_value: '11:59', response: @response)
-      Factory(:answer, question: @cease_cool_date, answer_value: '2013-06-04', response: @response)
-      @cqv.check(answer).should eq(nil)
+    describe 'should pass if all 4 questions not answered' do
+      it {cool_hours_test('2013-05-01', nil, '2013-06-04', '12:00', nil)}
+      it {cool_hours_test('2013-05-01', '11:59', nil, '12:00', nil)}
+      it {cool_hours_test('2013-05-01', '11:59', '2013-06-04', nil, nil)}
     end
+
+    def cool_hours_test(start_date, start_time, cease_date, cease_time, outcome)
+      answer = Factory(:answer, question: @start_cool_date, answer_value: start_date, response: @response)
+      Factory(:answer, question: @start_cool_time, answer_value: start_time, response: @response) unless start_time.nil?
+      Factory(:answer, question: @cease_cool_date, answer_value: cease_date, response: @response) unless cease_date.nil?
+      Factory(:answer, question: @cease_cool_time, answer_value: cease_time, response: @response) unless cease_time.nil?
+      answer.reload
+      @cqv.check(answer).should eq(outcome)
+    end
+
   end
 
   describe "RULE: special_o2_a" do
