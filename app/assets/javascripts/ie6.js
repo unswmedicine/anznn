@@ -6,5 +6,16 @@ $(function() {
         $(':button[class="btn"], :reset[class="btn"], :submit[class="btn"], input[type="button"]').addClass('button-reset');
         $(':checkbox').addClass('input-checkbox');
         $('.pagination li:first-child a').addClass('pagination-first-child');
+
+        $('.btn-ie6').each(
+            function() {
+                $(this).click(function() {
+                    msg = "You are about to delete this form in progress for BabyCODE " + $(this).attr('id')
+                        + ". This action cannot be undone. Are you sure you want to delete this form?" 
+                    return window.confirm(msg);
+                });
+            }
+        );
+        
 	}
 }); 
