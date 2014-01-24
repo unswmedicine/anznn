@@ -21,10 +21,20 @@ Given /^"([^"]*)" created a response to the "([^"]*)" survey with babycode "([^"
   create_response(Survey.find_by_name(survey_name), email, babycode, year_of_reg, submitted)
 end
 
-def create_response(survey, email, babycode = 'babycode123', year_of_reg = "2005", submitted = false)
+Given /^"([^"]*)" created a response to the "([^"]*)" survey with id "([^"]*)" and babycode "([^"]*)"$/ do |email, survey_name, id, babycode|
+  create_response(Survey.find_by_name(survey_name), email, babycode, "2005", false, id)
+end
+
+def create_response(survey, email, babycode = 'babycode123', year_of_reg = "2005", submitted = false, id=nil)
   user = User.find_by_email(email)
   submitted_status = submitted ? Response::STATUS_SUBMITTED : Response::STATUS_UNSUBMITTED
-  Response.create!(survey: survey, baby_code: babycode, year_of_registration: year_of_reg, user: user, hospital: user.hospital, submitted_status: submitted_status)
+  if id
+    Response.create!(survey: survey, baby_code: babycode, year_of_registration: year_of_reg, user: user, hospital: user.hospital, submitted_status: submitted_status) do |r|
+      r.id = id
+    end 
+  else
+    Response.create!(survey: survey, baby_code: babycode, year_of_registration: year_of_reg, user: user, hospital: user.hospital, submitted_status: submitted_status)
+  end
 end
 
 When /^I answer "([^"]*)" with "([^"]*)"$/ do |q, a|
