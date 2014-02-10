@@ -5,7 +5,7 @@ require 'colorize'
 require 'rvm/capistrano'
 require "delayed/recipes"
 require "bundler/capistrano"
-#require 'deploy/create_deployment_record'
+require 'deploy/create_deployment_record'
 
 set :whenever_environment, defer { stage }
 set :whenever_command, "bundle exec whenever"
