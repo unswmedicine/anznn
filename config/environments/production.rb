@@ -2,7 +2,7 @@ Anznn::Application.configure do
 
   config.action_mailer.default_url_options = { :host => 'anznn.med.unsw.edu.au' }
   config.action_mailer.smtp_settings = {
-    :address              => "mail.unsw.edu.au",
+    :address              => "smtp.unsw.edu.au",
     :port                 => 25,
     :enable_starttls_auto => false,
   }
