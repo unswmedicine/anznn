@@ -117,10 +117,10 @@ class SpecialRules
       cease_cpap_date = answer.response.comparable_answer_or_nil_for_question_with_code(CEASE_CPAP_DATE_CODE)
       cease_hi_flo_date = answer.response.comparable_answer_or_nil_for_question_with_code(CEASE_HI_FLO_DATE_CODE)
 
-      break false unless dob.present?
-      break false unless gest.present?
-      break false unless gest_days.present?
-      break false unless last_resp_supp.present? || cease_cpap_date.present? || cease_hi_flo_date.present?
+      break true unless dob.present?
+      break true unless gest.present?
+      break true unless gest_days.present?
+      break true unless last_resp_supp.present? || cease_cpap_date.present? || cease_hi_flo_date.present?
 
       dates = [last_resp_supp, cease_cpap_date, cease_hi_flo_date]
       last_date = dates.compact.sort.last

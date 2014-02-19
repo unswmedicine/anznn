@@ -333,8 +333,8 @@ describe "Special Rules" do
       end
 
       describe 'When premature' do
-        it 'should fail when any of Gest, Gestdays, DOB are not answered' do
-          # TODO: clarify that fail is correct here, unclear from description
+        it 'should pass when any of Gest, Gestdays, DOB are not answered' do
+          # Gest, Gestdays, DOB are mandatory anyway so will already generate errors, therefore we let this rule pass to avoid excessive messages
           # logic for Gest must be <32 or Wght must be <1500 is tested separately, so mock that part to simplify testing here
           CrossQuestionValidation.should_receive(:check_gest_wght).exactly(3).times.and_return(true)
           answer = Factory(:answer, question: @o2_36_wk, answer_value: -1, response: @response)
@@ -344,11 +344,11 @@ describe "Special Rules" do
           answer.reload
           [@gest, @gest_days, @dob].each do |q|
             answer.response.answers.where(question_id: q.id).destroy_all
-            @cqv.check(answer).should eq("My message")
+            @cqv.check(answer).should be_nil
           end
         end
 
-        it 'should fail when none of LastRespSupp, CeaseCPAPDate, CeaseHiFloDate are answered' do
+        it 'should pass when none of LastRespSupp, CeaseCPAPDate, CeaseHiFloDate are answered' do
           # logic for Gest must be <32 or Wght must be <1500 is tested separately, so mock that part to simplify testing here
           # TODO: clarify that fail is correct here, unclear from description
           CrossQuestionValidation.should_receive(:check_gest_wght).and_return(true)
@@ -357,7 +357,7 @@ describe "Special Rules" do
           Factory(:answer, question: @gest_days, answer_value: '5', response: @response)
           Factory(:answer, question: @dob, answer_value: '2013-01-01', response: @response)
           answer.reload
-          @cqv.check(answer).should eq("My message")
+          @cqv.check(answer).should be_nil
         end
 
         # testing and (Gest+Gestdays + weeks(DOB and the latest date of (LastRespSupp|CeaseCPAPDate|CeaseHiFloDate))) >36
@@ -450,7 +450,6 @@ describe "Special Rules" do
       end
 
       it 'should fail when HomeDate answered but LastRespSupp not answered' do
-        # TODO: check if this is correct or not
         answer = Factory(:answer, question: @hme_o2, answer_value: -1, response: @response)
         Factory(:answer, question: @home_date, answer_value: '2013-01-01', response: @response)
         answer.reload
