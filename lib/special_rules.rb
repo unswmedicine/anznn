@@ -158,15 +158,15 @@ class SpecialRules
       # If HmeO2 is -1 and HomeDate is a date then HomeDate must be the same as LastRespSupp
 
       home_date = answer.response.comparable_answer_or_nil_for_question_with_code(HOME_DATE_CODE)
-      last_o2 = answer.response.comparable_answer_or_nil_for_question_with_code(LAST_O2_CODE)
+      last_resp_supp = answer.response.comparable_answer_or_nil_for_question_with_code(LAST_RESP_SUPP_CODE)
 
       #Conditions (IF)
       break true unless (answer.comparable_answer == -1) # ok if not -1
       break true unless home_date.present? # bad if homedate blank
 
       #Requirements (THEN)
-      break false unless last_o2.present?
-      break false unless last_o2.eql? home_date
+      break false unless last_resp_supp.present?
+      break false unless last_resp_supp.eql? home_date
 
       true
     }

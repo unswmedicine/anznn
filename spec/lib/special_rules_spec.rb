@@ -424,7 +424,7 @@ describe "Special Rules" do
       Factory(:question_option, question: @hme_o2, option_value: 0)
       Factory(:question_option, question: @hme_o2, option_value: -1)
       @home_date = Factory(:question, code: 'HomeDate', section: @section, question_type: Question::TYPE_DATE)
-      @last_resp_supp = Factory(:question, code: 'LastO2', section: @section, question_type: Question::TYPE_DATE)
+      @last_resp_supp = Factory(:question, code: 'LastRespSupp', section: @section, question_type: Question::TYPE_DATE)
       @cqv = Factory(:cross_question_validation, rule: 'special_hmeo2_new', question: @hme_o2, error_message: 'My message', related_question_id: nil)
       @response = Factory(:response, survey: @survey)
     end
