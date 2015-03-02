@@ -78,7 +78,7 @@ gem "cancan"
 gem "capistrano-ext"
 gem "capistrano"
 gem "capistrano_colors"
-gem 'rvm-capistrano'
+gem 'rvm-capistrano', require: false
 gem "colorize"
 gem "simplecov", :require => false, :group => :test
 gem "simplecov-rcov", :require => false, :group => :test
