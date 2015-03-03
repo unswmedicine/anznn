@@ -42,6 +42,8 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "shoulda-matchers"
+  gem 'xray-rails'
+  gem 'pry-rails'
 
   # cucumber gems
   gem "cucumber"
@@ -57,8 +59,7 @@ group :development do
   gem "rails3-generators"
   gem 'thin'
   gem 'cheat'
-  gem 'xray-rails'
-  gem 'pry-rails'
+
 end
 
 group :test do
