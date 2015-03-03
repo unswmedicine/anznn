@@ -158,6 +158,11 @@ When /^I wait for (\d+) seconds?$/ do |n|
   sleep(n.to_i)
 end
 
+And /^I pry$/ do
+  require 'pry'
+  binding.pry
+end
+
 When /^"([^"]*)" should not be visible$/ do |text|
   result = page.has_content?(text)
   puts result
