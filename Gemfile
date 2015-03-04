@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
 
-gem 'rails', '3.1.10'
+gem 'rails', '3.2.21'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -12,8 +12,8 @@ gem 'mysql'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'coffee-rails', '~> 3.1.1'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -42,6 +42,8 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "shoulda-matchers"
+  gem 'xray-rails'
+  gem 'pry-rails'
 
   # cucumber gems
   gem "cucumber"
@@ -57,8 +59,7 @@ group :development do
   gem "rails3-generators"
   gem 'thin'
   gem 'cheat'
-  gem 'xray-rails'
-  gem 'pry-rails'
+
 end
 
 group :test do
@@ -78,7 +79,7 @@ gem "cancan"
 gem "capistrano-ext"
 gem "capistrano"
 gem "capistrano_colors"
-gem 'rvm-capistrano'
+gem 'rvm-capistrano', require: false
 gem "colorize"
 gem "simplecov", :require => false, :group => :test
 gem "simplecov-rcov", :require => false, :group => :test

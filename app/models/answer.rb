@@ -89,7 +89,7 @@ class Answer < ActiveRecord::Base
   end
 
   def format_for_csv
-    return raw_answer unless raw_answer.nil?
+    return raw_answer if has_attribute? :raw_answer and not raw_answer.nil?
     case question.question_type
       when TYPE_TEXT, TYPE_DECIMAL, TYPE_INTEGER, TYPE_CHOICE
         answer_value.to_s
@@ -110,7 +110,7 @@ class Answer < ActiveRecord::Base
 
   def answer_value
     #If there is a value in raw_answer we can just use that and ignore everything else
-    unless self.raw_answer.blank?
+    if has_attribute? :raw_answer and not self.raw_answer.blank?
       ans_val = self.raw_answer
       if ans_val.is_a?(Hash)
         #Convert the hash to a PartialDateTimeHash so we get the helper methods
