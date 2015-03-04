@@ -4,7 +4,6 @@ $(function() {
   $('.add_multi_link').each(function(){
     var $button = $(this);
     $button.on('click', function(){
-      console.log($button)
       var $parent_div = $button.parent();
       var data = $parent_div.data();
       data['groupNumber'] += 1;
