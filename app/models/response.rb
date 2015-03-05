@@ -114,7 +114,7 @@ class Response < ActiveRecord::Base
   end
 
   def all_answers_with_blanks_created
-    sections_to_answers_with_blanks_created.values.flatten
+    @all_answers_with_blanks_created ||= sections_to_answers_with_blanks_created.values.flatten
   end
 
   def section_started?(section)
@@ -154,13 +154,13 @@ class Response < ActiveRecord::Base
   end
 
   def fatal_warnings?
-    all_answers_with_blanks_created.any? do |answer|
+    @fatal_warnings ||= all_answers_with_blanks_created.any? do |answer|
       answer.violates_mandatory || answer.fatal_warnings.present?
     end
   end
 
   def warnings?
-    all_answers_with_blanks_created.any? do |answer|
+    @warnings ||= all_answers_with_blanks_created.any? do |answer|
       answer.has_warning?
     end || fatal_warnings?
   end
