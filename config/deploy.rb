@@ -264,7 +264,8 @@ task :generate_database_yml, :roles => :app do
   buffer.delete('spec')
 
   # Populate production password
-  buffer[rails_env]['password'] = production_database_password
+  puts production_database_password.to_s
+  buffer[rails_env]['password'] = production_database_password.to_s
 
   put YAML::dump(buffer), "#{release_path}/config/database.yml", :mode => 0664
 end
