@@ -6,10 +6,9 @@ environment = ARGV.shift
 gem_home = ENV['GEM_HOME']
 rvm_home = ENV['rvm_path']
 
-dep = Gem::Dependency.new('passenger', Gem::Requirement.default)
-specs = Gem.source_index.search dep
+spec = Gem::Specification.all.find {|x| x.name == "passenger"}
 
-version  = specs.first.version.version
+version  = spec.version.to_s
 wrapper_path = rvm_home + "/wrappers/" + gem_set
 
 
