@@ -23,7 +23,7 @@ set :project_rpms, %w(openssl openssl-devel curl-devel httpd-devel apr-devel apr
 set :shared_children, shared_children + %w(log_archive)
 set :bash, '/bin/bash'
 set :shell, bash # This is done in two lines to allow rpm_install to refer to bash (as shell just launches cap shell)
-set :rvm_ruby_string, 'ruby-2.0.0-p598@anznn'
+set :rvm_ruby_string, 'ruby-2.0.0-p643@anznn'
 
 # Deploy using copy for now
 set :scm, 'git'
