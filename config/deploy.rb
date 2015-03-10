@@ -67,7 +67,8 @@ namespace :server_setup do
       run "rvm rvmrc trust #{release_path}"
     end
     task :autolibs do
-      run 'rvm get stable && rvm autolibs enable'
+      # run 'rvm get stable && rvm autolibs enable'
+      run 'rvm pkg install iconv'
     end
   end
   task :gem_install, :roles => :app do
