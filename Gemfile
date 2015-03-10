@@ -77,7 +77,7 @@ gem "devise" , "1.5.4"
 gem "email_spec", :group => :test
 gem "cancan"
 gem "capistrano-ext"
-gem "capistrano"
+gem "capistrano", '~> 2.15.5'
 gem "capistrano_colors"
 gem 'rvm-capistrano', require: false
 gem "colorize"

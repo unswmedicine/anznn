@@ -53,7 +53,7 @@ GEM
       sass-rails (~> 3.1)
     builder (3.0.4)
     cancan (1.6.7)
-    capistrano (2.9.0)
+    capistrano (2.15.5)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -133,7 +133,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
-    highline (1.6.9)
+    highline (1.7.1)
     hike (1.2.3)
     i18n (0.7.0)
     jekyll (0.11.2)
@@ -167,13 +167,13 @@ GEM
       ruby-progressbar
     multi_json (1.11.0)
     mysql (2.8.1)
-    net-scp (1.0.4)
-      net-ssh (>= 1.99.1)
-    net-sftp (2.0.5)
-      net-ssh (>= 2.0.9)
-    net-ssh (2.2.2)
-    net-ssh-gateway (1.1.0)
-      net-ssh (>= 1.99.1)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-sftp (2.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.2)
+    net-ssh-gateway (1.2.0)
+      net-ssh (>= 2.6.5)
     nokogiri (1.5.0)
     orm_adapter (0.0.7)
     paperclip (2.6.0)
@@ -306,7 +306,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (~> 1.4.4)
   cancan
-  capistrano
+  capistrano (~> 2.15.5)
   capistrano-ext
   capistrano_colors
   capybara
