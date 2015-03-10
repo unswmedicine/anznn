@@ -182,6 +182,9 @@ GEM
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
+    passenger (5.0.2)
+      rack
+      rake (>= 0.8.1)
     pdf-reader (1.0.0)
       Ascii85 (~> 1.0.0)
       ruby-rc4
@@ -336,6 +339,7 @@ DEPENDENCIES
   minitest-reporters
   mysql2
   paperclip (~> 2.0)
+  passenger
   prawn
   pry-rails
   rails (= 3.2.21)

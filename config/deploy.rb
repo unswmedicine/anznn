@@ -52,6 +52,8 @@ set(:group) { "#{defined?(group) ? group : user}" }
 set(:user_home) { "/home/#{user}" }
 set(:deploy_to) { "#{user_home}/#{application}" }
 
+set(:passenger_version) { "5.0.2" }
+
 default_run_options[:pty] = true
 
 namespace :server_setup do
@@ -75,14 +77,14 @@ namespace :server_setup do
     end
   end
   task :gem_install, :roles => :app do
-    run "gem install bundler passenger"
+    run "gem install bundler passenger -v #{passenger_version}"
   end
   task :passenger, :roles => :app do
     run "passenger-install-apache2-module -a"
   end
   namespace :config do
     task :apache do
-      run "cd #{release_path}/config/httpd && ruby passenger_setup.rb \"#{rvm_ruby_string}\" \"#{current_path}\" \"#{web_server}\" \"#{stage}\""
+      run "cd #{release_path}/config/httpd && ruby passenger_setup.rb \"#{rvm_ruby_string}\" \"#{current_path}\" \"#{web_server}\" \"#{stage}\" \"#{passenger_version}\""
       src = "#{release_path}/config/httpd/apache_insertion.conf"
 
       custom_path = "#{release_path}/config/httpd/#{stage}_rails_#{application}.conf"

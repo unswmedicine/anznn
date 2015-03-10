@@ -2,17 +2,12 @@ gem_set = ARGV.shift
 current_path = ARGV.shift
 hostname = ARGV.shift
 environment = ARGV.shift
+version = ARGV.shift
 
 gem_home = ENV['GEM_HOME']
 rvm_home = ENV['rvm_path']
 
-spec = Gem::Specification.all.find {|x| x.name == "passenger"}
-
-version  = spec.version.to_s
 wrapper_path = rvm_home + "/wrappers/" + gem_set
-
-
-
 
 apache_string = <<EOF
 LoadModule passenger_module #{gem_home}/gems/passenger-#{version}/ext/apache2/mod_passenger.so
