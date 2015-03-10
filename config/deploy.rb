@@ -66,6 +66,9 @@ namespace :server_setup do
     task :trust_rvmrc do
       run "rvm rvmrc trust #{release_path}"
     end
+    task :autolibs do
+      run 'rvm get stable && rvm autolibs enable'
+    end
   end
   task :gem_install, :roles => :app do
     run "gem install bundler passenger"
@@ -100,6 +103,7 @@ before 'deploy:setup' do
   server_setup.rpm_install unless skip_rpm_install
   rvm.install_rvm
   rvm.install_ruby
+  server_setup.rvm.autolibs
   server_setup.rvm.trust
   server_setup.gem_install
   server_setup.passenger
