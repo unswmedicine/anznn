@@ -31,6 +31,9 @@ set :repository, 'https://github.com/IntersectAustralia/anznn.git'
 set :deploy_via, :copy
 set :copy_exclude, [".git/*"]
 
+set :bundle_dir, ''
+set :bundle_flags, '--system --quiet'
+
 set :branch do
   default_tag = 'HEAD'
 
@@ -68,7 +71,7 @@ namespace :server_setup do
     end
     task :autolibs do
       # run 'rvm get stable && rvm autolibs enable'
-      run 'rvm pkg install iconv'
+      # run 'rvm pkg install iconv'
     end
   end
   task :gem_install, :roles => :app do
