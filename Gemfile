@@ -70,6 +70,7 @@ end
   gem 'google-analytics-rails'
 #end
 
+gem "iconv"
 gem "haml"
 gem "haml-rails"
 gem "tabs_on_rails"
