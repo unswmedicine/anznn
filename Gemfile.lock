@@ -98,7 +98,7 @@ GEM
     daemons (1.1.6)
     database_cleaner (1.4.0)
     decent_exposure (1.0.2)
-    delayed_job (3.0.1)
+    delayed_job (3.0.5)
       activesupport (~> 3.0)
     delayed_job_active_record (0.3.2)
       activerecord (> 2.1.0)
@@ -323,6 +323,7 @@ DEPENDENCIES
   daemons
   database_cleaner
   decent_exposure
+  delayed_job (~> 3.0.5)
   delayed_job_active_record
   devise (= 1.5.4)
   email_spec
