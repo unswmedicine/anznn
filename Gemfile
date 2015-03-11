@@ -12,6 +12,7 @@ gem 'mysql2'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'sass', '~> 3.2.5'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
@@ -74,7 +75,7 @@ gem "iconv"
 gem "haml"
 gem "haml-rails"
 gem "tabs_on_rails"
-gem "devise" , "1.5.4" 
+gem "devise" , "1.5.4"
 gem "email_spec", :group => :test
 gem "cancan"
 gem "capistrano-ext"

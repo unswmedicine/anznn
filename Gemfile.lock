@@ -244,7 +244,7 @@ GEM
     rubyzip (1.1.0)
     rvm-capistrano (1.5.6)
       capistrano (~> 2.15.4)
-    sass (3.4.13)
+    sass (3.2.19)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -346,6 +346,7 @@ DEPENDENCIES
   rails3-generators
   rspec-rails
   rvm-capistrano
+  sass (~> 3.2.5)
   sass-rails (~> 3.2.3)
   shoulda-matchers
   simplecov
