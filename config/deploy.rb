@@ -77,7 +77,8 @@ namespace :server_setup do
     end
   end
   task :gem_install, :roles => :app do
-    run "gem install bundler passenger -v #{passenger_version}"
+    run "gem install bundler"
+    run "gem install passenger -v #{passenger_version}"
   end
   task :passenger, :roles => :app do
     run "passenger-install-apache2-module -a"
