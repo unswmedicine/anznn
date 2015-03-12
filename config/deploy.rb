@@ -52,7 +52,7 @@ set(:group) { "#{defined?(group) ? group : user}" }
 set(:user_home) { "/home/#{user}" }
 set(:deploy_to) { "#{user_home}/#{application}" }
 
-set(:passenger_version) { "5.0.2" }
+set(:passenger_version) { "3.0.21" }
 
 default_run_options[:pty] = true
 
