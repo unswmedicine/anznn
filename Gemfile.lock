@@ -123,7 +123,6 @@ GEM
       factory_girl (~> 2.3.0)
       railties (>= 3.0.0)
     fast-stemmer (1.0.1)
-    fastthread (1.0.7)
     ffi (1.9.3)
     gherkin (2.7.2)
       json (>= 1.4.6)
@@ -184,9 +183,8 @@ GEM
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
-    passenger (3.0.21)
-      daemon_controller (>= 1.0.0)
-      fastthread (>= 1.0.1)
+    passenger (4.0.59)
+      daemon_controller (>= 1.2.0)
       rack
       rake (>= 0.8.1)
     pdf-reader (1.0.0)
@@ -344,7 +342,7 @@ DEPENDENCIES
   minitest-reporters
   mysql2
   paperclip (~> 2.0)
-  passenger (~> 3.0.21)
+  passenger (~> 4.0.59)
   prawn
   pry-rails
   rails (= 3.2.21)

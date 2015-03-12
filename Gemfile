@@ -99,4 +99,4 @@ gem 'whenever', require: false
 gem 'jekyll', :require => false
 
 gem 'highline' # This has (up until now) been implicitly included by capistrano
-gem 'passenger', '~> 3.0.21', :require => false
+gem 'passenger', '~> 4.0.59', :require => false
