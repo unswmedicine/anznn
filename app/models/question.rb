@@ -1,4 +1,4 @@
-class Question < ActiveRecord::Base
+class Question < ApplicationRecord
 
   TYPE_CHOICE = 'Choice'
   TYPE_DATE = 'Date'
@@ -10,7 +10,7 @@ class Question < ActiveRecord::Base
   belongs_to :section
   has_many :answers, dependent: :destroy
   has_many :cross_question_validations, dependent: :destroy
-  has_many :question_options, dependent: :destroy, order: 'option_order'
+  has_many :question_options, -> {order('option_order')}, dependent: :destroy
 
   validates_presence_of :question_order
   validates_presence_of :section

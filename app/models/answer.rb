@@ -1,4 +1,4 @@
-class Answer < ActiveRecord::Base
+class Answer < ApplicationRecord
 
   #Answer abstracts all of the hard work of storing and retrieving answers.
   #Because of this, you should only use the interface methods rather than poking around in the fields themselves:

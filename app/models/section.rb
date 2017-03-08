@@ -1,6 +1,6 @@
-class Section < ActiveRecord::Base
+class Section < ApplicationRecord
   belongs_to :survey
-  has_many :questions, dependent: :destroy, order: :question_order
+  has_many :questions, -> {order(:question_order)}, dependent: :destroy
 
   validates_presence_of :name
   validates_presence_of :section_order

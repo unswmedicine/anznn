@@ -1,7 +1,7 @@
 $(function() {
   showHideSupplementary();
 
-  $('#batch_file_survey_id').live('change', function(){
+  $('#batch_file_survey_id').on('change', function(){
     showHideSupplementary();
   });
 });

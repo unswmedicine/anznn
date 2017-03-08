@@ -1,6 +1,6 @@
 $(function() {
     $(document).ready(function(){
-        $('.btn-deselect').live('click', function() {
+        $('.btn-deselect').on('click', function() {
             var radio_groups = $(this).parents('.inputs-list');
             radio_groups.each(function() {
                 var radio_btns = $(this).find('input[type="radio"]');

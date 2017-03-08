@@ -1,6 +1,6 @@
 require 'csv'
 
-class BatchFile < ActiveRecord::Base
+class BatchFile < ApplicationRecord
 
   BABY_CODE_COLUMN = "BabyCODE"
   STATUS_FAILED = "Failed"
@@ -37,7 +37,7 @@ class BatchFile < ActiveRecord::Base
 
   attr_accessor :responses
 
-  scope :failed, where(:status => STATUS_FAILED)
+  scope :failed, -> {where(:status => STATUS_FAILED)}
   scope :older_than, lambda { |date| where("updated_at < ?", date) }
 
   # Performance Optimisation: we don't load through the association, instead we do a global lookup by ID

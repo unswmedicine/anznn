@@ -70,4 +70,5 @@ Anznn::Application.configure do
 
   GA.tracker = "UA-16667092-14"
 
+  config.eager_load = true
 end

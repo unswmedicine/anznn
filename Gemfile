@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
 
-gem 'rails', '3.2.21'
+gem 'rails', '5.0.1'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -12,9 +12,9 @@ gem 'mysql2'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass', '~> 3.2.5'
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.2'
+  gem 'sass', '~> 3.4.23'
+  gem 'sass-rails',   '~> 5.0.6'
+  gem 'coffee-rails', '~> 4.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -75,19 +75,18 @@ gem "iconv"
 gem "haml"
 gem "haml-rails"
 gem "tabs_on_rails"
-gem "devise" , "1.5.4"
+gem "devise" , "4.2.0"
 gem "email_spec", :group => :test
 gem "cancan"
 gem "capistrano-ext"
-gem "capistrano", '~> 2.15.5'
-gem "capistrano_colors"
+gem "capistrano", '~> 3.7.2'
 gem 'rvm-capistrano', require: false
 gem "colorize"
 gem "simplecov", :require => false, :group => :test
 gem "simplecov-rcov", :require => false, :group => :test
-gem "bootstrap-sass", '~> 1.4.4'
-gem "paperclip", "~> 2.0"
-gem 'delayed_job', '~> 3.0.5'
+gem "bootstrap-sass", '~> 3.3.7'
+gem "paperclip", "~> 5.1.0"
+gem 'delayed_job', '~> 4.1.2'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'prawn'
@@ -99,4 +98,4 @@ gem 'whenever', require: false
 gem 'jekyll', :require => false
 
 gem 'highline' # This has (up until now) been implicitly included by capistrano
-gem 'passenger', '~> 4.0.59', :require => false
+gem 'passenger', '~> 5.1.2', :require => false

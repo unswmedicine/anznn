@@ -1,6 +1,6 @@
 class UserRegistersController < Devise::RegistrationsController
 
-  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy, :edit_password, :update_password, :profile]
+  prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy, :edit_password, :update_password, :profile]
 
   def profile
 

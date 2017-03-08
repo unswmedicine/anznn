@@ -28,10 +28,9 @@ def create_responses(big)
   main = Survey.where(:name => 'ANZNN data form').first
   followup = Survey.where(:name => 'ANZNN follow-up data form').first
 
-  hospitals = Hospital.all
   # remove the one dataprovider is linked to as we'll create those separately
   dp_hospital = User.find_by_email!('dataprovider@intersect.org.au').hospital
-  hospitals.delete(dp_hospital)
+  hospitals = Hospital.where.not(id: dp_hospital.id)
 
   count1 = big ? 100 : 20
   count2 = big ? 30 : 5
@@ -97,16 +96,16 @@ def create_test_users
   set_role("alexb@intersect.org.au", "Administrator")
   set_role("kali@intersect.org.au", "Administrator")
   set_role("ryan@intersect.org.au", "Administrator")
-  set_role("dataprovider@intersect.org.au", "Data Provider", Hospital.first.name)
-  set_role("supervisor@intersect.org.au", "Data Provider Supervisor", Hospital.first.name)
-  set_role("dataprovider2@intersect.org.au", "Data Provider", Hospital.last.name)
-  set_role("supervisor2@intersect.org.au", "Data Provider Supervisor", Hospital.last.name)
+  set_role("dataprovider@intersect.org.au", "Data Provider", Hospital.first.id)
+  set_role("supervisor@intersect.org.au", "Data Provider Supervisor", Hospital.first.id)
+  set_role("dataprovider2@intersect.org.au", "Data Provider", Hospital.last.id)
+  set_role("supervisor2@intersect.org.au", "Data Provider Supervisor", Hospital.last.id)
 end
 
-def set_role(email, role, hospital_name=nil)
+def set_role(email, role, hospital_id=nil)
   user = User.find_by_email(email)
   role = Role.find_by_name(role)
-  hospital = Hospital.find_by_name(hospital_name) unless hospital_name.nil?
+  hospital = Hospital.find(hospital_id) unless hospital_id.nil?
   user.role = role
   user.hospital = hospital
   user.save!

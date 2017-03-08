@@ -1,4 +1,4 @@
-class ConfigurationItem < ActiveRecord::Base
+class ConfigurationItem < ApplicationRecord
 
   YEAR_OF_REGISTRATION_START = "YearOfRegStart"
   YEAR_OF_REGISTRATION_END = "YearOfRegEnd"

@@ -1,4 +1,4 @@
-class Response < ActiveRecord::Base
+class Response < ApplicationRecord
 
   STATUS_UNSUBMITTED = 'Unsubmitted'
   STATUS_SUBMITTED = 'Submitted'
@@ -33,8 +33,8 @@ class Response < ActiveRecord::Base
 
   scope :for_survey, lambda { |survey| where(survey_id: survey.id) }
 
-  scope :unsubmitted, where(submitted_status: STATUS_UNSUBMITTED)
-  scope :submitted, where(submitted_status: STATUS_SUBMITTED)
+  scope :unsubmitted, -> {where(submitted_status: STATUS_UNSUBMITTED)}
+  scope :submitted, -> {where(submitted_status: STATUS_SUBMITTED)}
 
   after_initialize { @dummy_answers = [] }
 
@@ -206,7 +206,7 @@ class Response < ActiveRecord::Base
   end
 
   def clear_dummy_answers
-    self.answers.delete_if {|elem| @dummy_answers.map(&:object_id).include? elem.object_id }
+    self.answers.delete_all{|elem| @dummy_answers.map(&:object_id).include? elem.object_id }
     @dummy_answers.clear
   end
 

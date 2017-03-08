@@ -1,4 +1,4 @@
-class SupplementaryFile < ActiveRecord::Base
+class SupplementaryFile < ApplicationRecord
   belongs_to :batch_file
   has_attached_file :file, :styles => {}, :path => :make_file_path
   validates_presence_of :multi_name

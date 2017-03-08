@@ -1,4 +1,4 @@
-class CrossQuestionValidation < ActiveRecord::Base
+class CrossQuestionValidation < ApplicationRecord
 
   cattr_accessor(:valid_rules) { [] }
   cattr_accessor(:rules_with_no_related_question) { [] }
@@ -137,7 +137,7 @@ class CrossQuestionValidation < ActiveRecord::Base
   end
 
   def self.aggregate_date_time(d, t)
-    Time.utc_time(d.year, d.month, d.day, t.hour, t.min)
+    Time.utc(d.year, d.month, d.day, t.hour, t.min)
   end
 
   def self.sanitise_offset(checker_params)
