@@ -233,7 +233,7 @@ namespace :deploy do
 
   task :generate_user_manual do
     run "cd #{current_path}; rm -rf public/user_manual/*"
-    run "cd #{current_path}; bundle exec jekyll manual public/user_manual"
+    run "cd #{current_path}; bundle exec jekyll build --source manual/ --destination public/user_manual/"
   end
 
   task :new_secret, :roles => :app do
