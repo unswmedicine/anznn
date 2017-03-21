@@ -77,7 +77,7 @@ gem "haml-rails"
 gem "tabs_on_rails"
 gem "devise" , "4.2.0"
 gem "email_spec", :group => :test
-gem "cancan"
+gem "cancancan"
 gem "capistrano-ext"
 gem "capistrano", '~> 3.7.2'
 gem 'rvm-capistrano', require: false

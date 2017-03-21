@@ -58,7 +58,7 @@ class Response < ApplicationRecord
   end
 
   def self.count_per_survey_and_year_of_registration(survey_id, year)
-    Response.count(:conditions => ["year_of_registration = ? AND survey_id = ?", year, survey_id])
+    Response.where(year_of_registration: year, survey_id: survey_id).count
   end
 
   def self.delete_by_survey_and_year_of_registration(survey_id, year)
