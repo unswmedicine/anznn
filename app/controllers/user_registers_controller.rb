@@ -24,7 +24,7 @@ class UserRegistersController < Devise::RegistrationsController
       end
     else
       clean_up_passwords(resource)
-      respond_with_navigational(resource) { render_with_scope :new }
+      respond_with_navigational(resource) { render :new }
     end
   end
 
@@ -37,12 +37,12 @@ class UserRegistersController < Devise::RegistrationsController
       respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords(resource)
-      respond_with_navigational(resource){ render_with_scope :edit }
+      respond_with_navigational(resource){ render :edit }
     end
   end
 
   def edit_password
-    render_with_scope :edit_password
+    render :edit_password
   end
 
   # Mostly the same as the devise 'update' method, just call a different method on the model
@@ -53,7 +53,7 @@ class UserRegistersController < Devise::RegistrationsController
       respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords(resource)
-      respond_with_navigational(resource){ render_with_scope :edit_password }
+      respond_with_navigational(resource){ render :edit_password }
     end
   end
 
