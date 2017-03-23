@@ -1,8 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe CsvGenerator do
-  let(:survey) { Factory(:survey, name: "Survey One") }
-  let(:hospital) { Factory(:hospital, name: "Royal North Shore", abbrev: "RNS") }
+  let(:survey) { create(:survey, name: "Survey One") }
+  let(:hospital) { create(:hospital, name: "Royal North Shore", abbrev: "RNS") }
 
   describe "Generating the filename" do
 
@@ -26,12 +26,12 @@ describe CsvGenerator do
     end
 
     it "makes the survey name safe for use in a filename" do
-      survey = Factory(:survey, name: "SurVey %/\#.()A,|")
+      survey = create(:survey, name: "SurVey %/\#.()A,|")
       CsvGenerator.new(survey.id, "", "").csv_filename.should eq("survey_a.csv")
     end
 
     it "makes the hospital abbreviation safe for use in a filename" do
-      hospital = Factory(:hospital, abbrev: "HosPITAL %/\#.()A,|")
+      hospital = create(:hospital, abbrev: "HosPITAL %/\#.()A,|")
       CsvGenerator.new(survey.id, hospital.id, "").csv_filename.should eq("survey_one_hospital_a.csv")
     end
   end
@@ -50,28 +50,28 @@ describe CsvGenerator do
 
   describe "Generating the CSV" do
     it "includes the correct details" do
-      section2 = Factory(:section, survey: survey, section_order: 2)
-      section1 = Factory(:section, survey: survey, section_order: 1)
-      q_choice = Factory(:question, section: section1, question_order: 1, question_type: Question::TYPE_CHOICE, code: 'ChoiceQ')
-      q_date = Factory(:question, section: section1, question_order: 3, question_type: Question::TYPE_DATE, code: 'DateQ')
-      q_decimal = Factory(:question, section: section2, question_order: 2, question_type: Question::TYPE_DECIMAL, code: 'DecimalQ')
-      q_integer = Factory(:question, section: section2, question_order: 1, question_type: Question::TYPE_INTEGER, code: 'IntegerQ')
-      q_text = Factory(:question, section: section1, question_order: 2, question_type: Question::TYPE_TEXT, code: 'TextQ')
-      q_time = Factory(:question, section: section1, question_order: 4, question_type: Question::TYPE_TIME, code: 'TimeQ')
+      section2 = create(:section, survey: survey, section_order: 2)
+      section1 = create(:section, survey: survey, section_order: 1)
+      q_choice = create(:question, section: section1, question_order: 1, question_type: Question::TYPE_CHOICE, code: 'ChoiceQ')
+      q_date = create(:question, section: section1, question_order: 3, question_type: Question::TYPE_DATE, code: 'DateQ')
+      q_decimal = create(:question, section: section2, question_order: 2, question_type: Question::TYPE_DECIMAL, code: 'DecimalQ')
+      q_integer = create(:question, section: section2, question_order: 1, question_type: Question::TYPE_INTEGER, code: 'IntegerQ')
+      q_text = create(:question, section: section1, question_order: 2, question_type: Question::TYPE_TEXT, code: 'TextQ')
+      q_time = create(:question, section: section1, question_order: 4, question_type: Question::TYPE_TIME, code: 'TimeQ')
 
-      response1 = Factory(:response, hospital: Factory(:hospital, abbrev: 'HRL'), survey: survey, year_of_registration: 2009, baby_code: 'ABC-123')
-      Factory(:answer, response: response1, question: q_choice, answer_value: '1')
-      Factory(:answer, response: response1, question: q_date, answer_value: '25/02/2001')
-      Factory(:answer, response: response1, question: q_decimal, answer_value: '15.5673')
-      Factory(:answer, response: response1, question: q_integer, answer_value: '877')
-      Factory(:answer, response: response1, question: q_text, answer_value: 'ABc')
-      Factory(:answer, response: response1, question: q_time, answer_value: '14:56')
+      response1 = create(:response, hospital: create(:hospital, abbrev: 'HRL'), survey: survey, year_of_registration: 2009, baby_code: 'ABC-123')
+      create(:answer, response: response1, question: q_choice, answer_value: '1')
+      create(:answer, response: response1, question: q_date, answer_value: '25/02/2001')
+      create(:answer, response: response1, question: q_decimal, answer_value: '15.5673')
+      create(:answer, response: response1, question: q_integer, answer_value: '877')
+      create(:answer, response: response1, question: q_text, answer_value: 'ABc')
+      create(:answer, response: response1, question: q_time, answer_value: '14:56')
       response1.reload
       response1.save!
 
-      response2 = Factory(:response, hospital: Factory(:hospital, abbrev: 'BBB'), survey: survey, year_of_registration: 2011, baby_code: 'DEF-567')
-      Factory(:answer, response: response2, question: q_integer, answer_value: '99')
-      Factory(:answer, response: response2, question: q_text, answer_value: 'ABCdefg Ijkl')
+      response2 = create(:response, hospital: create(:hospital, abbrev: 'BBB'), survey: survey, year_of_registration: 2011, baby_code: 'DEF-567')
+      create(:answer, response: response2, question: q_integer, answer_value: '99')
+      create(:answer, response: response2, question: q_text, answer_value: 'ABCdefg Ijkl')
       response2.reload
       response2.save!
 

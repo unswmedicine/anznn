@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
 
-gem 'rails', '5.0.1'
+gem 'rails', '5.0.2'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -42,7 +42,7 @@ group :development, :test do
   gem "create_deployment_record", git: 'https://github.com/IntersectAustralia/create_deployment_record.git'
   gem "rspec-rails"
   gem "factory_girl_rails"
-  gem "shoulda-matchers"
+  gem "shoulda-matchers", '2.8'
   gem 'xray-rails'
   gem 'pry-rails'
 
@@ -90,6 +90,7 @@ gem 'delayed_job', '~> 4.1.2'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'prawn'
+gem 'prawn-table'
 gem 'decent_exposure'
 gem 'will_paginate', '> 3.0'
 gem 'will_paginate-bootstrap'

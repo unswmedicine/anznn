@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # Specs in this file have access to a helper object that includes
 # the ResponsesHelper. For example:
@@ -14,7 +14,7 @@ require 'spec_helper'
 describe ResponsesHelper do
   describe "Generating response page titles" do
     it "should string together survey, baby code and year of reg" do
-      response = Factory(:response, baby_code: "Bcdef", year_of_registration: 2015, survey: Factory(:survey, name: "My Survey"))
+      response = create(:response, baby_code: "Bcdef", year_of_registration: 2015, survey: create(:survey, name: "My Survey"))
       helper.response_title(response).should eq("My Survey - Baby Code Bcdef - Year of Registration 2015")
     end
   end
