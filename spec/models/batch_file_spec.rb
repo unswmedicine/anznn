@@ -81,13 +81,21 @@ describe BatchFile do
       [BatchFile::STATUS_FAILED, BatchFile::STATUS_SUCCESS, BatchFile::STATUS_IN_PROGRESS].each do |status|
         batch_file.stub(:status) { status }
 
-        expect { batch_file.process }.should raise_error
-        expect { batch_file.process(:force) }.should raise_error
+        if status == BatchFile::STATUS_IN_PROGRESS
+          # Batch process explicitly raises error unless status is in progress. When in progress, this will raise
+          #  type error due to no file being attached to the batch file object
+          expect { batch_file.process }.to raise_error('no implicit conversion of nil into String')
+          expect { batch_file.process(:force) }.to raise_error('no implicit conversion of nil into String')
+        else
+          expect { batch_file.process }.to raise_error("Batch has already been processed, cannot reprocess")
+          expect { batch_file.process(:force) }.to raise_error("Batch has already been processed, cannot reprocess")
+        end
+
       end
     end
     it "should needs_review" do
       batch_file.stub(:status) { BatchFile::STATUS_REVIEW }
-      expect { batch_file.process }.should raise_error
+      expect { batch_file.process }.to raise_error("Batch has already been processed, cannot reprocess")
     end
   end
 

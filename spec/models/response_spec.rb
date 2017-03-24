@@ -137,7 +137,7 @@ describe Response do
     it "can't submit a response incomplete" do
       response.stub(:validation_status) { Response::INCOMPLETE }
 
-      expect { response.submit! }.should raise_error
+      expect { response.submit! }.to raise_error("Can't submit with status Incomplete")
     end
   end
 
