@@ -7,44 +7,44 @@ describe CsvGenerator do
   describe "Generating the filename" do
 
     it "includes only survey name when no hospital or year of registration" do
-      CsvGenerator.new(survey.id, "", "").csv_filename.should eq("survey_one.csv")
+      expect(CsvGenerator.new(survey.id, "", "").csv_filename).to eq("survey_one.csv")
     end
 
     it "includes survey name and hospital when hospital set" do
-      CsvGenerator.new(survey.id, hospital.id, "").csv_filename.should eq("survey_one_rns.csv")
+      expect(CsvGenerator.new(survey.id, hospital.id, "").csv_filename).to eq("survey_one_rns.csv")
 
     end
 
     it "includes survey name and year of registration when year of registration set" do
-      CsvGenerator.new(survey.id, "", "2009").csv_filename.should eq("survey_one_2009.csv")
+      expect(CsvGenerator.new(survey.id, "", "2009").csv_filename).to eq("survey_one_2009.csv")
 
     end
 
     it "includes survey name, hospital and year of registration when all are set" do
-      CsvGenerator.new(survey.id, hospital.id, "2009").csv_filename.should eq("survey_one_rns_2009.csv")
+      expect(CsvGenerator.new(survey.id, hospital.id, "2009").csv_filename).to eq("survey_one_rns_2009.csv")
 
     end
 
     it "makes the survey name safe for use in a filename" do
       survey = create(:survey, name: "SurVey %/\#.()A,|")
-      CsvGenerator.new(survey.id, "", "").csv_filename.should eq("survey_a.csv")
+      expect(CsvGenerator.new(survey.id, "", "").csv_filename).to eq("survey_a.csv")
     end
 
     it "makes the hospital abbreviation safe for use in a filename" do
       hospital = create(:hospital, abbrev: "HosPITAL %/\#.()A,|")
-      CsvGenerator.new(survey.id, hospital.id, "").csv_filename.should eq("survey_one_hospital_a.csv")
+      expect(CsvGenerator.new(survey.id, hospital.id, "").csv_filename).to eq("survey_one_hospital_a.csv")
     end
   end
 
   describe "Checking for emptiness" do
     it "returns true if there's no matching records" do
-      Response.should_receive(:for_survey_hospital_and_year_of_registration).with(survey, hospital.id, "2009").and_return([])
-      CsvGenerator.new(survey.id, hospital.id, "2009").should be_empty
+      expect(Response).to receive(:for_survey_hospital_and_year_of_registration).with(survey, hospital.id, "2009").and_return([])
+      expect(CsvGenerator.new(survey.id, hospital.id, "2009")).to be_empty
     end
 
     it "returns false if there's matching records" do
-      Response.should_receive(:for_survey_hospital_and_year_of_registration).and_return(["something"])
-      CsvGenerator.new(survey.id, "", "").should_not be_empty
+      expect(Response).to receive(:for_survey_hospital_and_year_of_registration).and_return(["something"])
+      expect(CsvGenerator.new(survey.id, "", "")).not_to be_empty
     end
   end
 
@@ -75,13 +75,13 @@ describe CsvGenerator do
       response2.reload
       response2.save!
 
-      Response.should_receive(:for_survey_hospital_and_year_of_registration).with(survey, '', '').and_return([response1, response2])
+      expect(Response).to receive(:for_survey_hospital_and_year_of_registration).with(survey, '', '').and_return([response1, response2])
       csv = CsvGenerator.new(survey.id, '', '').csv
       expected = []
       expected << %w(RegistrationType YearOfRegistration Hospital BabyCODE ChoiceQ TextQ DateQ TimeQ IntegerQ DecimalQ)
       expected << ['Survey One', '2009', 'HRL', 'ABC-123', '1', 'ABc', '2001-02-25', '14:56', '877', '15.5673']
       expected << ['Survey One', '2011', 'BBB', 'DEF-567', '', 'ABCdefg Ijkl', '', '', '99', '']
-      CSV.parse(csv).should eq(expected)
+      expect(CSV.parse(csv)).to eq(expected)
     end
   end
 
