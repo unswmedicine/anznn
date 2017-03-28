@@ -47,7 +47,7 @@ class UserRegistersController < Devise::RegistrationsController
 
   # Mostly the same as the devise 'update' method, just call a different method on the model
   def update_password
-    if resource.update_password(params[resource_name])
+    if resource.update_password(params.require(resource_name).permit(:current_password, :password, :password_confirmation))
       set_flash_message :notice, :password_updated if is_navigational_format?
       sign_in resource_name, resource, bypass: true
       respond_with resource, location: after_update_path_for(resource)
