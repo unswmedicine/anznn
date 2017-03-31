@@ -206,7 +206,7 @@ class Response < ApplicationRecord
   end
 
   def clear_dummy_answers
-    self.answers.delete_all{|elem| @dummy_answers.map(&:object_id).include? elem.object_id }
+    self.answers.delete(self.answers.select{|elem| @dummy_answers.map(&:object_id).include? elem.object_id})
     @dummy_answers.clear
   end
 
