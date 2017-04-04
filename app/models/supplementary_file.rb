@@ -1,8 +1,9 @@
-class SupplementaryFile < ActiveRecord::Base
+class SupplementaryFile < ApplicationRecord
   belongs_to :batch_file
   has_attached_file :file, :styles => {}, :path => :make_file_path
   validates_presence_of :multi_name
   validates_attachment_presence :file
+  do_not_validate_attachment_file_type :file
 
   attr_accessor :message
   attr_accessor :supplementary_data

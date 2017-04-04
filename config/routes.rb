@@ -1,5 +1,7 @@
 Anznn::Application.routes.draw do
-  devise_for :users, :controllers => {:registrations => "user_registers", :passwords => "user_passwords"} do
+  devise_for :users, :controllers => {:registrations => "user_registers", :passwords => "user_passwords"}
+
+  as :user do
     get "/users/profile", :to => "user_registers#profile" #page which gives options to edit details or change password
     get "/users/edit_password", :to => "user_registers#edit_password" #allow users to edit their own password
     put "/users/update_password", :to => "user_registers#update_password" #allow users to edit their own password
@@ -53,9 +55,9 @@ Anznn::Application.routes.draw do
           put :deactivate
           put :activate
           get :edit_role
-          put :update_role
+          patch :update_role
           get :edit_approval
-          put :approve
+          patch :approve
 
         end
       end

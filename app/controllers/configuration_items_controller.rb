@@ -1,6 +1,6 @@
 class ConfigurationItemsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   load_and_authorize_resource
   set_tab :year_of_registration, :admin_navigation
 

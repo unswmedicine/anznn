@@ -1,4 +1,4 @@
-class Role < ActiveRecord::Base
+class Role < ApplicationRecord
 
   SUPER_USER = 'Administrator'
   DATA_PROVIDER = 'Data Provider'
@@ -8,8 +8,8 @@ class Role < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
-  scope :by_name, order('name')
-  scope :superuser_roles, where(name: SUPER_USER)
+  scope :by_name, -> {order('name')}
+  scope :superuser_roles, -> {where(name: SUPER_USER)}
 
   def super_user?
     self.name.eql? SUPER_USER

@@ -1,9 +1,9 @@
-class Survey < ActiveRecord::Base
+class Survey < ApplicationRecord
   has_many :responses, dependent: :destroy
-  has_many :sections, dependent: :destroy, order: :section_order
+  has_many :sections, -> {order(:section_order)}, dependent: :destroy
   has_many :questions, through: :sections
 
-  scope :by_name, order(:name)
+  scope :by_name, -> {order(:name)}
 
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 

@@ -23,3 +23,6 @@ rerun.txt
 
 # Ignore generated user manual
 /public/user_manual
+
+# Mac finder artifacts
+.DS_Store

@@ -16,11 +16,11 @@ class CsvGenerator
   end
 
   def csv_filename
-    name_parts = [survey.name.parameterize("_")]
+    name_parts = [survey.name.parameterize(separator: "_")]
 
     unless hospital_id.blank?
       hospital = Hospital.find(hospital_id)
-      name_parts << hospital.abbrev.parameterize("_")
+      name_parts << hospital.abbrev.parameterize(separator: "_")
     end
     unless year_of_registration.blank?
       name_parts << year_of_registration

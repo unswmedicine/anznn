@@ -52,7 +52,7 @@ set(:group) { "#{defined?(group) ? group : user}" }
 set(:user_home) { "/home/#{user}" }
 set(:deploy_to) { "#{user_home}/#{application}" }
 
-set(:passenger_version) { "4.0.59" }
+set(:passenger_version) { "5.1.2" }
 
 default_run_options[:pty] = true
 
@@ -233,7 +233,7 @@ namespace :deploy do
 
   task :generate_user_manual do
     run "cd #{current_path}; rm -rf public/user_manual/*"
-    run "cd #{current_path}; bundle exec jekyll manual public/user_manual"
+    run "cd #{current_path}; bundle exec jekyll build --source manual/ --destination public/user_manual/"
   end
 
   task :new_secret, :roles => :app do

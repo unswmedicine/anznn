@@ -1,4 +1,4 @@
-class QuestionOption < ActiveRecord::Base
+class QuestionOption < ApplicationRecord
   belongs_to :question
 
   validates_presence_of :question_id

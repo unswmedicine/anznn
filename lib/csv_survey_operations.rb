@@ -19,7 +19,7 @@ module CsvSurveyOperations
       question_codes << hash["code"].downcase unless hash["code"].blank?
 
       section_name = hash.delete('section')
-      section = survey.sections.find_or_initialize_by_name(section_name)
+      section = survey.sections.find_or_initialize_by(name: section_name)
       if section.new_record?
         section.section_order = order
         section.save!
