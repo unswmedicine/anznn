@@ -141,13 +141,13 @@ describe User do
       user = create(:user, :password => "Pass.123")
       result = user.update_password({:current_password => "Pass.123", :password => "Pass.456", :password_confirmation => ""})
       result.should be false
-      user.errors[:password].should eq ["doesn't match confirmation"]
+      user.errors[:password_confirmation].should eq ["doesn't match Password"]
     end
     it "should fail if confirmation doesn't match new password" do
       user = create(:user, :password => "Pass.123")
       result = user.update_password({:current_password => "Pass.123", :password => "Pass.456", :password_confirmation => "Pass.678"})
       result.should be false
-      user.errors[:password].should eq ["doesn't match confirmation"]
+      user.errors[:password_confirmation].should eq ["doesn't match Password"]
     end
     it "should fail if password doesn't meet rules" do
       user = create(:user, :password => "Pass.123")
