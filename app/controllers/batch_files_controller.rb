@@ -47,7 +47,7 @@ class BatchFilesController < ApplicationController
     @batch_file.user = current_user
     @batch_file.hospital = current_user.hospital
     if @batch_file.save
-      supplementaries = params[:supplementary_files]
+      supplementaries = supplementary_files_params
       if supplementaries
         supplementaries.each_pair { |key, supp_attrs| @batch_file.supplementary_files.create!(supp_attrs) if supp_attrs[:file] }
       end
@@ -70,8 +70,12 @@ class BatchFilesController < ApplicationController
 
   private
 
-  def create_params
-    params.require(:batch_file).permit(:survey_id, :year_of_registration, :file, :supplementary_files)
+  def batch_file_params
+    params.require(:batch_file).permit(:survey_id, :year_of_registration, :file)
+  end
+
+  def supplementary_files_params
+    params.permit(supplementary_files: [:multi_name, :file])[:supplementary_files]
   end
 
 end
