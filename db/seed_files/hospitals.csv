@@ -33,6 +33,7 @@ Qld,John Flynn Hospital,T38
 Qld,"Mater Hospital, Mackay",T39
 Qld,"Mater Hospital, Rockhampton",T40
 Qld,"Mater Hospital, Townsville",T41
+Qld,Mt Isa Base Hospital,T57
 Qld,Nambour Hospital,T42
 Qld,North West Private Hospital,T43
 Qld,Pindara Hospital,T44
@@ -77,8 +78,19 @@ Vic,Werribee Mercy Hospital,T29
 Vic,West Gippsland Hospital,T30
 Vic,Wimmera Base Hospital,T31
 Vic,Wodonga Regional Health Service,T32
+WA,Bunbury District Hospital,T70
+WA,Derby Hospital,T71
+WA,Fiona Stanley Hospital,T72
+WA,Glengarry Private Hospital,T80
+WA,Hedland Health Campus,T73
+WA,Joondalup Health Campus,T74
 WA,King Edward Memorial Hospital,KEMH
 WA,Princess Margaret Hospital,PMH
+WA,St John of God Bunbury,T75
+WA,St John of God Midland,T76
+WA,St John of God Mt Lawley,T77
+WA,St John of God Murdoch,T78
+WA,St John of God Subiaco,T79
 North Island,Auckland City Hospital,NWH
 North Island,Gisborne Hospital,L209
 North Island,Hawkes Bay Hospital,L214
@@ -105,3 +117,11 @@ South Island,Wairau Hospital,L215
 Singapore,KK Womens and Childrens Hospital,KKH
 Singapore,National University Hospital,NUH
 Singapore,Singapore General Hospital,SGH
+Hong Kong,Kwong Wah Hospital,KWH
+Hong Kong,Pamela Youde Nethersole Eastern Hospital,PYNEH
+Hong Kong,Prince of Wales Hospital,POWH
+Hong Kong,Princess Margaret Hospital,PMHHK
+Hong Kong,Queen Elizabeth Hospital,QEH
+Hong Kong,Queen Mary Hospital,QMH
+Hong Kong,Tuen Mun Hospital,TMH
+Hong Kong,United Christian Hospital,UCH
