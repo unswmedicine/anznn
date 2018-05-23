@@ -8,7 +8,7 @@ gem 'rails', '5.0.2'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 #gem 'pg'
-gem 'mysql2'
+gem 'mysql2', '~> 0.4.4'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -41,7 +41,7 @@ gem "therubyracer"
 group :development, :test do
   gem "create_deployment_record", git: 'https://github.com/IntersectAustralia/create_deployment_record.git'
   gem "rspec-rails"
-  gem "factory_girl_rails"
+  gem "factory_bot_rails"
   gem "shoulda-matchers", '2.8'
   gem 'xray-rails'
   gem 'pry-rails'
@@ -96,3 +96,5 @@ gem 'jekyll', :require => false
 
 gem 'highline' # This has (up until now) been implicitly included by capistrano
 gem 'passenger', '~> 5.1.2', :require => false
+gem 'nokogiri', '~> 1.8.2'
+

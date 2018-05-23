@@ -30,5 +30,5 @@ Go to the ANZNN home page and enter your email address and the password you chos
 
 ## What to do if you can't log in
 If you're having trouble logging in, you can use the 'Forgot your password?' link on the home page to create a new password. A password reset link will be sent to the email address you registered with. If you are still having difficulties, please contact ANZNN.
-
+If you enter the wrong password 3 times, your account will be locked. Once locked, you need to wait for an hour before the account unlocks automatically. Alternatively, you can reset your password by clicking on 'Forgot your password?' link on the homepage.
   

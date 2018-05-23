@@ -16,7 +16,7 @@
 
 # Read about factories at http://github.com/thoughtbot/factory_girl
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :hospital do
       sequence(:name) { |n| "Some Hospital #{n}" }
       sequence(:state) do |n| #Pick a random, real state
