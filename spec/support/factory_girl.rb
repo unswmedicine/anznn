@@ -1,5 +1,5 @@
 # Configure test suite for factory girl
-# Enables creating factories with "create" rather than "FactoryGirl.create" and "build" instead of "FactoryGirl.build"
+# Enables creating factories with "create" rather than "FactoryBot.create" and "build" instead of "FactoryBot.build"
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end
