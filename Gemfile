@@ -81,7 +81,7 @@ gem "cancancan"
 gem "simplecov", :require => false, :group => :test
 gem "simplecov-rcov", :require => false, :group => :test
 gem "bootstrap-sass", '~> 3.3.7'
-gem "paperclip", "~> 5.1.0"
+gem "paperclip", "~> 5.2.0"
 gem 'delayed_job', '~> 4.1.2'
 gem 'delayed_job_active_record'
 gem 'daemons'
