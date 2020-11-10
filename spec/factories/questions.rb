@@ -19,10 +19,10 @@
 FactoryBot.define do
   factory :question do
     sequence :question_order
-    question "What?"
+    question { "What?" }
     association :section
-    question_type "Text"
-    code "What"
+    question_type { "Text" }
+    code { "What" }
     after(:create) do |survey|
       StaticModelPreloader.load
     end

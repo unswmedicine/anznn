@@ -13,6 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+*.swp
 
 .sass-cache/
 coverage/
@@ -26,3 +27,7 @@ rerun.txt
 
 # Mac finder artifacts
 .DS_Store
+
+# Dev temp
+docker_dir/db
+docker_dir/bundle_path
