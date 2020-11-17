@@ -10,8 +10,8 @@ WORKDIR /app
 
 # Copy the Gemfile as well as the Gemfile.lock and install the RubyGems. This is a separate step so the dependencies
 # will be cached unless changes to one of those two files are made.
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+#COPY Gemfile /app/Gemfile
+#COPY Gemfile.lock /app/Gemfile.lock
 #RUN gem install bundler && bundle install --jobs 20 --retry 5
 
 # Add a script to be executed every time the container starts.

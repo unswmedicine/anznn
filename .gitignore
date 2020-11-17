@@ -14,6 +14,7 @@
 /log/*.log
 /tmp
 *.swp
+*.log
 
 .sass-cache/
 coverage/
@@ -31,3 +32,4 @@ rerun.txt
 # Dev temp
 docker_dir/db
 docker_dir/bundle_path
+manual/.jekyll-cache

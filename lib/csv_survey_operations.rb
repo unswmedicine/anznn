@@ -29,7 +29,7 @@ module CsvSurveyOperations
       begin
         Question.create!(hash.merge(section_id: section.id))
       rescue
-        puts "Failed to create question #{hash}"
+        Kernel.puts "Failed to create question #{hash}"
         raise
       end
     end
@@ -104,8 +104,8 @@ module CsvSurveyOperations
 
       CrossQuestionValidation.create!(hash)
     rescue
-      puts "Failed to create cqv #{orig}, continuing anyway"
-      puts $!
+      Kernel.puts "Failed to create cqv #{orig}, continuing anyway"
+      Kernel.puts $!
       raise
     end
 

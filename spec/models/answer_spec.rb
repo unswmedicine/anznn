@@ -233,13 +233,13 @@ describe Answer do
 
     describe "For time questions, should delegate to TimeInputHandler to process the input" do
       it "should set the time answer if the input is valid" do
-        time = Time.now.utc
+        time = Time.now.round.utc
         mock_ih = double('mock input handler')
         TimeInputHandler.should_receive(:new).and_return(mock_ih)
         mock_ih.should_receive(:valid?).and_return(true)
         mock_ih.should_receive(:to_time).and_return(time)
         a = build(:answer, question: time_question, answer_value: "abc")
-        a.time_answer.should be(time)
+        a.time_answer.should eq(time)
         a.raw_answer.should be_nil
       end
 

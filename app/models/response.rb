@@ -78,7 +78,7 @@ class Response < ApplicationRecord
   end
 
   def self.delete_by_survey_and_year_of_registration(survey_id, year)
-    Response.destroy_all(["year_of_registration = ? AND survey_id = ?", year, survey_id])
+    Response.where(["year_of_registration = ? AND survey_id = ?", year, survey_id]).destroy_all
   end
 
   def self.existing_years_of_registration
