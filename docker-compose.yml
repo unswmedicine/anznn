@@ -15,6 +15,22 @@ services:
     depends_on:
       - db
 
+  web_passenger:
+    build: .
+    command: "start_app.sh passenger"
+    environment:
+      - BUNDLE_PATH=/bundle_path
+      - GEM_PATH=/bundle_path
+      - GEM_HOME=/bundle_path
+    volumes:
+      - .:/app
+      - ./docker_dir/bundle_path:/bundle_path
+      - ./docker_dir/sample_password.yml:/app/tmp/env_config/sample_password.yml
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
   db:
     image: "mysql:5.7"
     restart: always
