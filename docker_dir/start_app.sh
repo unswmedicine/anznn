@@ -8,5 +8,18 @@ gem install bundler && bundle install --jobs 20 --retry 5 \
 && \
 bundle exec jekyll build --source manual/ --destination public/user_manual/ \
 && \
-bundle exec rails server -b 0.0.0.0
+bundle exec rake app:generate_secret \
+&& \
+bundle exec script/delayed_job -i anznn start \
+&& \
+(
+    if [ "$1" == "passenger" ]; 
+    then 
+        #prod_like
+        bundle exec rake assets:clobber assets:precompile && bundle exec passenger start; 
+    else 
+        #dev
+        rm -vfr /app/public/assets && bundle exec rails server -b 0.0.0.0; 
+    fi
+)
 

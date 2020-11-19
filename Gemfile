@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 #gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
 
-gem 'rails', '~> 5.0.7.2'
+gem 'rails', '~> 5.1.7'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -14,8 +14,11 @@ gem 'mysql2'
 # in production environments by default.
 group :assets do
   gem 'sass', '~> 3.4.23'
+  #TODO gem 'sass'
   gem 'sass-rails',   '~> 5.0.6'
+  #TODO gem 'sass-rails'
   gem 'coffee-rails', '~> 4.2.1'
+  #TODO gem 'coffee-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -91,7 +94,8 @@ gem "bootstrap-sass"
 #gem "paperclip", "~> 5.2.0"
 #deprated gem
 gem "paperclip"
-gem 'delayed_job', '~> 4.1.2'
+#gem 'delayed_job', '~> 4.1.2'
+gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'prawn'
