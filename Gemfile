@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 #gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
 
-gem 'rails', '~> 5.1.7'
+gem 'rails', '~> 5.2.4.4'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -84,7 +84,9 @@ gem "iconv"
 gem "haml"
 gem "haml-rails"
 gem "tabs_on_rails"
-gem "devise" , "4.6.0"
+#gem "devise" , "4.6.0"
+gem "devise"
+#gem "devise"
 gem "email_spec", :group => :test
 gem "cancancan"
 gem "simplecov", :require => false, :group => :test
