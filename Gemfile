@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 #gem 'whoops_rails_logger', :git=> 'https://github.com/IntersectAustralia/whoops_rails_logger.git'
 
-gem 'rails', '~> 5.2.4.4'
+gem 'rails', '~> 6.0.3.4'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -17,8 +17,8 @@ group :assets do
   #TODO gem 'sass'
   gem 'sass-rails',   '~> 5.0.6'
   #TODO gem 'sass-rails'
-  gem 'coffee-rails', '~> 4.2.1'
-  #TODO gem 'coffee-rails'
+  #gem 'coffee-rails', '~> 4.2.1'
+  gem 'coffee-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
