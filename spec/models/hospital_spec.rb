@@ -39,14 +39,14 @@ describe Hospital do
       royal_ad = create(:hospital, state: "SA", name: "Royal Adelaide").id
 
       output = Hospital.hospitals_by_state
-      output.size.should eq(3)
-      output[0][0].should eq("NSW")
-      output[1][0].should eq("SA")
-      output[2][0].should eq("Vic")
+      expect(output.size).to eq(3)
+      expect(output[0][0]).to eq("NSW")
+      expect(output[1][0]).to eq("SA")
+      expect(output[2][0]).to eq("Vic")
 
-      output[0][1].should eq([["Campbelltown", campbelltown], ["Liverpool", liverpool], ["RPA", rpa]])
-      output[1][1].should eq([["Royal Adelaide", royal_ad]])
-      output[2][1].should eq([["Mercy Hospital", mercy], ["The Royal Childrens Hospital", royal_childrens]])
+      expect(output[0][1]).to eq([["Campbelltown", campbelltown], ["Liverpool", liverpool], ["RPA", rpa]])
+      expect(output[1][1]).to eq([["Royal Adelaide", royal_ad]])
+      expect(output[2][1]).to eq([["Mercy Hospital", mercy], ["The Royal Childrens Hospital", royal_childrens]])
     end
   end
 

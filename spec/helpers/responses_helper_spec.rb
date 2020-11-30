@@ -31,7 +31,7 @@ describe ResponsesHelper, :type => :helper do
   describe "Generating response page titles" do
     it "should string together survey, baby code and year of reg" do
       response = create(:response, baby_code: "Bcdef", year_of_registration: 2015, survey: create(:survey, name: "My Survey"))
-      helper.response_title(response).should eq("My Survey - Baby Code Bcdef - Year of Registration 2015")
+      expect(helper.response_title(response)).to eq("My Survey - Baby Code Bcdef - Year of Registration 2015")
     end
   end
 end

@@ -25,9 +25,9 @@ describe Notifier do
       email = Notifier.notify_user_of_approved_request(user).deliver
   
       # check that the email has been queued for sending
-      ActionMailer::Base.deliveries.empty?.should eq(false) 
-      email.to.should eq([address])
-      email.subject.should eq("ANZNN - Your access request has been approved") 
+      expect(ActionMailer::Base.deliveries.empty?).to eq(false) 
+      expect(email.to).to eq([address])
+      expect(email.subject).to eq("ANZNN - Your access request has been approved") 
     end
 
     it "should send mail to user if access request denied" do
@@ -36,9 +36,9 @@ describe Notifier do
       email = Notifier.notify_user_of_rejected_request(user).deliver
   
       # check that the email has been queued for sending
-      ActionMailer::Base.deliveries.empty?.should eq(false) 
-      email.to.should eq([address])
-      email.subject.should eq("ANZNN - Your access request has been rejected") 
+      expect(ActionMailer::Base.deliveries.empty?).to eq(false) 
+      expect(email.to).to eq([address])
+      expect(email.subject).to eq("ANZNN - Your access request has been rejected") 
     end
   end
 
@@ -46,13 +46,13 @@ describe Notifier do
   it "should send the right email" do
     address = 'user@email.org'
     user = create(:user, :status => "U", :email => address)
-    User.should_receive(:get_superuser_emails) { ["super1@intersect.org.au", "super2@intersect.org.au"] }
+    expect(User).to receive(:get_superuser_emails) { ["super1@intersect.org.au", "super2@intersect.org.au"] }
     email = Notifier.notify_superusers_of_access_request(user).deliver
 
     # check that the email has been queued for sending
-    ActionMailer::Base.deliveries.empty?.should eq(false)
-    email.subject.should eq("ANZNN - There has been a new access request")
-    email.to.should eq(["super1@intersect.org.au", "super2@intersect.org.au"])
+    expect(ActionMailer::Base.deliveries.empty?).to eq(false)
+    expect(email.subject).to eq("ANZNN - There has been a new access request")
+    expect(email.to).to eq(["super1@intersect.org.au", "super2@intersect.org.au"])
   end
  
 end

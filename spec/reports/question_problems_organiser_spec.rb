@@ -31,59 +31,59 @@ describe QuestionProblemsOrganiser do
 
   it "for aggregated report, takes errors and warnings and aggregates them by question and error message" do
     aggregated = qpo.aggregated_by_question_and_message
-    aggregated.should be_a(Array)
-    aggregated.size.should == 23
-    aggregated[0].should eq(['Column', 'Type', 'Message', 'Number of records'])
-    aggregated[1].should eq(['q1', 'Error', 'fwa', '2'])
-    aggregated[2].should eq(['', '', 'b1, b2', ''])
-    aggregated[3].should eq(['q1', 'Error', 'fwb', '1'])
-    aggregated[4].should eq(['', '', 'b1', ''])
-    aggregated[5].should eq(['q1', 'Warning', 'wa', '2'])
-    aggregated[6].should eq(['', '', 'b1, b2', ''])
-    aggregated[7].should eq(['q1', 'Warning', 'wb', '1'])
-    aggregated[8].should eq(['', '', 'b1', ''])
+    expect(aggregated).to be_a(Array)
+    expect(aggregated.size).to eq 23
+    expect(aggregated[0]).to eq(['Column', 'Type', 'Message', 'Number of records'])
+    expect(aggregated[1]).to eq(['q1', 'Error', 'fwa', '2'])
+    expect(aggregated[2]).to eq(['', '', 'b1, b2', ''])
+    expect(aggregated[3]).to eq(['q1', 'Error', 'fwb', '1'])
+    expect(aggregated[4]).to eq(['', '', 'b1', ''])
+    expect(aggregated[5]).to eq(['q1', 'Warning', 'wa', '2'])
+    expect(aggregated[6]).to eq(['', '', 'b1, b2', ''])
+    expect(aggregated[7]).to eq(['q1', 'Warning', 'wb', '1'])
+    expect(aggregated[8]).to eq(['', '', 'b1', ''])
 
-    aggregated[9].should eq(['q2', 'Error', 'fwc', '2'])
-    aggregated[10].should eq(['', '', 'b1, b2', ''])
-    aggregated[11].should eq(['q2', 'Error', 'fwd', '1'])
-    aggregated[12].should eq(['', '', 'b2', ''])
-    aggregated[13].should eq(['q2', 'Warning', 'wc', '1'])
-    aggregated[14].should eq(['', '', 'b1', ''])
-    aggregated[15].should eq(['q2', 'Warning', 'wd', '2'])
-    aggregated[16].should eq(['', '', 'b1, b2', ''])
+    expect(aggregated[9]).to eq(['q2', 'Error', 'fwc', '2'])
+    expect(aggregated[10]).to eq(['', '', 'b1, b2', ''])
+    expect(aggregated[11]).to eq(['q2', 'Error', 'fwd', '1'])
+    expect(aggregated[12]).to eq(['', '', 'b2', ''])
+    expect(aggregated[13]).to eq(['q2', 'Warning', 'wc', '1'])
+    expect(aggregated[14]).to eq(['', '', 'b1', ''])
+    expect(aggregated[15]).to eq(['q2', 'Warning', 'wd', '2'])
+    expect(aggregated[16]).to eq(['', '', 'b1, b2', ''])
 
-    aggregated[17].should eq(['q3', 'Error', 'fwe', '1'])
-    aggregated[18].should eq(['', '', 'b1', ''])
-    aggregated[19].should eq(['q3', 'Error', 'fwf', '1'])
-    aggregated[20].should eq(['', '', 'b1', ''])
-    aggregated[21].should eq(['q3', 'Warning', 'we', '1'])
-    aggregated[22].should eq(['', '', 'b2', ''])
+    expect(aggregated[17]).to eq(['q3', 'Error', 'fwe', '1'])
+    expect(aggregated[18]).to eq(['', '', 'b1', ''])
+    expect(aggregated[19]).to eq(['q3', 'Error', 'fwf', '1'])
+    expect(aggregated[20]).to eq(['', '', 'b1', ''])
+    expect(aggregated[21]).to eq(['q3', 'Warning', 'we', '1'])
+    expect(aggregated[22]).to eq(['', '', 'b2', ''])
   end
 
   it "For detailed report it takes errors and warnings orders them by baby code, question and error message" do
     details = qpo.detailed_problems
-    details.should be_a(Array)
-    details.size.should == 15
-    details[0].should eq(['b1', 'q1', 'Error', 'q1-b1-a', 'fwa'])
-    details[1].should eq(['b1', 'q1', 'Error', 'q1-b1-a', 'fwb'])
-    details[2].should eq(['b1', 'q1', 'Warning', 'q1-b1-a', 'wa'])
-    details[3].should eq(['b1', 'q1', 'Warning', 'q1-b1-a', 'wb'])
+    expect(details).to be_a(Array)
+    expect(details.size).to eq 15
+    expect(details[0]).to eq(['b1', 'q1', 'Error', 'q1-b1-a', 'fwa'])
+    expect(details[1]).to eq(['b1', 'q1', 'Error', 'q1-b1-a', 'fwb'])
+    expect(details[2]).to eq(['b1', 'q1', 'Warning', 'q1-b1-a', 'wa'])
+    expect(details[3]).to eq(['b1', 'q1', 'Warning', 'q1-b1-a', 'wb'])
 
-    details[4].should eq(['b1', 'q2', 'Error', 'q2-b1-a', 'fwc'])
-    details[5].should eq(['b1', 'q2', 'Warning', 'q2-b1-a', 'wc'])
-    details[6].should eq(['b1', 'q2', 'Warning', 'q2-b1-a', 'wd'])
+    expect(details[4]).to eq(['b1', 'q2', 'Error', 'q2-b1-a', 'fwc'])
+    expect(details[5]).to eq(['b1', 'q2', 'Warning', 'q2-b1-a', 'wc'])
+    expect(details[6]).to eq(['b1', 'q2', 'Warning', 'q2-b1-a', 'wd'])
 
-    details[7].should eq(['b1', 'q3', 'Error', 'q3-b1-a', 'fwe'])
-    details[8].should eq(['b1', 'q3', 'Error', 'q3-b1-a', 'fwf'])
+    expect(details[7]).to eq(['b1', 'q3', 'Error', 'q3-b1-a', 'fwe'])
+    expect(details[8]).to eq(['b1', 'q3', 'Error', 'q3-b1-a', 'fwf'])
 
-    details[9].should eq(['b2', 'q1', 'Error', 'q1-b2-a', 'fwa'])
-    details[10].should eq(['b2', 'q1', 'Warning', 'q1-b2-a', 'wa'])
+    expect(details[9]).to eq(['b2', 'q1', 'Error', 'q1-b2-a', 'fwa'])
+    expect(details[10]).to eq(['b2', 'q1', 'Warning', 'q1-b2-a', 'wa'])
 
-    details[11].should eq(['b2', 'q2', 'Error', 'q2-b2-a', 'fwc'])
-    details[12].should eq(['b2', 'q2', 'Error', 'q2-b2-a', 'fwd'])
-    details[13].should eq(['b2', 'q2', 'Warning', 'q2-b2-a', 'wd'])
+    expect(details[11]).to eq(['b2', 'q2', 'Error', 'q2-b2-a', 'fwc'])
+    expect(details[12]).to eq(['b2', 'q2', 'Error', 'q2-b2-a', 'fwd'])
+    expect(details[13]).to eq(['b2', 'q2', 'Warning', 'q2-b2-a', 'wd'])
 
-    details[14].should eq(['b2', 'q3', 'Warning', 'q3-b2-a', 'we'])
+    expect(details[14]).to eq(['b2', 'q3', 'Warning', 'q3-b2-a', 'we'])
   end
 
 end
