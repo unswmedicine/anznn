@@ -5,7 +5,7 @@ When /^hospital "([^"]*)" has submitted the following baby codes$/ do |hospital,
   user = hospital.users.where(role_id: roles).first!
   table.hashes.each do |hash|
     survey = hash[:form]
-    Factory.create(:response, user: user, hospital: user.hospital,
+    FactoryBot.create(:response, user: user, hospital: user.hospital,
                    submitted_status: Response::STATUS_SUBMITTED, baby_code: hash[:baby_code],
                    year_of_registration: hash[:year],survey: Survey.find_by_name!(survey))
   end

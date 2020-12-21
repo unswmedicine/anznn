@@ -82,7 +82,7 @@ Feature: In order to see error messages in the right place
     When I am on the list of batch uploads page
     Then I should see "batch_uploads" table with
       | Registration Type | Num records | Status       | Details                                                                                | Reports                       |
-      | MySurvey          | 1           | Needs Review | The file you uploaded has one or more warnings. Please review the reports for details. | Summary Report\nDetail Report |
+      | MySurvey          | 1           | Needs Review | The file you uploaded has one or more warnings. Please review the reports for details. | Summary Report Detail Report |
     And the last detail report should look like
       | BabyCODE | Column Name | Type    | Value | Message                               |
       | bad      | QText       | Warning |       | QText must be present if QChoice == 1 |

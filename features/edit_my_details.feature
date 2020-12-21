@@ -14,7 +14,7 @@ Feature: Edit my details
     And I fill in "First Name" with "Fred"
     And I fill in "Last Name" with "Bloggs"
     And I press "Update"
-    Then I should see "Your account details have been successfully updated."
+    Then I should see "Your account has been updated successfully."
     And I should be on the home page
     And I follow "georgina@intersect.org.au"
     And I follow "Edit My Details"

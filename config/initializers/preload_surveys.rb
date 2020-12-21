@@ -12,8 +12,8 @@ class StaticModelPreloader
     Question.includes(:cross_question_validations, :question_options).all.each do |question|
       QUESTIONS[question.id] = question
     end
-    if ENV["RAILS_ENV"] != 'test'
-      Kernel.puts('StaticModelPreloader.load is called !!!')
+    if ENV["RAILS_ENV"] == 'development'
+      Kernel.puts('StaticModelPreloader.load is called .')
     end
   end
 end

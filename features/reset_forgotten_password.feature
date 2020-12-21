@@ -12,7 +12,7 @@ Feature: Reset forgotten password
     When I follow "Forgot your password?"
     And I fill in "Email" with "georgina@intersect.org.au"
     And I press "Send me reset password instructions"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And I should be on the login page
     And "georgina@intersect.org.au" should receive an email
     When I open the email
@@ -22,13 +22,13 @@ Feature: Reset forgotten password
     When I fill in "Password" with "Pass.456"
     And I fill in "Password confirmation" with "Pass.456"
     And I press "Change Your Password"
-    Then I should see "Your password was changed successfully. You are now signed in."
+    Then I should see "Your password has been changed successfully. You are now signed in."
     And I should be able to log in with "georgina@intersect.org.au" and "Pass.456"
     
   Scenario: Deactivated user gets an email saying they can't reset their password
     Given I have a deactivated user "deac@intersect.org.au"
     When I request a reset for "deac@intersect.org.au"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And I should be on the login page
     And "deac@intersect.org.au" should receive an email
     When I open the email
@@ -37,7 +37,7 @@ Feature: Reset forgotten password
   Scenario: Pending approval user gets an email saying they can't reset their password
     Given I have a pending approval user "pa@intersect.org.au"
     When I request a reset for "pa@intersect.org.au"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And I should be on the login page
     And "pa@intersect.org.au" should receive an email
     When I open the email
@@ -46,21 +46,21 @@ Feature: Reset forgotten password
   Scenario: Rejected as spam user trying to request a reset just sees default message but doesn't get email (so we don't reveal which users exist)
     Given I have a rejected as spam user "spam@intersect.org.au"
     When I request a reset for "spam@intersect.org.au"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And I should be on the login page
     But "spam@intersect.org.au" should receive no emails
 
   Scenario: Non existent user trying to request a reset just sees default message but doesn't get email (so we don't reveal which users exist)
     Given I am on the home page
     When I request a reset for "noexist@intersect.org.au"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And I should be on the login page
     But "noexist@intersect.org.au" should receive no emails
 
   Scenario: Non existent user trying to request a reset just sees default message but doesn't get email (so we don't reveal which users exist)
     Given I am on the home page
     When I request a reset for "noexist@intersect.org.au"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And I should be on the login page
     But "noexist@intersect.org.au" should receive no emails
 
@@ -79,7 +79,7 @@ Feature: Reset forgotten password
      And I fill in "Password" with "Pass.456"
      And I fill in "Password confirmation" with "Pass.123"
      And I press "Change Your Password"
-     Then I should see "Password doesn't match confirmation"
+     Then I should see "Password confirmation doesn't match Password"
 
    Scenario: New password must meet minimum requirements
      Given I have a user "georgina@intersect.org.au"
@@ -101,7 +101,7 @@ Feature: Reset forgotten password
     And I fill in "Password" with "Pass.456"
     And I fill in "Password confirmation" with "Pass.456"
     And I press "Change Your Password"
-    Then I should see "Your password was changed successfully. You are now signed in."
+    Then I should see "Your password has been changed successfully. You are now signed in."
     When I follow "Logout"
     And I open the email
     And I follow "Change my password" in the email
@@ -114,7 +114,8 @@ Feature: Reset forgotten password
   Scenario: Can't go to get new password page without the token in the email
     Given I have a user "georgina@intersect.org.au"
     When I go to the reset password page
-    When I fill in "Password" with "Pass.456"
-    And I fill in "Password confirmation" with "Pass.456"
-    And I press "Change Your Password"
-    Then I should see "Reset password token can't be blank"
+    Then I should see "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
+    #When I fill in "Password" with "Pass.456"
+    #And I fill in "Password confirmation" with "Pass.456"
+    #And I press "Change Your Password"
+    #Then I should see "Reset password token can't be blank"

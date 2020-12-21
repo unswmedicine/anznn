@@ -1,25 +1,26 @@
+
 Given /^I have a user "([^"]*)"$/ do |email|
-  Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'A')
+  FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'A')
 end
 
 Given /^I have a locked user "([^"]*)"$/ do |email|
-  Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'A', :locked_at => Time.now - 30.minute, :failed_attempts => 3)
+  FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'A', :locked_at => Time.now - 30.minute, :failed_attempts => 3)
 end
 
 Given /^I have a deactivated user "([^"]*)"$/ do |email|
-  Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'D')
+  FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'D')
 end
 
 Given /^I have a rejected as spam user "([^"]*)"$/ do |email|
-  Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'R')
+  FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'R')
 end
 
 Given /^I have a pending approval user "([^"]*)"$/ do |email|
-  Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'U')
+  FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'U')
 end
 
 Given /^I have a user "([^"]*)" with an expired lock$/ do |email|
-  Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'A', :locked_at => Time.now - 1.hour - 1.second, :failed_attempts => 3)
+  FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'A', :locked_at => Time.now - 1.hour - 1.second, :failed_attempts => 3)
 end
 
 Given /^I have a user "([^"]*)" with role "([^"]*)"$/ do |email, role|
@@ -66,7 +67,7 @@ Then /^I should be able to log in with "([^"]*)" and "([^"]*)"$/ do |email, pass
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   click_button("Log in")
-  page.should have_content('Logged in successfully.')
+  page.should have_content('Signed in successfully.')
   current_path.should == path_to('the home page')
 end
 
@@ -105,8 +106,8 @@ def create_usual_roles
 end
 
 def create_user_with_role(email, role_name)
-  hospital = role_name == Role::SUPER_USER ? nil : Factory(:hospital)
-  user = Factory(:user, :email => email, :password => "Pas$w0rd", :status => 'A', hospital: hospital)
+  hospital = role_name == Role::SUPER_USER ? nil : FactoryBot.create(:hospital)
+  user = FactoryBot.create(:user, :email => email, :password => "Pas$w0rd", :status => 'A', hospital: hospital)
   role = Role.find_by_name!(role_name)
   user.role_id = role.id
   user.save!
@@ -123,7 +124,7 @@ end
 
 def link_user_to_hospital(user, hospital_name)
   hospital = Hospital.find_by_name(hospital_name)
-  hospital ||= Factory(:hospital, name: hospital_name)
+  hospital ||= FactoryBot.create(:hospital, name: hospital_name)
   user.hospital = hospital
   user.save!
 end

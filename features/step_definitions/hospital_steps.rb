@@ -1,5 +1,5 @@
 Given /^I have hospitals$/ do |table|
   table.hashes.each do |hash|
-    Factory(:hospital, hash)
+    FactoryBot.create(:hospital, hash)
   end
 end
