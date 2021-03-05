@@ -18,7 +18,7 @@
 
 FactoryBot.define do
   factory :section do
-    name "Section 1"
+    name { "Section 1" }
     sequence :section_order
     association :survey
     after(:create) do |survey|

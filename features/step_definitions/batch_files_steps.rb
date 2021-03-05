@@ -30,7 +30,7 @@ When /^I force submit for "(.*)"$/ do |filename|
   click_button "force_submit_#{bf.id}"
 end
 
-Given /^I upload batch file( as "(.*)")? "([^"]*)" for survey "([^"]*)"$/ do |as_user, email, filename, survey_name|
+Given /^I upload batch file( as "(.*)")? "([^"]*)" for survey "([^"]*)"$/ do |email, filename, survey_name|
   visit batch_files_path
   click_link "Upload Batch File"
   select survey_name, from: "Registration type"
@@ -39,7 +39,7 @@ Given /^I upload batch file( as "(.*)")? "([^"]*)" for survey "([^"]*)"$/ do |as
   click_button "Upload"
   page.should have_content "Your upload has been received and is now being processed. This may take some time depending on the size of the file."
   page.should have_content "The status of your uploads can be seen in the table below. Click the 'Refresh Status' button to see an updated status."
-  if as_user
+  if email
     user = User.find_by_email!(email)
   else
     user = User.first
@@ -48,7 +48,7 @@ Given /^I upload batch file( as "(.*)")? "([^"]*)" for survey "([^"]*)"$/ do |as
 end
 
 Then /^I should have two batch files stored with name "([^"]*)"$/ do |name|
-  files = BatchFile.find_all_by_file_file_name(name)
+  files = BatchFile.where(file_file_name: name)
   files.count.should eq(2)
   files[0].file.path.should_not eq(files[1].file.path)
 end
@@ -63,11 +63,11 @@ Given /^I have batch uploads$/ do |table|
     uploader = User.find_by_email!(attrs.delete("created_by"))
     hospital_name = attrs.delete("hospital")
     hospital = Hospital.find_by_name(hospital_name)
-    hospital ||= Factory(:hospital, name: hospital_name)
+    hospital ||= FactoryBot.create(:hospital, name: hospital_name)
     summary = attrs.delete("summary report") == "true"
     detail = attrs.delete("detail report") == "true"
 
-    bf = Factory(:batch_file, attrs.merge(survey: survey, user: uploader, hospital: hospital))
+    bf = FactoryBot.create(:batch_file, attrs.merge(survey: survey, user: uploader, hospital: hospital))
 
     #create fake reports so we can test downloading them
     if summary
@@ -127,7 +127,7 @@ end
 Given /^there are (\d+) batch uploads$/ do |count|
   BatchFile.delete_all
   count.to_i.times do |i|
-    Factory(:batch_file, year_of_registration: i)
+    FactoryBot.create(:batch_file, year_of_registration: i)
   end
 end
 
@@ -143,7 +143,7 @@ Then /^I should have a supplementary file stored for the most recent batch for g
   extension = File.extname(supplementary.file_file_name)
   expected_path = Rails.root.join("tmp/supplementary_#{supplementary.id}#{extension}").to_s
   supplementary.file.path.should eq(expected_path)
-  File.exist?(expected_path).should be_true
+  File.exist?(expected_path).should be true
 end
 
 When /^I should have (\d+) supplementary files? for the most recent batch$/ do |expected_count|

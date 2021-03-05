@@ -38,7 +38,7 @@ class Response < ApplicationRecord
   validates_presence_of :hospital_id
   validates_presence_of :year_of_registration
   validates_inclusion_of :submitted_status, in: [STATUS_UNSUBMITTED, STATUS_SUBMITTED]
-  validates_uniqueness_of :baby_code, scope: :survey_id
+  validates_uniqueness_of :baby_code, scope: :survey_id, case_sensitive: true
   validates_format_of :baby_code, with: BABY_CODE_REGEX
   validates_length_of :baby_code, maximum: 30
 
@@ -78,7 +78,7 @@ class Response < ApplicationRecord
   end
 
   def self.delete_by_survey_and_year_of_registration(survey_id, year)
-    Response.destroy_all(["year_of_registration = ? AND survey_id = ?", year, survey_id])
+    Response.where(["year_of_registration = ? AND survey_id = ?", year, survey_id]).destroy_all
   end
 
   def self.existing_years_of_registration

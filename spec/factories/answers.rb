@@ -20,6 +20,6 @@ FactoryBot.define do
   factory :answer do
     association :response
     association :question
-    answer_value "100"
+    answer_value { "100" }
   end
 end

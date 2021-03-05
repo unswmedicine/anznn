@@ -16,9 +16,9 @@
 
 FactoryBot.define do
   factory :basic_user, class: :user do
-    first_name "Fred"
-    last_name "Bloggs"
-    password "Pas$w0rd"
+    first_name { "Fred" }
+    last_name { "Bloggs" }
+    password { "Pas$w0rd" }
     sequence(:email) { |n| "#{n}@intersect.org.au" }
 
     factory :user do

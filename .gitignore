@@ -13,6 +13,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+*.swp
+*.log
 
 .sass-cache/
 coverage/
@@ -23,6 +25,13 @@ rerun.txt
 
 # Ignore generated user manual
 /public/user_manual
+# Ignore generated assets
+
+/public/assets
 
 # Mac finder artifacts
 .DS_Store
+
+# Dev temp
+docker_dir/
+manual/.jekyll-cache

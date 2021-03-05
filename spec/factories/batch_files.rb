@@ -21,7 +21,7 @@ FactoryBot.define do
     association :survey
     association :user
     association :hospital
-    file_file_name "Blah"
-    year_of_registration 2012
+    file_file_name { "Blah" }
+    year_of_registration { 2012 }
   end
 end

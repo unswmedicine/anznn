@@ -52,11 +52,19 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^"]*)"$/ do |button|
-  click_button(button)
+#capybara upgrade
+  click_button(button, match: :first)
 end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
-  click_link(link)
+#capybara upgrade
+  if ['Delete'].include?(link)
+    accept_alert do
+      click_link(link, match: :first)
+    end
+  else
+      click_link(link, match: :first)
+  end
 end
 
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
@@ -215,7 +223,7 @@ Then /^the "([^"]*)" checkbox(?: within (.*))? should be checked$/ do |label, pa
   with_scope(parent) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      field_checked.should be_true
+      field_checked.should be true
     else
       assert field_checked
     end

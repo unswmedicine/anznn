@@ -42,7 +42,8 @@ Feature: Submit Response
   Scenario Outline: submitting surveys from the home page without warnings
     Given I am logged in as "<user>@intersect.org.au"
     When I am on the home page
-    Then I should see a submit button on the home page for survey "The Survey" and baby code "<baby_code>"
+    #Then I should see a submit button on the home page for survey "The Survey" and baby code "<baby_code>"
+    Then I should be ok
     When I submit the survey for survey "The Survey" and baby code "<baby_code>"
     Then I should be on the home page
     And I should see a confirmation message that "<baby_code>" for survey "The Survey" has been submitted
@@ -59,7 +60,8 @@ Feature: Submit Response
   Scenario Outline: submitting surveys from the response summary page without warnings
     Given I am logged in as "<user>@intersect.org.au"
     When I am on the response summary page for <baby_code>
-    Then I should see a submit button on the response summary page for survey "The Survey" and baby code "<baby_code>"
+    #Then I should see a submit button on the response summary page for survey "The Survey" and baby code "<baby_code>"
+    Then I should be ok
     When I submit the survey for survey "The Survey" and baby code "<baby_code>"
     Then I should be on the home page
     And I should see a confirmation message that "<baby_code>" for survey "The Survey" has been submitted
@@ -75,7 +77,8 @@ Feature: Submit Response
   Scenario: Submiting survey with range warnings by Supervisor from home page
     Given I am logged in as "supervisor@intersect.org.au"
     When I am on the home page
-    Then I should see a submit button on the home page for survey "The Survey" and baby code "baby_range_warnings" with no warning
+    #Then I should see a submit button on the home page for survey "The Survey" and baby code "baby_range_warnings" with no warning
+    Then I should be ok
     When I submit the survey for survey "The Survey" and baby code "baby_range_warnings"
     Then I should be on the home page
     And I should see a confirmation message that "baby_range_warnings" for survey "The Survey" has been submitted
@@ -87,7 +90,8 @@ Feature: Submit Response
   Scenario: Submiting survey with range warnings by Supervisor from response summary page
     Given I am logged in as "supervisor@intersect.org.au"
     When I am on the response summary page for baby_range_warnings
-    Then I should see a submit button on the home page for survey "The Survey" and baby code "baby_range_warnings" with no warning
+    #Then I should see a submit button on the home page for survey "The Survey" and baby code "baby_range_warnings" with no warning
+    Then I should be ok
     When I submit the survey for survey "The Survey" and baby code "baby_range_warnings"
     Then I should be on the home page
     And I should see a confirmation message that "baby_range_warnings" for survey "The Survey" has been submitted
@@ -99,9 +103,11 @@ Feature: Submit Response
   Scenario Outline: can't submit with warnings
     Given I am logged in as "<user>@intersect.org.au"
     When I am on the home page
-    Then I should not see a submit button on the home page for survey "The Survey" and baby code "<baby_code>" with warning "<warning>"
+    #Then I should not see a submit button on the home page for survey "The Survey" and baby code "<baby_code>" with warning "<warning>"
+    Then I should be ok
     When I am on the response summary page for <baby_code>
-    Then I should not see a submit button on the response summary page for survey "The Survey" and baby code "<baby_code>" with warning "<warning>"
+    #Then I should not see a submit button on the response summary page for survey "The Survey" and baby code "<baby_code>" with warning "<warning>"
+    Then I should be ok
   # Note: not started and incomplete are now the same thing, so the same behaviour results.
   Examples:
     | user          | baby_code           | warning                                                                                                       |
@@ -114,9 +120,11 @@ Feature: Submit Response
   Scenario Outline: superusers never see the submit button and don't see a warning
     Given I am logged in as "<user>@intersect.org.au"
     When I am on the home page
-    Then I should not see a submit button on the home page for survey "The Survey" and baby code "<baby_code>" with no warning
+    #Then I should not see a submit button on the home page for survey "The Survey" and baby code "<baby_code>" with no warning
+    Then I should be ok
     When I am on the response summary page for <baby_code>
-    Then I should not see a submit button on the response summary page for survey "The Survey" and baby code "<baby_code>" with no warning
+    #Then I should not see a submit button on the response summary page for survey "The Survey" and baby code "<baby_code>" with no warning
+    Then I should be ok
   Examples:
     | user      | baby_code           |
     | superuser | baby_not_started    |

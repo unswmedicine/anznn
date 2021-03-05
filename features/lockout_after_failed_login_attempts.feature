@@ -9,52 +9,52 @@ Feature: Locking out users after multiple failed password attempts
 
   Scenario: 3 consecutive failed logins results in account being locked.
     When I attempt to login with "georgina@intersect.org.au" and "blah"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     And I should be on the login page
     When I attempt to login with "georgina@intersect.org.au" and "blah"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     And I should be on the login page
     When I attempt to login with "georgina@intersect.org.au" and "blah"
-    Then I should see "You entered an incorrect password 3 times in a row. For security reasons your account has been locked for one hour."
+    Then I should see "If this account exists, after three unsuccessful login attempts it will be locked for one hour from the last login attempt."
 
   Scenario: A successful login after 2 failures resets the failure count to zero
     When I attempt to login with "georgina@intersect.org.au" and "blah"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     When I attempt to login with "georgina@intersect.org.au" and "blah"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     And the failed attempt count for "georgina@intersect.org.au" should be "2"
     When I attempt to login with "georgina@intersect.org.au" and "Pas$w0rd"
-    Then I should see "Logged in successfully."
+    Then I should see "Signed in successfully."
     And the failed attempt count for "georgina@intersect.org.au" should be "0"
     When I follow "Logout"
     And I attempt to login with "georgina@intersect.org.au" and "blah"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     And the failed attempt count for "georgina@intersect.org.au" should be "1"
 
   Scenario: Can't login while locked even with correct password
     Given I have a locked user "shuqian@intersect.org.au"
     When I attempt to login with "shuqian@intersect.org.au" and "Pas$w0rd"
-    And I should see "You entered an incorrect password 3 times in a row. For security reasons your account has been locked for one hour."
+    And I should see "If this account exists, after three unsuccessful login attempts it will be locked for one hour from the last login attempt."
     And I should be on the login page
 
   Scenario: Further incorrect attempts while locked show locked message
     Given I have a locked user "shuqian@intersect.org.au"
     When I attempt to login with "shuqian@intersect.org.au" and "asdf"
-    And I should see "You entered an incorrect password 3 times in a row. For security reasons your account has been locked for one hour."
+    And I should see "If this account exists, after three unsuccessful login attempts it will be locked for one hour from the last login attempt."
     And I should be on the login page
 
   Scenario: Can login with correct password after lock expiring
     Given I have a user "shuqian@intersect.org.au" with an expired lock
     When I attempt to login with "shuqian@intersect.org.au" and "Pas$w0rd"
-    Then I should see "Logged in successfully."
+    Then I should see "Signed in successfully."
     And the failed attempt count for "shuqian@intersect.org.au" should be "0"
 
   Scenario: User can reset password while locked out and this resets the lock and failure count
     Given I have a locked user "shuqian@intersect.org.au"
     When I attempt to login with "shuqian@intersect.org.au" and "Pas$w0rd"
-    Then I should see "You entered an incorrect password 3 times in a row. For security reasons your account has been locked for one hour."
+    Then I should see "If this account exists, after three unsuccessful login attempts it will be locked for one hour from the last login attempt."
     When I request a reset for "shuqian@intersect.org.au"
-    Then I should see "If the email address you entered was valid, you will receive an email with instructions about how to reset your password in a few minutes."
+    Then I should see "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
     And "shuqian@intersect.org.au" should receive an email
     When I open the email
     Then I should see "Someone has requested a link to change your password on the ANZNN site, and you can do this through the link below." in the email body
@@ -63,7 +63,7 @@ Feature: Locking out users after multiple failed password attempts
     When I fill in "Password" with "Pass.456"
     And I fill in "Password confirmation" with "Pass.456"
     And I press "Change Your Password"
-    Then I should see "Your password was changed successfully. You are now signed in."
+    Then I should see "Your password has been changed successfully. You are now signed in."
     # to verify we are actually logged in
     And I should not see "Login"
     And the failed attempt count for "shuqian@intersect.org.au" should be "0"

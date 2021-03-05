@@ -21,7 +21,8 @@ Feature: Processing batch files
     | no_baby_code_column.csv | The file you uploaded did not contain a BabyCODE column. Processing stopped on CSV row 0                                    |
     | missing_baby_code.csv   | The file you uploaded is missing one or more baby codes. Each record must have a baby code. Processing stopped on CSV row 2 |
     | blank_rows.csv          | The file you uploaded is missing one or more baby codes. Each record must have a baby code. Processing stopped on CSV row 1 |
-    | empty.csv               | The file you uploaded did not contain any data.                                                                             |
+    #empty file is rejected straght away 
+    #| empty.csv               | File has contents that are not what they are reported to be                                                                 |
     | headers_only.csv        | The file you uploaded did not contain any data.                                                                             |
     | duplicate_baby_code.csv | The file you uploaded contained duplicate baby codes. Each baby code can only be used once. Processing stopped on CSV row 3 |
     | duplicate_column.csv    | The file you uploaded contained duplicate columns. Each column heading must be unique.                                      |
@@ -48,7 +49,7 @@ Feature: Processing batch files
     When I am on the list of batch uploads page
     Then I should see "batch_uploads" table with
       | Registration Type | Num records | Status | Details                                                                               | Reports                       |
-      | MySurvey          | 3           | Failed | The file you uploaded did not pass validation. Please review the reports for details. | Summary Report\nDetail Report |
+      | MySurvey          | 3           | Failed | The file you uploaded did not pass validation. Please review the reports for details. | Summary Report Detail Report |
   Examples:
     | file                              |
     | bad_date.csv                      |
@@ -66,7 +67,7 @@ Feature: Processing batch files
     When I am on the list of batch uploads page
     Then I should see "batch_uploads" table with
       | Registration Type | Num records | Status       | Details                                                                                | Reports                       |
-      | MySurvey          | 3           | Needs Review | The file you uploaded has one or more warnings. Please review the reports for details. | Summary Report\nDetail Report |
+      | MySurvey          | 3           | Needs Review | The file you uploaded has one or more warnings. Please review the reports for details. | Summary Report Detail Report |
   Examples:
     | file                     |
     | cross_question_error.csv |
@@ -79,4 +80,4 @@ Feature: Processing batch files
     When I am on the list of batch uploads page
     Then I should see "batch_uploads" table with
       | Registration Type | Num records | Status | Details                                                                               | Reports                       |
-      | MySurvey          | 3           | Failed | The file you uploaded did not pass validation. Please review the reports for details. | Summary Report\nDetail Report |
+      | MySurvey          | 3           | Failed | The file you uploaded did not pass validation. Please review the reports for details. | Summary Report Detail Report |

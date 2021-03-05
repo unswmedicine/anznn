@@ -18,7 +18,7 @@
 
 FactoryBot.define do
   factory :configuration_item do
-      name "MyString"
-      configuration_value "MyString"
+      name { "MyString" } 
+      configuration_value { "MyString" }
     end
 end

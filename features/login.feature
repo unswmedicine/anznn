@@ -14,38 +14,38 @@ Feature: Logging In
   Scenario: Successful login
     Given I am on the login page
     When I fill in "Email" with "georgina@intersect.org.au"
-    And I fill in "Password" with "Pas$w0rd"
+    And I fill in "Password:" with "Pas$w0rd"
     And I press "Log in"
-    Then I should see "Logged in successfully."
+    Then I should see "Signed in successfully."
     And I should be on the home page
 
   Scenario: Successful login from home page
     Given I am on the home page
     When I fill in "Email" with "georgina@intersect.org.au"
-    And I fill in "Password" with "Pas$w0rd"
+    And I fill in "Password:" with "Pas$w0rd"
     And I press "Log in"
-    Then I should see "Logged in successfully."
+    Then I should see "Signed in successfully."
     And I should be on the home page
 
   Scenario: Should be redirected to the login page when trying to access a secure page
     Given I am on the list users page
-    Then I should see "You need to log in before continuing."
+    Then I should see "You need to sign in or sign up before continuing."
     And I should be on the login page
 
   Scenario: Should be redirected to requested page after logging in following a redirect from a secure page
     Given I am on the list users page
     When I fill in "Email" with "georgina@intersect.org.au"
-    And I fill in "Password" with "Pas$w0rd"
+    And I fill in "Password:" with "Pas$w0rd"
     And I press "Log in"
-    Then I should see "Logged in successfully."
+    Then I should see "Signed in successfully."
     And I should be on the list users page
 
   Scenario Outline: Failed logins due to missing/invalid details
     Given I am on the login page
     When I fill in "Email" with "<email>"
-    And I fill in "Password" with "<password>"
+    And I fill in "Password:" with "<password>"
     And I press "Log in"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     And I should be on the login page
   Examples:
     | email                     | password         | explanation    |
@@ -61,9 +61,9 @@ Feature: Logging In
     And I have a pending approval user "pending@intersect.org.au"
     And I am on the login page
     When I fill in "Email" with "<email>"
-    And I fill in "Password" with "<password>"
+    And I fill in "Password:" with "<password>"
     And I press "Log in"
-    Then I should see "Your account is not active."
+    Then I should see "Your account is not activated yet."
   Examples:
     | email                    | password |
     | deact@intersect.org.au   | Pas$w0rd |
@@ -76,10 +76,10 @@ Feature: Logging In
     And I have a pending approval user "pending@intersect.org.au"
     And I am on the login page
     When I fill in "Email" with "<email>"
-    And I fill in "Password" with "<password>"
+    And I fill in "Password:" with "<password>"
     And I press "Log in"
-    Then I should see "Invalid email or password."
-    And I should not see "Your account is not active."
+    Then I should see "Incorrect email or password."
+    And I should not see "Your account is not activated yet."
   Examples:
     | email                    | password |
     | deact@intersect.org.au   | pa       |

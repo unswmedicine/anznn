@@ -15,7 +15,7 @@ Feature: Change my password
     And I fill in "Confirm new password" with "Pass.123"
     And I fill in "Current password" with "Pas$w0rd"
     And I press "Update"
-    Then I should see "Your password has been updated."
+    Then I should see "Your password has been changed successfully."
     And I should see link "Logout"
     And I should be able to log in with "georgina@intersect.org.au" and "Pass.123"
 
@@ -48,7 +48,7 @@ Feature: Change my password
     And I fill in "Confirm new password" with "Pass.1233"
     And I fill in "Current password" with "Pas$w0rd"
     And I press "Update"
-    Then I should see "Password doesn't match confirmation"
+    Then I should see "Password confirmation doesn't match"
     And I should be able to log in with "georgina@intersect.org.au" and "Pas$w0rd"
 
   Scenario: Change password not allowed if new password blank

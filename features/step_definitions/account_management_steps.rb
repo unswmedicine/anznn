@@ -1,6 +1,6 @@
 Given /^I have access requests$/ do |table|
   table.hashes.each do |hash|
-    Factory(:user, hash.merge(:status => 'U'))
+    FactoryBot.create(:user, hash.merge(:status => 'U'))
   end
 end
 
@@ -10,18 +10,18 @@ Given /^I have users$/ do |table|
     role_name = hash.delete('role')
     role = role_name.blank? ? nil : Role.find_by_name!(role_name)
     hospital = hospital_name.blank? ? nil : Hospital.find_by_name!(hospital_name)
-    Factory(:user, hash.merge(status: 'A', hospital: hospital, role: role))
+    FactoryBot.create(:user, hash.merge(status: 'A', hospital: hospital, role: role))
   end
 end
 
 Given /^I have roles$/ do |table|
   table.hashes.each do |hash|
-    Factory(:role, hash)
+    FactoryBot.create(:role, hash)
   end
 end
 
 And /^I have role "([^"]*)"$/ do |name|
-  Factory(:role, :name => name)
+  FactoryBot.create(:role, :name => name)
 end
 
 

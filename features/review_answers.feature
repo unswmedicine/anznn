@@ -56,14 +56,14 @@ Feature: Review my answers
   Scenario: Shows 'Not answered' for questions that are not answered yet
     Given I am on the review answers page for ABCDEF
     Then I should see answers for section "SectionOne"
-      | Text Qn    | Not answered\nThis question is mandatory |
+      | Text Qn    | Not answered This question is mandatory |
       | Decimal Qn | Not answered                             |
-      | Integer Qn | Not answered\nThis question is mandatory |
+      | Integer Qn | Not answered This question is mandatory |
       | Integer Q2 | Not answered                             |
       | Integer Q3 | Not answered                             |
     And I should see answers for section "SectionTwo"
-      | Date Qn   | Not answered\nThis question is mandatory |
-      | Time Qn   | Not answered\nThis question is mandatory |
+      | Date Qn   | Not answered This question is mandatory |
+      | Time Qn   | Not answered This question is mandatory |
       | Choice Qn | Not answered                             |
 
   @javascript

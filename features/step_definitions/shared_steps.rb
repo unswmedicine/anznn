@@ -109,7 +109,7 @@ end
 
 # can be helpful for @javascript features in lieu of "show me the page
 Then /^pause$/ do
-  puts "Press Enter to continue"
+  Kernel.puts "Press Enter to continue"
   STDIN.getc
 end
 
@@ -124,9 +124,11 @@ end
 def chatty_diff_table!(expected_table, actual, opts={})
   begin
     expected_table.diff!(actual, opts)
-  rescue Cucumber::Ast::Table::Different
-    puts "Tables were as follows:"
-    puts expected_table
+  #rescue Cucumber::Ast::Table::Different
+  #cucumber upgrade
+  rescue Cucumber::MultilineArgument::DataTable::Different
+    Kernel.puts "Tables were as follows:"
+    Kernel.puts expected_table
     raise
   end
 end
@@ -165,7 +167,7 @@ end
 
 When /^"([^"]*)" should not be visible$/ do |text|
   result = page.has_content?(text)
-  puts result
+  Kernel.puts result
   result.should be_false
   # special case that uses the above form instead of this:
   # page.should have_no_content(text)

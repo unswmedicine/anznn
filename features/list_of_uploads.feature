@@ -25,7 +25,7 @@ Feature: View a list of batch files
       | Registration Type | Year of Registration | Filename   | Created By    | Date Uploaded          | Num records | Status      | Details   | Reports                       |
       | MySurvey2         | 2010                 | second.csv | Data Provider | January 04, 2012 13:56 |             | In Progress | Message 2 |                               |
       | MySurvey          | 2009                 | first.csv  | Data Provider | January 03, 2012 13:56 |             | In Progress | Message 1 |                               |
-      | MySurvey2         | 2012                 | fourth.csv | Fred Smith    | January 03, 2012 11:23 | 20          | Failed      | Message 4 | Summary Report\nDetail Report |
+      | MySurvey2         | 2012                 | fourth.csv | Fred Smith    | January 03, 2012 11:23 | 20          | Failed      | Message 4 | Summary Report Detail Report |
       | MySurvey          | 2008                 | third.csv  | Fred Smith    | January 03, 2012 08:00 | 15          | Succeeded   | Message 3 | Summary Report                |
 
   Scenario Outline: View a list of batch uploads - data provider/data provider supervisor only sees own hospital
@@ -34,7 +34,7 @@ Feature: View a list of batch files
     Then I should see "batch_uploads" table with
       | Registration Type | Filename   | Created By    | Date Uploaded          | Num records | Status      | Details   | Reports                       |
       | MySurvey          | first.csv  | Data Provider | January 03, 2012 13:56 |             | In Progress | Message 1 |                               |
-      | MySurvey2         | fourth.csv | Fred Smith    | January 03, 2012 11:23 | 20          | Failed      | Message 4 | Summary Report\nDetail Report |
+      | MySurvey2         | fourth.csv | Fred Smith    | January 03, 2012 11:23 | 20          | Failed      | Message 4 | Summary Report Detail Report |
   Examples:
     | user                           |
     | supervisor@intersect.org.au    |

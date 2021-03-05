@@ -62,9 +62,9 @@ Feature: Reject access requests
     And I follow "Logout"
     And I am on the login page
     And I fill in "Email" with "diego@intersect.org.au"
-    And I fill in "Password" with "Pas$w0rd"
+    And I fill in "Password:" with "Pas$w0rd"
     And I press "Log in"
-    Then I should see "Invalid email or password."
+    Then I should see "Incorrect email or password."
     And I should be on the login page
 
   Scenario: Rejected as spam user should not be able to log in
@@ -74,9 +74,9 @@ Feature: Reject access requests
     And I follow "Logout"
     And I am on the login page
     And I fill in "Email" with "diego@intersect.org.au"
-    And I fill in "Password" with "Pas$w0rd"
+    And I fill in "Password:" with "Pas$w0rd"
     And I press "Log in"
-    Then I should see "Your account is not active."
+    Then I should see "Your account is not activated yet."
     And I should be on the login page
 
   Scenario: Rejected user should be able to apply again
@@ -87,12 +87,12 @@ Feature: Reject access requests
     And I am on the request account page
     And I fill in the following:
       | Email                 | diego@intersect.org.au |
-      | Password              | Pas$w0rd               |
+      | Password:             | Pas$w0rd               |
       | Confirm Password      | Pas$w0rd               |
       | First Name            | Fred                   |
       | Last Name             | Bloggs                 |
     And I press "Submit Request"
-    Then I should see "Thanks for requesting an account. You will receive an email when your request has been approved."
+    Then I should see "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
 
   Scenario: Rejected as spam user should not be able to apply again
     Given I am on the access requests page
@@ -102,7 +102,7 @@ Feature: Reject access requests
     And I am on the request account page
     And I fill in the following:
       | Email                 | diego@intersect.org.au |
-      | Password              | Pas$w0rd               |
+      | Password:             | Pas$w0rd               |
       | Confirm Password      | Pas$w0rd               |
       | First Name            | Fred                   |
       | Last Name             | Bloggs                 |

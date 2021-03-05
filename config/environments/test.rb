@@ -53,8 +53,8 @@ Anznn::Application.configure do
   # like if you have constraints or database-specific column types
   # config.active_record.schema_format = :sql
 
-  # Print deprecation notices to the stderr
-  config.active_support.deprecation = :stderr
+  # Raise exception for deprecation notices
+  config.active_support.deprecation = :raise
 
   config.eager_load = false
 end

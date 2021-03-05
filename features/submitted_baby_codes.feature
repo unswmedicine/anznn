@@ -43,9 +43,9 @@ Feature: Submitted Baby Codes
     Then I should be on the submitted baby codes page
     And I should see the following baby codes
     | form     | year | baby_code |
-    | followup | 2011 | baby2     |
-    | main     | 2012 | baby3     |
-    | main     | 2010 | baby4     |
+    | followup | 2011 (1 submitted) | baby2     |
+    | main     | 2012 (1 submitted) | baby3     |
+    | main     | 2010 (1 submitted) | baby4     |
 
   Scenario: Administrator can not see the submitted baby codes link
     Given I am logged in as "dan@intersect.org.au"

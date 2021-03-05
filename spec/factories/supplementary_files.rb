@@ -18,7 +18,7 @@
 
 FactoryBot.define do
   factory :supplementary_file do
-      multi_name "MyString"
-      batch_file nil
+      multi_name { "MyString" }
+      batch_file { nil }
     end
 end

@@ -24,7 +24,7 @@ end
 Given /^"([^"]*)" has sections$/ do |survey_name, table|
   survey = Survey.find_by_name(survey_name)
   table.hashes.each do |sec_attrs|
-    Factory(:section, sec_attrs.merge(survey: survey))
+    FactoryBot.create(:section, sec_attrs.merge(survey: survey))
   end
   refresh_static_cache
 end
@@ -39,7 +39,7 @@ Given /^question "([^"]*)" has question options$/ do |question_name, table|
   question = Question.find_by_question!(question_name)
   question.question_options.delete_all
   table.hashes.each do |qo_attrs|
-    Factory(:question_option, qo_attrs.merge(question: question))
+    FactoryBot.create(:question_option, qo_attrs.merge(question: question))
   end
   refresh_static_cache
 end
@@ -69,8 +69,8 @@ end
 
 def setup_year_of_reg(from, to)
   if ConfigurationItem.all.empty?
-    Factory(:configuration_item, name: ConfigurationItem::YEAR_OF_REGISTRATION_START, configuration_value: from)
-    Factory(:configuration_item, name: ConfigurationItem::YEAR_OF_REGISTRATION_END, configuration_value: to)
+    FactoryBot.create(:configuration_item, name: ConfigurationItem::YEAR_OF_REGISTRATION_START, configuration_value: from)
+    FactoryBot.create(:configuration_item, name: ConfigurationItem::YEAR_OF_REGISTRATION_END, configuration_value: to)
   end
 end
 
@@ -79,12 +79,16 @@ def create_questions(survey, table)
     section_num = q_attrs.delete("section")
     section_num ||= 0
     section = survey.sections.find_by_section_order(section_num)
-    section = Factory(:section, survey: survey, section_order: section_num) unless section
-    question = Factory(:question, q_attrs.merge(section: section, code: q_attrs['question']))
+    section = FactoryBot.create(:section, survey: survey, section_order: section_num) unless section
+    #question = FactoryBot.create(:question, q_attrs.merge(section: section, code: q_attrs['question']))
+    #only fallback to question when code was not given
+    the_question_code = q_attrs['code']
+    the_question_code ||=q_attrs['question']
+    question = FactoryBot.create(:question, q_attrs.merge(section: section, code: the_question_code))
     if question.type_choice?
-      Factory(:question_option, question: question, label: "Apple", option_value: "A")
-      Factory(:question_option, question: question, label: "Bike", option_value: "B")
-      Factory(:question_option, question: question, label: "Cat", option_value: "C")
+      FactoryBot.create(:question_option, question: question, label: "Apple", option_value: "A")
+      FactoryBot.create(:question_option, question: question, label: "Bike", option_value: "B")
+      FactoryBot.create(:question_option, question: question, label: "Cat", option_value: "C")
     end
   end
 end

@@ -16,6 +16,15 @@ require 'cucumber/rails'
 Capybara.default_selector = :css
 
 Capybara.ignore_hidden_elements = true
+Capybara.register_driver :selenium do |app|
+  browser_options = Selenium::WebDriver::Firefox::Options.new()
+  browser_options.args << '--headless'
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    options: browser_options
+  )
+end
 # By default, any exception happening in your Rails application will bubble up
 # to Cucumber so that your scenario will fail. This is a different from how
 # your application behaves in the production environment, where an error page will
@@ -58,4 +67,9 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+require 'rspec/rails'
+RSpec.configure do |config|
+  #explicit using old should style
+  config.expect_with(:rspec) { |c| c.syntax = :should }
+end
 

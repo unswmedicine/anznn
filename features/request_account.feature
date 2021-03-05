@@ -12,13 +12,13 @@ Feature: Request an account
     Given I am on the request account page
     When I fill in the following:
       | Email            | georgina@intersect.org.au |
-      | Password         | paS$w0rd                  |
+      | Password:        | paS$w0rd                  |
       | Confirm Password | paS$w0rd                  |
       | First Name       | Fred                      |
       | Last Name        | Bloggs                    |
     And I press "Submit Request"
-    Then I should see "Thanks for requesting an account. You will receive an email when your request has been approved."
-    And I should not see "Your account is not active"
+    Then I should see "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
+    And I should not see "Your account is not activated yet."
     And I should be on the home page
     And I should see "Please enter your email and password to log in"
 
@@ -26,7 +26,7 @@ Feature: Request an account
     Given I am on the request account page
     When I fill in the following:
       | Email            | georgina@intersect.org.au |
-      | Password         | paS$w0rd                  |
+      | Password:        | paS$w0rd                  |
       | Confirm Password | paS$w0rd                  |
       | First Name       | Fred                      |
       | Last Name        | Bloggs                    |
@@ -41,7 +41,7 @@ Feature: Request an account
     When they click the first link in the email
     Then I should be on the login page
     And I fill in "Email" with "diego.alonso@intersect.org.au"
-    And I fill in "Password" with "Pas$w0rd"
+    And I fill in "Password:" with "Pas$w0rd"
     And I press "Log in"
     Then I should be on the access requests page
     And I should see "access_requests" table with
@@ -52,39 +52,39 @@ Feature: Request an account
     Given I am on the request account page
     When I fill in the following:
       | Email            | georgina@intersect.org.au |
-      | Password         | paS$w0rd                  |
+      | Password:        | paS$w0rd                  |
       | Confirm Password | pa                        |
       | First Name       | Fred                      |
       | Last Name        | Bloggs                    |
     And I press "Submit Request"
-    Then I should see "Password doesn't match confirmation"
+    Then I should see "Password confirmation doesn't match Password"
 
   Scenario: Password fields should be cleared out on validation error
     Given I am on the request account page
     When I fill in the following:
       | Email            | georgina@intersect.org.au |
-      | Password         | paS$w0rd                  |
+      | Password:        | paS$w0rd                  |
       | Confirm Password | paS$w0rd                  |
     And I press "Submit Request"
     Then I should see "First name can't be blank"
     And I should see "Last name can't be blank"
-    And the "Password" field should contain ""
+    And the "Password:" field should contain ""
     And the "Confirm Password" field should contain ""
 
   Scenario: Newly requested account should not be able to log in yet
     Given I am on the request account page
     And I fill in the following:
       | Email            | georgina@intersect.org.au |
-      | Password         | paS$w0rd                  |
+      | Password:        | paS$w0rd                  |
       | Confirm Password | paS$w0rd                  |
       | First Name       | Fred                      |
       | Last Name        | Bloggs                    |
     And I press "Submit Request"
     And I am on the login page
     When I fill in "Email" with "georgina@intersect.org.au"
-    And I fill in "Password" with "paS$w0rd"
+    And I fill in "Password:" with "paS$w0rd"
     And I press "Log in"
-    Then I should see "Your account is not active."
+    Then I should see "Your account is not activated yet."
     And I should be on the login page
 
   Scenario: Deactivated supers shouldn't get the email
@@ -93,7 +93,7 @@ Feature: Request an account
     And I am on the request account page
     When I fill in the following:
       | Email            | georgina@intersect.org.au |
-      | Password         | paS$w0rd                  |
+      | Password:        | paS$w0rd                  |
       | Confirm Password | paS$w0rd                  |
       | First Name       | Fred                      |
       | Last Name        | Bloggs                    |
